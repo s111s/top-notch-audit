@@ -16,20 +16,42 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
 
 ---
 
-## Try it in 2 minutes (no install)
+## Try it in 60 seconds (no wallet, no install)
 
 1. **Open** https://s111s.github.io/top-notch-audit/
    **You should see** the published audit of `alpha-bot-demo.near`: a **Qualified opinion**, 8 trades tested, 7 tickmarked ✓, 1 finding.
 2. **Look at the finding.**
-   **You should see** *"Allowed tokens (trade 5): wNEAR → RHEA"*. RHEA is not on the agent's allowlist. Click the tx link: the swap is on NearBlocks, and the *intents* link shows its settlement on NEAR Intents.
-3. **Check the mandate can't have been changed after the fact.**
-   **You should see** in *Mandate the agent published* the rules, the mandate hash and the block it was published at, before the first trade. The hash is computed by the contract itself from the text: `near view top-notch.near get_mandates '{"agent":"alpha-bot-demo.near"}'`.
-4. **Check the report is genuine.**
-   **You should see** under *Verify this report yourself* two green ticks: your browser recomputed the report hash and found the same hash stored on `top-notch.near`. CLI: `near view top-notch.near get_reports '{"agent":"alpha-bot-demo.near"}'`.
-5. **Re-run the audit live.** Press **Audit**.
-   **You should see** the progress log, then the same opinion, computed in your browser from mainnet data (NearBlocks index, NEAR RPC, 1Click status API). No server of ours is involved.
-6. **Audit any other account.** Type an account that never published a mandate, e.g. `root.near`.
-   **You should see** a **Disclaimer of opinion**: no mandate, so nothing to test against. We don't guess.
+   **You should see** *"Allowed tokens (trade 5): wNEAR → RHEA"*. RHEA is not on the agent's allowlist. Click the tx link to see the swap on NearBlocks, and *intents* to see its settlement on NEAR Intents.
+3. **Check the report is genuine.** Scroll to *Verify this report yourself*.
+   **You should see** two green ticks: your browser recomputed the report hash and found the same hash stored on `top-notch.near`.
+4. **Re-run the audit live.** Press **Audit**.
+   **You should see** a progress log (23 transactions read, 8 confirmed as 1Click swaps), then the same opinion, computed in your browser from mainnet data. No server of ours is involved.
+5. **Audit any other account.** Type e.g. `root.near` and press **Audit**.
+   **You should see** a **Disclaimer of opinion**: no mandate was published, so there is nothing to test against. We don't guess.
+
+## Go deeper (optional)
+
+**Check the chain directly (NEAR CLI, read-only, no wallet):**
+
+```bash
+near view top-notch.near get_mandates '{"agent":"alpha-bot-demo.near"}'   # the mandate text + on-chain hash
+near view top-notch.near get_reports  '{"agent":"alpha-bot-demo.near"}'   # opinion + report hash
+```
+
+**Audit from the command line:**
+
+```bash
+git clone https://github.com/s111s/top-notch-audit && cd top-notch-audit && npm install
+node scripts/auditor.mjs alpha-bot-demo.near --no-publish --no-letter
+```
+
+**Audit your own agent (needs a NEAR mainnet account):** anyone can publish a mandate, because the registry records whoever calls it as the agent.
+
+```bash
+near call top-notch.near publish_mandate '{"mandate":"{\"version\":1,\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"max_trade_usd\":5,\"max_slippage_bps\":100}"}' --accountId YOUR_AGENT.near
+```
+
+Then make a swap from that account through 1Click (e.g. `node scripts/agent.mjs trade wNEAR USDC 0.3` with your key in `TN_KEY_DIR`), open the page, type `YOUR_AGENT.near` and press **Audit**.
 
 ## Key mainnet evidence
 

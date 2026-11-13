@@ -1,0 +1,82 @@
+[
+  {
+    "at": "2026-11-13T11:04:48.388Z",
+    "from": "wNEAR",
+    "to": "USDC",
+    "amount": "0.35",
+    "txHash": "9YPKgMdNykcQM7b8XvTxuSh8pUAgH8VR3zC3aYya1zpG",
+    "depositAddress": "9614281148508d025acc212d53ea2629ae86b7195d0d5b115fd3568739bd9e4f",
+    "status": "SUCCESS",
+    "amountOut": "1.224647"
+  },
+  {
+    "at": "2026-11-13T11:06:14.790Z",
+    "from": "wNEAR",
+    "to": "USDC",
+    "amount": "0.35",
+    "txHash": "H1pKdoGHVDtNcFwtgug97Rw6yz7B6QrAzajUrAq7ThcP",
+    "depositAddress": "db15386dd0da76b3b3048dccd943371421cd883c8f6a5047af88e566a4c4fc39",
+    "status": "SUCCESS",
+    "amountOut": "1.222095"
+  },
+  {
+    "at": "2026-11-13T11:07:41.525Z",
+    "from": "USDC",
+    "to": "wNEAR",
+    "amount": "1.1",
+    "txHash": "8c3GSSQCRkKhxpPFPai7NB2HaW9V1HwRBmzHWgvbV1gX",
+    "depositAddress": "0e3fa0bb197a721bc439559809dc2577a693543d50a80faae63e9a3f29bcead2",
+    "status": "SUCCESS",
+    "amountOut": "0.311150902545859335038362"
+  },
+  {
+    "at": "2026-11-13T11:09:02.824Z",
+    "from": "wNEAR",
+    "to": "USDC",
+    "amount": "0.35",
+    "txHash": "GQTZuM85Dk4QvxopAnXp4N8hqQMVKDWrMo1QvhbnMDnB",
+    "depositAddress": "58194cd282101953985623574a5e1711a6bdb3827bd3fd0dca79568d9b0b281e",
+    "status": "SUCCESS",
+    "amountOut": "1.226569"
+  },
+  {
+    "at": "2026-11-13T11:12:04.301Z",
+    "from": "wNEAR",
+    "to": "RHEA",
+    "amount": "0.3",
+    "txHash": "7mbn36C8SR47PBqKZW6T5xSSPciVnRf3AaBopdS8rN6d",
+    "depositAddress": "ec0da29a636eb14c2a3166817a9d76e819a7f9df0cd28df812f784de6360f03a",
+    "status": "SUCCESS",
+    "amountOut": "29.463647066651329416"
+  },
+  {
+    "at": "2026-11-13T11:13:36.388Z",
+    "from": "USDC",
+    "to": "wNEAR",
+    "amount": "1.1",
+    "txHash": "3DmmQoSo3uCtS1JQi3XV5yzjbGVfVMBPtMKx46GbXnY6",
+    "depositAddress": "98683c94762e271d335ced0ebd7ccd04b2e0e68b6c24b4815eac60b74206ec73",
+    "status": "SUCCESS",
+    "amountOut": "0.312082100127248694877449"
+  },
+  {
+    "at": "2026-11-13T11:15:02.777Z",
+    "from": "wNEAR",
+    "to": "USDC",
+    "amount": "0.3",
+    "txHash": "9BCTWyekNSw87LSjD2GA2TE6XUjbwL2m6MoZ5tY6RUhg",
+    "depositAddress": "35248f994e4227f6f9947d006414a9f92923a9234272b4909fac58f6e7196e79",
+    "status": "SUCCESS",
+    "amountOut": "1.047758"
+  },
+  {
+    "at": "2026-11-13T11:16:13.220Z",
+    "from": "USDC",
+    "to": "wNEAR",
+    "amount": "0.9",
+    "txHash": "Eg7uqmMoo3uG95iT1trE4cq13gsNEvUQLnS9TSibjaQq",
+    "depositAddress": "0d5cd68c99acca022f1b19db8f112c88917a285c3d448ec9a3df302ff2113157",
+    "status": "SUCCESS",
+    "amountOut": "0.254646729235231502397247"
+  }
+]

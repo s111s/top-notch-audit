@@ -61,6 +61,7 @@ const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const tx = (h) => h ? `<a href="${CONFIG.explorerTx(h)}" target="_blank" rel="noopener"><code>${esc(h.slice(0, 10))}…</code></a>` : '';
 const params = new URLSearchParams(location.search);
+const amt = (x) => { const n = Number(x); return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 2 : 4 }) : esc(x); };
 $('#agent').value = params.get('agent') || 'alpha-bot-demo.near';
 
 function render(r, source) {
@@ -88,7 +89,7 @@ function render(r, source) {
     html += `<section class="card"><h2>Trades tested</h2><div class="tbl"><table><tr><th>#</th><th>Time (UTC)</th><th>Swap</th><th>USD in</th><th>Tests</th><th>Evidence</th></tr>`;
     for (const t of r.trades) {
       const checks = (t.checks || []).map((c) => `<div title="${esc(c.detail)}"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✓' : '✗'}</span> ${esc(c.rule)}${c.pass ? '' : `: ${esc(c.detail)}`}</div>`).join('');
-      html += `<tr><td>${t.n ?? ''}</td><td>${esc(t.time.slice(0, 16).replace('T', ' '))}</td><td>${esc(t.in.amount)} ${esc(t.in.symbol)} → ${esc(t.out.amount)} ${esc(t.out.symbol)}</td>
+      html += `<tr><td>${t.n ?? ''}</td><td>${esc(t.time.slice(0, 16).replace('T', ' '))}</td><td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td>
         <td>$${t.in.usd.toFixed(2)}</td><td>${checks}</td><td>${tx(t.tx)}<br><a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;
     }
     html += `</table></div></section>`;

@@ -27,7 +27,7 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
 4. **Re-run the audit live.** Press **Audit**.
    **You should see** a progress log (23 transactions read, 8 confirmed as 1Click swaps), then the same opinion, computed in your browser from mainnet data. No server of ours is involved.
 5. **Watch the live tape.** Click **Live tape** (or open https://s111s.github.io/top-notch-audit/live.html).
-   **You should see** every agent that published a mandate, its live opinion, and every trade it made, newest first, each tickmarked ✓ or flagged ✗. It refreshes every 20 seconds; new trades flash in.
+   **You should see** every agent that published a mandate, its live opinion, and every trade it made, newest first, each tickmarked ✓ or flagged ✗. It refreshes every 30 seconds; new trades flash in.
 6. **Audit any other account.** Type e.g. `root.near` and press **Audit**.
    **You should see** a **Disclaimer of opinion**: no mandate was published, so there is nothing to test against. We don't guess.
 

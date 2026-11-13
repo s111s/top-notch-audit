@@ -20,7 +20,7 @@ async function getJson(url, opts = {}, tries = 4) {
     try {
       const res = await fetch(url, opts);
       if (res.status === 404) return { __notFound: true };
-      if (res.status === 429 || res.status >= 500) { last = new Error(`${res.status} ${url}`); await sleep(1500 * (i + 1)); continue; }
+      if (res.status === 429 || res.status >= 500) { last = new Error(`${res.status} ${url}`); await sleep(3000 * (i + 1)); continue; }
       if (!res.ok) throw new Error(`${res.status} ${url}`);
       return await res.json();
     } catch (e) { last = e; await sleep(1000 * (i + 1)); }
@@ -97,7 +97,7 @@ export async function symbolOf(assetId) {
 }
 
 // 1. List transactions signed by the agent (NearBlocks index), oldest first.
-export async function listAgentTxs(agent, maxPages = 4) {
+export async function listAgentTxs(agent, maxPages = 2) {
   const out = [];
   let cursor;
   for (let p = 0; p < maxPages; p++) {

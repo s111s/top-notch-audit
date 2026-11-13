@@ -44,7 +44,7 @@ footer{margin-top:28px;color:var(--muted);font-size:14px}
 <section class="card">
   <h2>Agents under audit <small id="upd">Loading…</small></h2>
   <div class="tbl"><table><thead><tr><th>Agent</th><th>Live opinion</th><th>Trades</th><th>Tickmarked</th><th>Findings</th><th>Last trade (UTC)</th></tr></thead><tbody id="agents"></tbody></table></div>
-  <p class="hint">An agent joins this list the moment it publishes a mandate to <code>top-notch.near</code>. Live opinions are recomputed in your browser every 20 seconds; signed, published opinions are on the <a href="./">Audit</a> page.</p>
+  <p class="hint">An agent joins this list the moment it publishes a mandate to <code>top-notch.near</code>. Live opinions are recomputed in your browser every 30 seconds; signed, published opinions are on the <a href="./">Audit</a> page.</p>
 </section>
 
 <section class="card">
@@ -60,7 +60,15 @@ import { audit, listAuditedAgents, OPINION_TEXT, CONFIG } from './engine.js';
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const amt = (x) => { const n = Number(x); return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 2 : 4 }) : esc(x); };
-const POLL_MS = 20000;
+const POLL_MS = 30000;
+const AGENT_TTL_MS = 5 * 60 * 1000;
+let agentCache = { at: 0, list: ['alpha-bot-demo.near'] };
+const lastGood = new Map();
+async function agentsList() {
+  if (Date.now() - agentCache.at < AGENT_TTL_MS) return agentCache.list;
+  try { const l = await listAuditedAgents(); if (l.length) agentCache = { at: Date.now(), list: l }; } catch { agentCache.at = Date.now() - AGENT_TTL_MS + 60000; }
+  return agentCache.list;
+}
 const seen = new Set();
 let firstLoad = true;
 
@@ -71,9 +79,18 @@ function feeUsd(t) {
 
 async function refresh() {
   try {
-    const agents = await listAuditedAgents();
+    const agents = await agentsList();
     const reports = [];
-    for (const a of agents) reports.push(await audit(a).catch((e) => ({ agent: a, error: e.message, trades: [], findings: [], opinion: 'disclaimer' })));
+    let stale = false;
+    for (const a of agents) {
+      try { const r = await audit(a); lastGood.set(a, r); reports.push(r); }
+      catch (e) {
+        stale = true;
+        if (lastGood.has(a)) reports.push(lastGood.get(a));
+        else { const pub = await fetch(`./data/report-${a}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null); if (pub) reports.push(pub); }
+      }
+    }
+    if (!reports.length) throw new Error('data sources busy');
     const all = reports.flatMap((r) => r.trades.map((t) => ({ ...t, agent: r.agent }))).sort((x, y) => (x.time < y.time ? 1 : -1));
 
     const ticked = all.filter((t) => t.checks.every((c) => c.pass)).length;
@@ -103,7 +120,7 @@ async function refresh() {
         <td><a href="${CONFIG.explorerTx(t.tx)}" target="_blank" rel="noopener">tx</a> · <a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;
     }).join('') || '<tr><td colspan="6" class="hint">No trades yet.</td></tr>';
     firstLoad = false;
-    $('#upd').textContent = `Updated ${new Date().toISOString().slice(11, 19)} UTC · refreshes every ${POLL_MS / 1000}s`;
+    $('#upd').textContent = `${stale ? 'Data source busy, showing last result · ' : ''}Updated ${new Date().toISOString().slice(11, 19)} UTC · refreshes every ${POLL_MS / 1000}s`;
   } catch (e) {
     $('#upd').textContent = `Update failed (${e.message}); retrying`;
   }

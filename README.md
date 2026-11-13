@@ -26,7 +26,9 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
    **You should see** two green ticks: your browser recomputed the report hash and found the same hash stored on `top-notch.near`.
 4. **Re-run the audit live.** Press **Audit**.
    **You should see** a progress log (23 transactions read, 8 confirmed as 1Click swaps), then the same opinion, computed in your browser from mainnet data. No server of ours is involved.
-5. **Audit any other account.** Type e.g. `root.near` and press **Audit**.
+5. **Watch the live tape.** Click **Live tape** (or open https://s111s.github.io/top-notch-audit/live.html).
+   **You should see** every agent that published a mandate, its live opinion, and every trade it made, newest first, each tickmarked ✓ or flagged ✗. It refreshes every 20 seconds; new trades flash in.
+6. **Audit any other account.** Type e.g. `root.near` and press **Audit**.
    **You should see** a **Disclaimer of opinion**: no mandate was published, so there is nothing to test against. We don't guess.
 
 ## Go deeper (optional)
@@ -102,7 +104,7 @@ Append-only. `publish_mandate(mandate)` must be called by the agent account itse
 
 ## NEAR tech used
 
-- **NEAR Intents / 1Click API**: the demo agent trades through it (with a 0.2% app fee to `top-notch.near`), and the auditor confirms every swap's settlement through its status API.
+- **NEAR Intents / 1Click API**: the demo agent trades through it (every trade carries an app fee tag to `top-notch.near`: 0.1% today, 0.2% with a 1Click partner key), and the auditor confirms every swap's settlement through its status API.
 - **NEAR smart contract** (Rust, near-sdk 5): mandate and report registry.
 - **NEAR AI Cloud**: TEE-run model writes and signs the opinion letter (signature + attestation saved with the report).
 - **Named accounts**: readable reports, e.g. `alpha-bot-demo.near: Qualified`.
@@ -124,7 +126,7 @@ cd contract && cargo test
 
 ## Business model
 
-Agent builders pay per audit to earn a **Top Notch verified** badge, because a verified track record wins user deposits. Next: continuous audits by subscription, and the badge in NEAR's Agent Market. The demo agent also shows a second line: a 0.2% 1Click app fee on trades routed through Top Notch tooling.
+Agent builders pay per audit to earn a **Top Notch verified** badge, because a verified track record wins user deposits. Next: continuous audits by subscription, and the badge in NEAR's Agent Market. Second line: agents that trade through Top Notch's open tooling carry a 1Click app fee tag to `top-notch.near` (0.1% today), which is also how their flow shows up on the live tape.
 
 ## Limits (honest)
 

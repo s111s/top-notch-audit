@@ -28,12 +28,17 @@ async function getJson(url, opts = {}, tries = 4) {
   throw last;
 }
 
+const txCache = new Map();
+const statusCache = new Map();
+
 async function rpc(method, params) {
+  if (method === 'tx' && txCache.has(params.tx_hash)) return txCache.get(params.tx_hash);
   const j = await getJson(CONFIG.rpc, {
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ jsonrpc: '2.0', id: 'tn', method, params }),
   });
   if (j.error) throw new Error(`RPC ${method}: ${JSON.stringify(j.error).slice(0, 200)}`);
+  if (method === 'tx' && j.result?.transaction) txCache.set(params.tx_hash, j.result);
   return j.result;
 }
 
@@ -131,7 +136,12 @@ export async function collectEvidence(agent, onProgress = () => {}) {
     }
   }
   onProgress(`${deposits.length} outgoing deposits to one-time addresses`);
-  const statuses = await mapLimit(deposits, 4, (d) => getJson(`${CONFIG.oneclick}/status?depositAddress=${d.depositAddress}`).catch(() => ({ __notFound: true })));
+  const statuses = await mapLimit(deposits, 4, async (d) => {
+    if (statusCache.has(d.depositAddress)) return statusCache.get(d.depositAddress);
+    const st = await getJson(`${CONFIG.oneclick}/status?depositAddress=${d.depositAddress}`).catch(() => ({ __notFound: true }));
+    if (['SUCCESS', 'REFUNDED', 'FAILED'].includes(st.status)) statusCache.set(d.depositAddress, st);
+    return st;
+  });
   const trades = [];
   for (let i = 0; i < deposits.length; i++) {
     if (statuses[i].__notFound) continue; // not a 1Click deposit: out of scope
@@ -163,6 +173,13 @@ async function normaliseTrade(d, s) {
     appFees: req.appFees || [],
     destinationTxs: (sd.destinationChainTxHashes || []).map((x) => x.hash || x),
   };
+}
+
+// Every account that has published a mandate to the registry (= every agent under audit).
+export async function listAuditedAgents() {
+  const j = await getJson(`${CONFIG.nearblocks}/account/${CONFIG.registry}/txns?method=publish_mandate&per_page=50`);
+  const agents = new Set((j.txns || []).filter((t) => t.receipt_outcome?.status !== false).map((t) => t.predecessor_account_id));
+  return [...agents];
 }
 
 // 3. Read the mandate the agent published on-chain (latest one wins; trades before it are out of period).

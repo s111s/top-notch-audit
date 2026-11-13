@@ -11,7 +11,7 @@ import fs from 'fs';
 import { account, oneclick, sleep, parseNear, USDC, WNEAR, RHEA, REGISTRY, AGENT } from './near.mjs';
 
 const ASSETS = { wNEAR: { id: WNEAR, contract: 'wrap.near', decimals: 24 }, USDC: { id: USDC, contract: USDC.slice(7), decimals: 6 }, RHEA: { id: RHEA, contract: 'token.rhealab.near', decimals: 18 } };
-const APP_FEE = { recipient: REGISTRY, fee: 20 }; // 0.2% to Top Notch on every trade
+const APP_FEE = { recipient: REGISTRY, fee: 20 }; // requested 0.2%; without a 1Click partner key, 1Click records 0.1% for us
 const LOG = new URL('../web/data/agent-trades.json', import.meta.url);
 
 export const MANDATE = {

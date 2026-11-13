@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Notch Live Tape</title>
+<meta name="description" content="Every trade by every AI agent under Top Notch audit, tickmarked against its on-chain mandate as it settles on NEAR mainnet.">
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--ink:#16181d;--muted:#5d6370;--line:#e3e1da;--accent:#0f6e4f;--clean:#0f6e4f;--clean-bg:#e5f4e4;--qual:#8a5a00;--qual-bg:#f9eeda;--adv:#a32020;--adv-bg:#fbebeb;--disc:#4a4f5a;--disc-bg:#f0efec;--flash:#fff6c8;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#121417;--card:#1b1e23;--ink:#eceae4;--muted:#a3a8b3;--line:#2c3038;--accent:#4cc79a;--clean:#6fd6a3;--clean-bg:#173327;--qual:#f0b54a;--qual-bg:#3a2d12;--adv:#ff8a80;--adv-bg:#3d1b1b;--disc:#c4c8d0;--disc-bg:#262a31;--flash:#3a3612}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:28px 16px 64px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+header h1{margin:0;font-size:32px;letter-spacing:-.02em}header h1 span{color:var(--accent)}
+header p{margin:6px 0 0;color:var(--muted)}
+nav a{margin-left:16px;color:var(--muted);text-decoration:none;font-weight:600}nav a.on{color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:18px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}@media (max-width:800px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi b{display:block;font-size:24px}.kpi span{color:var(--muted);font-size:14px}
+h2{font-size:18px;margin:0 0 12px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+h2 small{font-weight:400;color:var(--muted);font-size:13px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--clean);margin-right:6px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}
+.tbl{overflow-x:auto}
+.badge{font-weight:700;font-size:13px;padding:3px 9px;border-radius:8px;white-space:nowrap}
+.clean{color:var(--clean);background:var(--clean-bg)}.qualified{color:var(--qual);background:var(--qual-bg)}.adverse{color:var(--adv);background:var(--adv-bg)}.disclaimer{color:var(--disc);background:var(--disc-bg)}
+.ok{color:var(--clean);font-weight:700}.bad{color:var(--adv);font-weight:700}
+tr.new td{background:var(--flash);transition:background 2s}
+code{font-family:var(--mono);font-size:13px}a{color:var(--accent)}
+.hint{color:var(--muted);font-size:14px}
+footer{margin-top:28px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div><h1>Top Notch <span>✓</span></h1><p>Live tape: every trade by every agent under audit, tickmarked against its on-chain mandate as it settles.</p></div>
+  <nav><a href="./">Audit</a><a class="on" href="./live.html">Live tape</a></nav>
+</header>
+
+<section class="card kpis" id="kpis"></section>
+
+<section class="card">
+  <h2>Agents under audit <small id="upd">Loading…</small></h2>
+  <div class="tbl"><table><thead><tr><th>Agent</th><th>Live opinion</th><th>Trades</th><th>Tickmarked</th><th>Findings</th><th>Last trade (UTC)</th></tr></thead><tbody id="agents"></tbody></table></div>
+  <p class="hint">An agent joins this list the moment it publishes a mandate to <code>top-notch.near</code>. Live opinions are recomputed in your browser every 20 seconds; signed, published opinions are on the <a href="./">Audit</a> page.</p>
+</section>
+
+<section class="card">
+  <h2><span><span class="dot"></span>Trade tape</span><small>newest first</small></h2>
+  <div class="tbl"><table><thead><tr><th>Time (UTC)</th><th>Agent</th><th>Swap</th><th>USD</th><th>Result</th><th>Evidence</th></tr></thead><tbody id="tape"></tbody></table></div>
+</section>
+
+<footer>Agents trade directly on NEAR Intents (1Click); Top Notch never holds funds or blocks trades. It observes, tests and certifies. Built at NEAR HACKATHON 2026. <a href="https://github.com/s111s/top-notch-audit">Source on GitHub</a>.</footer>
+</main>
+
+<script type="module">
+import { audit, listAuditedAgents, OPINION_TEXT, CONFIG } from './engine.js';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const amt = (x) => { const n = Number(x); return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 2 : 4 }) : esc(x); };
+const POLL_MS = 20000;
+const seen = new Set();
+let firstLoad = true;
+
+function feeUsd(t) {
+  const ours = (t.appFees || []).find((f) => f.recipient === CONFIG.registry);
+  return ours ? (t.in.usd * ours.fee) / 10000 : 0;
+}
+
+async function refresh() {
+  try {
+    const agents = await listAuditedAgents();
+    const reports = [];
+    for (const a of agents) reports.push(await audit(a).catch((e) => ({ agent: a, error: e.message, trades: [], findings: [], opinion: 'disclaimer' })));
+    const all = reports.flatMap((r) => r.trades.map((t) => ({ ...t, agent: r.agent }))).sort((x, y) => (x.time < y.time ? 1 : -1));
+
+    const ticked = all.filter((t) => t.checks.every((c) => c.pass)).length;
+    const vol = all.reduce((s, t) => s + t.in.usd, 0);
+    const fees = all.reduce((s, t) => s + feeUsd(t), 0);
+    $('#kpis').innerHTML = [
+      [agents.length, 'agents under audit'], [all.length, 'trades observed'], [ticked, 'tickmarked ✓'],
+      [all.length - ticked, 'flagged ✗'], [`$${vol.toFixed(2)}`, 'volume tested'], [`$${fees.toFixed(4)}`, 'app fees earned'],
+    ].map(([v, l]) => `<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join('');
+
+    $('#agents').innerHTML = reports.map((r) => {
+      const op = OPINION_TEXT[r.opinion];
+      const ok = r.trades.filter((t) => t.checks.every((c) => c.pass)).length;
+      const last = r.trades.length ? r.trades[r.trades.length - 1].time.slice(0, 16).replace('T', ' ') : '—';
+      return `<tr><td><a href="./?agent=${encodeURIComponent(r.agent)}">${esc(r.agent)}</a></td><td><span class="badge ${r.opinion}">${esc(op.label)}</span></td>
+        <td>${r.trades.length}</td><td>${ok}</td><td>${r.findings.length}</td><td>${last}</td></tr>`;
+    }).join('');
+
+    $('#tape').innerHTML = all.map((t) => {
+      const key = `${t.agent}:${t.tx}`;
+      const isNew = !firstLoad && !seen.has(key);
+      seen.add(key);
+      const failed = t.checks.filter((c) => !c.pass);
+      const result = failed.length ? failed.map((c) => `<span class="bad">✗</span> ${esc(c.rule)}`).join('<br>') : `<span class="ok">✓</span> ${t.checks.length} tests passed`;
+      return `<tr class="${isNew ? 'new' : ''}"><td>${esc(t.time.slice(0, 19).replace('T', ' '))}</td><td>${esc(t.agent)}</td>
+        <td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td><td>$${t.in.usd.toFixed(2)}</td><td>${result}</td>
+        <td><a href="${CONFIG.explorerTx(t.tx)}" target="_blank" rel="noopener">tx</a> · <a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;
+    }).join('') || '<tr><td colspan="6" class="hint">No trades yet.</td></tr>';
+    firstLoad = false;
+    $('#upd').textContent = `Updated ${new Date().toISOString().slice(11, 19)} UTC · refreshes every ${POLL_MS / 1000}s`;
+  } catch (e) {
+    $('#upd').textContent = `Update failed (${e.message}); retrying`;
+  }
+  setTimeout(refresh, POLL_MS);
+}
+refresh();
+</script>
+</body>
+</html>

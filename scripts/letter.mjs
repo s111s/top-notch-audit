@@ -8,7 +8,7 @@ export const MODEL = process.env.TN_MODEL || 'deepseek-ai/DeepSeek-V4.1-Flash-10
 
 export async function writeLetter({ facts, system, mustInclude, attestationFile }) {
   const body = { model: MODEL, temperature: 0, max_tokens: 3000, messages: [{ role: 'system', content: system }, { role: 'user', content: canonical(facts) }] };
-  const res = await fetch(`${NEAR_AI}/chat/completions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const res = await fetch(`${NEAR_AI}/chat/completions`, { method: 'POST', headers: { 'content-type': 'application/json', ...(process.env.NEAR_AI_API_KEY ? { authorization: `Bearer ${process.env.NEAR_AI_API_KEY}` } : {}) }, body: JSON.stringify(body) });
   const j = await res.json();
   if (!res.ok) throw new Error(`NEAR AI ${res.status}: ${JSON.stringify(j).slice(0, 200)}`);
   const text = j.choices[0].message.content;

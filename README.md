@@ -1,9 +1,18 @@
 # Top Notch ✓
 
-**A strategy marketplace for NEAR, with an auditor built in.**
-Researchers publish trading strategies with honest backtests, and they can keep the logic hidden. Investors pick a strategy and run their **own** agent on it through NEAR Intents, paying the researcher a fee in every swap. An independent auditor checks both sides on-chain.
+**A strategy marketplace with managed AI agents, built on three NEAR products.**
+Researchers publish trading strategies with honest backtests, logic public or hidden. Investors pick one and fund their own vault; our managed agent trades it through NEAR Intents and can never withdraw. An auditor checks both sides, and NEAR AI Cloud signs every note and opinion.
 
-> Built at NEAR HACKATHON 2026. Tracks: defi, agents, business.
+> Built at NEAR HACKATHON 2026. Tracks: agents, defi, business.
+
+## What NEAR makes possible here
+
+| NEAR product | What it does in Top Notch | Why it matters |
+|---|---|---|
+| **NEAR Intents / 1Click** | Every trade is a 1Click swap. The researcher's fee (20 bps) and the platform's fee (10 bps) are paid *inside* the swap via `appFees`. | One API for any token, settlement in seconds, and a revenue model with no billing system. |
+| **NEAR accounts + contracts** | Each investor gets a vault: a NEAR account whose only full-access key is the investor's. The vault contract lets our agent call one method, `swap`, within the owner's caps, only to a one-time Intents deposit address. It can't withdraw. | An agent can trade real money without custody. That's the trust gap NEAR says blocks agents. |
+| **NEAR AI Cloud (TEE)** | Writes the investor's daily "what your agent did" note and every audit letter, with a signature and attestation from the TEE. Code decides; the model only writes, and a letter that changes the opinion is rejected. | Private, verifiable AI: investors can check the note came from the attested model, unedited. |
+| **NEAR registry contract** | Timestamps strategy cards, daily signals, agent mandates and audit reports, append-only. | Track records can't be backdated, and hidden logic is pinned by a hash. |
 
 ## Who it is for
 
@@ -11,9 +20,9 @@ Researchers publish trading strategies with honest backtests, and they can keep 
 |---|---|---|
 | **Job to be done** | "I have a trading idea. I want to test it on real data in minutes and get paid if it's good, without running money myself or giving my logic away." | "I want strategies with a track record I can trust, run from my own wallet." |
 | **Pain today** | Building data and backtest code takes days. A good idea earns nothing without capital. Sharing it means it gets copied. | Signal groups sell screenshots. Copy-trading means handing funds or keys to someone. |
-| **What Top Notch gives** | A browser Lab with BRAIN-style stats (Sharpe, drawdown, turnover, fitness) on NEAR Intents prices. Publish public or hidden; earn bps on every follower swap. | Audited stats. Hidden logic proven to match its commitment. An agent that trades only your wallet, audited against the strategy's scope. |
+| **What Top Notch gives** | A browser Lab with BRAIN-style stats (Sharpe, drawdown, turnover, fitness) on NEAR Intents prices. Publish public or hidden; earn bps on every follower swap. | Audited stats. Hidden logic proven to match its commitment. A managed agent that trades your own vault, can't withdraw, sends you a signed daily note, and is audited against the strategy. |
 
-**Business model:** every follower swap goes through 1Click with `appFees`: the researcher's fee (here 20 bps) and a platform fee (5 bps) are paid by the swap itself. No custody, no pooled fund, no invoices. Auditing (strategy certification and agent audits) is the trust layer that makes hidden strategies sellable.
+**Business model:** every agent swap goes through 1Click with `appFees`: the researcher's fee (20 bps) and the platform's fee (10 bps) are paid by the swap itself. No custody, no pooled fund, no invoices. Later: a monthly fee for managed agents and paid strategy certification. Auditing (strategy certification and agent audits) is the trust layer that makes hidden strategies sellable.
 
 **Why NEAR:** NEAR Intents gives one execution path and one fee rail across chains; the registry contract timestamps every strategy card and signal so nobody can backdate a track record; NEAR AI Cloud signs the audit letters inside a TEE.
 
@@ -27,8 +36,10 @@ Researchers publish trading strategies with honest backtests, and they can keep 
    **You should see** the backtest (Sharpe 2.78, max drawdown −8.9%, fitness 16.45) against holding NEAR, the logic shown only as a sha256 commitment, the auditor's four checks all ✓ (logic matches commitment, stats reproduced, every signal reproduced, no backdating) and a letter signed by NEAR AI Cloud.
 3. **Open the Lab** and pick any example, or write your own, e.g. `rank(ts_mean(returns, 14)) - 0.5`.
    **You should see** stats, an equity curve, in-sample vs out-of-sample, the listing gates, and tomorrow's target weights, computed in your browser.
-4. **Open Agent audit** (`alpha-bot-demo.near`).
-   **You should see** a **Clean** opinion on the investor agent: 2 mainnet swaps, each tickmarked for *Signal in force*, *Trades toward the signal* and *Researcher paid: 20 bps to researcher-1.top-notch.near*. Press **Audit** to recompute it in your browser from chain data.
+4. **Open My agent** (https://s111s.github.io/top-notch-audit/vault.html).
+   **You should see** the investor's vault `vault-1.top-notch.near`: its holdings, *"1 full-access key: the investor's. The platform holds none."* read live from the chain, the agent's caps, and today's note from the agent written and signed inside NEAR AI Cloud.
+5. **Open Agent audit** (`alpha-bot-demo.near`).
+   **You should see** the managed agent's opinion, each swap tickmarked for *Signal in force*, *Trades toward the signal*, *Through the investor's vault* and *Researcher paid*. Press **Audit** to recompute it in your browser from chain data.
 
 ## Mainnet evidence
 
@@ -43,6 +54,19 @@ Researchers publish trading strategies with honest backtests, and they can keep 
 | Follower swaps via 1Click (researcher fee inside) | txs `HSkQ7tRhzamiCZSxHnBkJfmCs5c9paXJ8QuZM5Nxs2Q5`, `278mFTwXRVn3QE4Zp9vsuu7S6gNJL48EzmjU53e8NvvE` |
 | Strategy audit reports | txs `FqzHpJUDeWUzzqcXU4FT3UTXRu7rwBohP4mM3KVn6zt9` (hidden), `DFbkHfh7deLNoYxm82ppEYks5vBnpkvo8U1iqekLAPRs` (public) |
 | Investor agent audit report | tx `AX1jWnFDgLhpKmcNDwPBbXCvK5scffujdTDPikVsipRW` |
+| Investor vault created (investor key only) | deploy `DMkxzMYwEiX8QLtz3hf11rB7AEMLv8z2visn1EFbnPgV`, init `4E1zLdf1Zao9DHXRnt1WB4dZFCmKmddY6o5nVevUvpWe` |
+| Investor funds vault (5.9 USDC) | tx `7ea7dAh9Z8CQtEKsg1wcMdQUWQTEzrouinA4rNTSmoa` |
+| Managed agent mandate | tx `4kFTMA1pL3Vvqc1rDWToBsjnnRnorx5afHNehgKFZNKx` |
+
+## How the managed agent works
+
+1. **Onboarding.** The platform creates `vault-N.top-notch.near` with the investor's public key as its only full-access key; the investor deploys the vault contract and sets the policy: allowed tokens, per-swap caps, swaps per day, the agent, the strategy.
+2. **Daily run** (`scripts/daily.sh`, scheduled by `.github/workflows/daily.yml` after each daily candle closes): the researcher's signal is published, then the agent reads it, asks 1Click for a quote with `recipient = refundTo = vault` and the fees in `appFees`, and calls `vault.swap(token, amount, deposit_address)`. The vault checks the policy and sends the tokens; output and refunds land back in the vault.
+3. **Daily note.** NEAR AI Cloud writes the investor a plain-English note from the facts (signal, trades, balances) and signs it.
+4. **Audit.** The auditor checks every swap the agent made: allowed token, size, slippage, settled, signal in force, toward the signal, through the vault, researcher paid.
+5. **Investor controls.** Pause, change agent, change limits, withdraw: all with the investor's own key, no platform involved.
+
+Roadmap: host the agent itself inside NEAR AI Cloud's TEE agent hosting (in invite-only beta today), so even the platform can't change what it runs.
 
 ## How hidden logic works
 
@@ -78,6 +102,9 @@ Publishing (`researcher.mjs publish|signal`, `follow.mjs mandate|rebalance`, the
 - `web/index.html` strategies · `web/strategy.html` one strategy · `web/lab.html` Lab · `web/audit.html` agent audit · `web/live.html` live trade tape.
 - `scripts/`: price fetcher, researcher, investor follow agent, strategy audit, agent audit, NEAR AI Cloud letter.
 - `contract/`: the append-only registry (`publish_mandate`, `publish_report`).
+- `vault/`: the investor vault contract (`swap` for the agent; `withdraw`, `set_paused`, `set_agent`, `set_policy` for the owner), 11 unit tests: `cd vault && cargo test`.
+- `scripts/vault.mjs`, `scripts/managed-agent.mjs`, `scripts/daily.sh`: onboarding, the managed agent, the daily cycle.
+- `web/vault.html`: the investor's My agent page.
 
 ## Honest limits
 
@@ -85,3 +112,5 @@ Publishing (`researcher.mjs publish|signal`, `follow.mjs mandate|rebalance`, the
 - Long-only (swaps can't short), so many alphas are partly NEAR beta. Every curve is shown against holding NEAR.
 - 1Click without a partner key records half of each requested app fee and adds its own, so the agent requests 2× the agreed bps and the audit checks the recorded amount.
 - Demo sizes are tiny ($1–$5 swaps) on purpose.
+- The vault can't prove a deposit address belongs to 1Click; a compromised agent could send up to one capped swap to a wrong address per call, within the daily limit. The audit flags any deposit without a 1Click settlement, and the owner can pause at once.
+- The agent runs on a schedule from this repo, not yet inside a TEE.

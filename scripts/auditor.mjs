@@ -9,7 +9,7 @@ import { account, REGISTRY } from './near.mjs';
 const agentId = process.argv[2] || 'alpha-bot-demo.near';
 const flags = new Set(process.argv.slice(3));
 const NEAR_AI = 'https://cloud-api.near.ai/v1';
-const MODEL = process.env.TN_MODEL || 'deepseek-ai/DeepSeek-V3.1';
+const MODEL = process.env.TN_MODEL || 'deepseek-ai/DeepSeek-V4.1-Flash-1017';
 
 const report = await audit(agentId, (m) => console.log('  ·', m));
 console.log(`opinion: ${report.opinion} | trades tested ${report.trades.length} | findings ${report.findings.length}`);
@@ -51,7 +51,7 @@ async function writeLetter(report) {
     mandate: report.mandate?.text ? JSON.parse(report.mandate.text) : null,
   };
   const body = {
-    model: MODEL, temperature: 0, max_tokens: 700,
+    model: MODEL, temperature: 0, max_tokens: 3000,
     messages: [
       { role: 'system', content: 'You are the writer of an independent auditor\'s report on an AI trading agent. The opinion has ALREADY been decided by deterministic tests; you must state it exactly as given and never change it. Write in plain English, under 220 words, in this structure: "Opinion", "Basis for opinion", "Findings" (one line per finding, cite the trade number), "Scope and limits". Mention the report hash. No markdown tables.' },
       { role: 'user', content: canonical(facts) },

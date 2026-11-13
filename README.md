@@ -21,7 +21,7 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
 1. **Open** https://s111s.github.io/top-notch-audit/
    **You should see** the published audit of `alpha-bot-demo.near`: a **Qualified opinion**, 8 trades tested, 7 tickmarked ✓, 1 finding.
 2. **Look at the finding.**
-   **You should see** *"Allowed tokens (trade 5): wNEAR → SWEAT"*. SWEAT is not on the agent's allowlist. Click the tx link: the swap is on NearBlocks, and the *intents* link shows its settlement on NEAR Intents.
+   **You should see** *"Allowed tokens (trade 5): wNEAR → RHEA"*. RHEA is not on the agent's allowlist. Click the tx link: the swap is on NearBlocks, and the *intents* link shows its settlement on NEAR Intents.
 3. **Check the mandate can't have been changed after the fact.**
    **You should see** in *Mandate the agent published* the rules, the mandate hash and the block it was published at, before the first trade. The hash is computed by the contract itself from the text: `near view top-notch.near get_mandates '{"agent":"alpha-bot-demo.near"}'`.
 4. **Check the report is genuine.**
@@ -37,9 +37,11 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
 |---|---|
 | Registry contract | [`top-notch.near`](https://nearblocks.io/address/top-notch.near) |
 | Demo agent | [`alpha-bot-demo.near`](https://nearblocks.io/address/alpha-bot-demo.near) |
-| Mandate published | `<TX_MANDATE>` |
-| The breach (trade 5) | `<TX_5>` |
-| Report published | `<TX_REPORT>` |
+| Registry deployed | [`GbzosWHLf3…`](https://nearblocks.io/txns/GbzosWHLf3mKEgVNhrkewu98UPTx1KqRKedhGr6rLYwX) |
+| Mandate published by the agent | [`6YcbGSCq6B…`](https://nearblocks.io/txns/6YcbGSCq6BwMhjey6CZmQCUoHgwgRhLmixHf3PBWV5kK) |
+| The breach (trade 5: wNEAR → RHEA) | [`7mbn36C8SR…`](https://nearblocks.io/txns/7mbn36C8SR47PBqKZW6T5xSSPciVnRf3AaBopdS8rN6d) |
+| Report published (Qualified, hash `473c6a29…`) | [`9sHWBD1KDm…`](https://nearblocks.io/txns/9sHWBD1KDmxEDJU9EmMHJMTw2om2T7Ga5hswzqUSvAXK) |
+| NEAR AI Cloud signing address | `0xfe0071895500a9755c18044948ab4f4e1a7f337e` |
 
 ## How it works
 

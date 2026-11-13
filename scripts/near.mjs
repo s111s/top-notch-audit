@@ -8,7 +8,7 @@ export const NETWORK = 'mainnet';
 export const ONECLICK = 'https://1click.chaindefuser.com/v0';
 export const USDC = 'nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1';
 export const WNEAR = 'nep141:wrap.near';
-export const SWEAT = 'nep141:token.sweat';
+export const RHEA = 'nep141:token.rhealab.near';
 export const REGISTRY = 'top-notch.near';
 export const AGENT = 'alpha-bot-demo.near';
 

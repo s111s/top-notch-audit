@@ -8,9 +8,9 @@
 //   node scripts/agent.mjs trade wNEAR USDC 0.35
 //   node scripts/agent.mjs plan               run the full 8-trade demo plan
 import fs from 'fs';
-import { account, oneclick, sleep, parseNear, USDC, WNEAR, SWEAT, REGISTRY, AGENT } from './near.mjs';
+import { account, oneclick, sleep, parseNear, USDC, WNEAR, RHEA, REGISTRY, AGENT } from './near.mjs';
 
-const ASSETS = { wNEAR: { id: WNEAR, contract: 'wrap.near', decimals: 24 }, USDC: { id: USDC, contract: USDC.slice(7), decimals: 6 }, SWEAT: { id: SWEAT, contract: 'token.sweat', decimals: 18 } };
+const ASSETS = { wNEAR: { id: WNEAR, contract: 'wrap.near', decimals: 24 }, USDC: { id: USDC, contract: USDC.slice(7), decimals: 6 }, RHEA: { id: RHEA, contract: 'token.rhealab.near', decimals: 18 } };
 const APP_FEE = { recipient: REGISTRY, fee: 20 }; // 0.2% to Top Notch on every trade
 const LOG = new URL('../web/data/agent-trades.json', import.meta.url);
 
@@ -92,7 +92,7 @@ const PLAN = [
   ['wNEAR', 'USDC', '0.35'],
   ['USDC', 'wNEAR', '1.1'],
   ['wNEAR', 'USDC', '0.35'],
-  ['wNEAR', 'SWEAT', '0.3'], // deliberate breach: SWEAT is not on the allowlist
+  ['wNEAR', 'RHEA', '0.3'], // deliberate breach: RHEA is not on the allowlist
   ['USDC', 'wNEAR', '1.1'],
   ['wNEAR', 'USDC', '0.3'],
   ['USDC', 'wNEAR', '0.9'],

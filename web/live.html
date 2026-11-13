@@ -36,7 +36,7 @@ footer{margin-top:28px;color:var(--muted);font-size:14px}
 <main>
 <header>
   <div><h1>Top Notch <span>✓</span></h1><p>Live tape: every trade by every agent under audit, tickmarked against its on-chain mandate as it settles.</p></div>
-  <nav><a href="./">Audit</a><a class="on" href="./live.html">Live tape</a></nav>
+  <nav><a href="./">Strategies</a><a href="./lab.html">Lab</a><a href="./audit.html">Agent audit</a><a class="on" href="./live.html">Live tape</a></nav>
 </header>
 
 <section class="card kpis" id="kpis"></section>
@@ -44,7 +44,7 @@ footer{margin-top:28px;color:var(--muted);font-size:14px}
 <section class="card">
   <h2>Agents under audit <small id="upd">Loading…</small></h2>
   <div class="tbl"><table><thead><tr><th>Agent</th><th>Live opinion</th><th>Trades</th><th>Tickmarked</th><th>Findings</th><th>Last trade (UTC)</th></tr></thead><tbody id="agents"></tbody></table></div>
-  <p class="hint">An agent joins this list the moment it publishes a mandate to <code>top-notch.near</code>. Live opinions are recomputed in your browser every 30 seconds; signed, published opinions are on the <a href="./">Audit</a> page.</p>
+  <p class="hint">An agent joins this list the moment it publishes a mandate to <code>top-notch.near</code>. Live opinions are recomputed in your browser every 30 seconds; signed, published opinions are on the <a href="./audit.html">Agent audit</a> page.</p>
 </section>
 
 <section class="card">
@@ -83,7 +83,7 @@ async function refresh() {
     const reports = [];
     let stale = false;
     for (const a of agents) {
-      try { const r = await audit(a); lastGood.set(a, r); reports.push(r); }
+      try { const r = await audit(a); if (!r.mandate && !r.trades.length) continue; /* researcher accounts publish strategies, not trades */ lastGood.set(a, r); reports.push(r); }
       catch (e) {
         stale = true;
         if (lastGood.has(a)) reports.push(lastGood.get(a));
@@ -107,7 +107,7 @@ async function refresh() {
       const op = OPINION_TEXT[r.opinion];
       const ok = r.trades.filter((t) => t.checks.every((c) => c.pass)).length;
       const last = r.trades.length ? r.trades[r.trades.length - 1].time.slice(0, 16).replace('T', ' ') : '—';
-      return `<tr><td><a href="./?agent=${encodeURIComponent(r.agent)}">${esc(r.agent)}</a></td><td><span class="badge ${r.opinion}">${esc(op.label)}</span></td>
+      return `<tr><td><a href="./audit.html?agent=${encodeURIComponent(r.agent)}">${esc(r.agent)}</a></td><td><span class="badge ${r.opinion}">${esc(op.label)}</span></td>
         <td>${r.trades.length}</td><td>${ok}</td><td>${r.findings.length}</td><td>${last}</td></tr>`;
     }).join('');
 

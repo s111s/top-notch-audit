@@ -87,8 +87,15 @@ async function createAccount() {
   }
 }
 
+// The daily equity curve the researcher publishes next to the card (returns only, never the logic).
+function writeCurve(id, r) {
+  const out = { id, from: r.period.from, to: r.period.to, split_at: r.daily[Math.floor(r.daily.length * 0.7)]?.date, points: r.daily.map((d) => [d.date, +d.equity.toFixed(5), +d.bench.toFixed(5)]) };
+  fs.writeFileSync(new URL(`../web/data/curve-${id}.json`, import.meta.url), JSON.stringify(out));
+}
+
 async function publishCard(id) {
   const { card, result } = await buildCard(id);
+  writeCurve(id, result);
   const text = canonical(card);
   console.log(text.length, 'bytes', text);
   console.log('gates:', checkGates(result).map((g) => `${g.pass ? '✓' : '✗'} ${g.label}`).join(' | '));
@@ -123,6 +130,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (cmd === 'account') await createAccount();
   else if (cmd === 'publish') await publishCard(id);
   else if (cmd === 'signal') await publishSignal(id);
+  else if (cmd === 'curve') writeCurve(id, (await buildCard(id)).result);
   else if (cmd === 'preview') { const { card, result } = await buildCard(id); console.log(JSON.stringify(card, null, 2), checkGates(result)); console.log(JSON.stringify(await buildSignal(id))); }
-  else console.log('usage: researcher.mjs account | publish <id> | signal <id> | preview <id>');
+  else console.log('usage: researcher.mjs account | publish <id> | signal <id> | curve <id> | preview <id>');
 }

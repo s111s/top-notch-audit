@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Notch Lab</title>
+<meta name="description" content="Write a trading alpha as one expression and backtest it in your browser on real NEAR Intents prices: Sharpe, drawdown, turnover, fitness.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+<header>
+  <nav class="top"><a href="./">Strategies</a><a href="./lab.html" class="on">Lab</a><a href="./audit.html">Agent audit</a><a href="./live.html">Live tape</a></nav>
+  <h1>Lab</h1>
+  <p>Write an alpha as one expression. It gives each token a score every day; the portfolio holds the top scorers, long-only, rest in USDC. Backtested in your browser on daily prices from NEAR Intents pools, with swap costs.</p>
+</header>
+
+<section class="card">
+  <label for="expr"><b>Alpha expression</b></label>
+  <textarea id="expr" spellcheck="false">ts_mean(close, 5) / ts_mean(close, 20) - 1</textarea>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center">
+    <select id="ex" aria-label="Examples"><option value="">Examples…</option></select>
+    <label class="chk">Hold top <select id="topn"><option>1</option><option>2</option><option selected>3</option><option>4</option></select></label>
+    <label class="chk"><input type="checkbox" id="cash" checked> USDC when score ≤ 0</label>
+    <label class="chk">Cost/side <select id="fee"><option value="10">10 bps</option><option value="35" selected>35 bps</option><option value="60">60 bps</option></select></label>
+    <button id="run">Backtest</button>
+  </div>
+  <div id="uni" style="margin-top:8px"></div>
+  <div id="err" class="bad" style="margin-top:8px"></div>
+  <details style="margin-top:10px"><summary class="hint">Fields and functions</summary><div id="ref" class="hint"></div></details>
+</section>
+
+<div id="out"></div>
+
+<section class="card" id="pub" hidden>
+  <h2>Publish this strategy</h2>
+  <p class="hint" style="margin-top:0">Public shows the expression on-chain. Hidden publishes only the hash of (expression | settings | salt), plus the stats; keep the salt and expression private and share them only with the auditor.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input id="name" placeholder="Strategy name" value="My alpha"><select id="vis"><option value="public">Public logic</option><option value="hidden">Hidden logic</option></select><button class="ghost" id="mk">Make card</button></div>
+  <pre class="mono" id="card" style="white-space:pre-wrap;margin-top:12px"></pre>
+</section>
+
+<footer>Built at NEAR HACKATHON 2026. Short history (about 6 months) and many tries make overfitting easy; the out-of-sample column is there to keep you honest.</footer>
+</main>
+<script type="module">
+import { backtest, checkGates, FUNCTIONS, FIELDS, pct, num, logicCommit, canonical } from './alpha.js';
+import { lineChart } from './market.js';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const EX = {
+  'Trend 5/20': 'ts_mean(close, 5) / ts_mean(close, 20) - 1',
+  'Momentum 20d': 'ts_delta(close, 20) / delay(close, 20)',
+  'Risk-adjusted momentum': 'ts_mean(returns, 21) / ts_std(returns, 21)',
+  'Cross-sectional winners': 'rank(ts_mean(returns, 14)) - 0.5',
+  'Price above 30d trend': 'close / ts_mean(close, 30) - 1',
+  'Short-term reversal': '-ts_delta(close, 3) / delay(close, 3)',
+  'Volume breakout': '(close > ts_max(delay(close, 1), 10)) * rank(volume)',
+};
+for (const k of Object.keys(EX)) $('#ex').insertAdjacentHTML('beforeend', `<option>${esc(k)}</option>`);
+$('#ex').onchange = () => { if (EX[$('#ex').value]) { $('#expr').value = EX[$('#ex').value]; run(); } };
+$('#ref').innerHTML = `<p>Fields: ${FIELDS.map((f) => `<code>${f}</code>`).join(', ')} (daily close in USD, daily volume in USD, daily return). Operators: <code>+ - * / &gt; &lt;</code> and parentheses.</p><ul>${Object.entries(FUNCTIONS).map(([k, f]) => `<li><code>${k}(${f.args === 2 ? (k.startsWith('ts_') || k === 'delay' ? 'x, d' : 'a, b') : 'x'})</code>: ${esc(f.doc)}</li>`).join('')}</ul>`;
+const q = new URLSearchParams(location.search);
+if (q.get('e')) $('#expr').value = q.get('e');
+
+const prices = await fetch('./data/prices.json').then((r) => r.json());
+const syms = Object.keys(prices.tokens);
+$('#uni').innerHTML = '<span class="hint">Universe: </span>' + syms.map((s) => `<label class="chk"><input type="checkbox" value="${s}" checked> ${s}</label>`).join('');
+const settings = () => ({ top_n: +$('#topn').value, cash_if_negative: $('#cash').checked, fee_bps: +$('#fee').value, max_weight: 1, universe: [...document.querySelectorAll('#uni input:checked')].map((i) => i.value) });
+let last = null;
+
+function run() {
+  $('#err').textContent = '';
+  let r;
+  try { r = backtest($('#expr').value, prices, settings()); } catch (e) { $('#err').textContent = e.message; return; }
+  last = r;
+  const s = r.stats, o = r.out_of_sample, b = r.benchmark;
+  const tile = (v, l, cls = '') => `<div class="tile"><b class="${cls}">${v}</b><span>${l}</span></div>`;
+  const row = (l, x) => `<tr><td>${l}</td><td>${num(x.sharpe)}</td><td>${pct(x.total_return)}</td><td>${pct(x.max_drawdown)}</td><td>${pct(x.turnover)}</td><td>${num(x.fitness)}</td><td>${pct(x.win_rate, 0)}</td></tr>`;
+  const split = r.daily[Math.floor(r.daily.length * 0.7)]?.date;
+  $('#out').innerHTML = `<section class="card"><h2>Result · ${r.period.from} → ${r.period.to} (${r.period.days} days)</h2>
+    <div class="tiles">${tile(num(s.sharpe), 'Sharpe')}${tile(num(s.fitness), 'Fitness')}${tile(pct(s.max_drawdown), 'Max drawdown', 'neg')}${tile(pct(s.turnover), 'Turnover / day')}${tile(pct(s.total_return, 0), 'Total return', s.total_return >= 0 ? 'pos' : 'neg')}${tile(num(o.sharpe), 'Out-of-sample Sharpe', o.sharpe >= 0 ? 'pos' : 'neg')}</div>
+    <div style="margin-top:14px">${lineChart([{ points: r.daily.map((d) => [d.date, d.bench]), color: 'var(--muted)', width: 1.5 }, { points: r.daily.map((d) => [d.date, d.equity]), color: 'var(--accent)' }], { split })}</div>
+    <div class="hint"><span style="color:var(--accent)">━</span> your alpha &nbsp; <span style="color:var(--muted)">━</span> hold NEAR</div>
+    <div class="tbl" style="margin-top:10px"><table><tr><th></th><th>Sharpe</th><th>Return</th><th>Max DD</th><th>Turnover</th><th>Fitness</th><th>Win days</th></tr>${row('Full period', s)}${row('In-sample (first 70%)', r.in_sample)}${row('Out-of-sample (last 30%)', o)}${row('Hold NEAR', b)}</table></div>
+    <h2 style="margin-top:16px">Listing gates</h2><div>${checkGates(r).map((g) => `<span class="${g.pass ? 'ok' : 'bad'}">${g.pass ? '✓' : '✗'}</span> ${esc(g.label)}`).join(' &nbsp; ')}</div>
+    <p class="hint">Signal for the next day (from the ${r.latest_signal.date} close): ${Object.keys(r.latest_signal.weights).length ? Object.entries(r.latest_signal.weights).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC'}.</p>
+    <p class="hint">Fitness = Sharpe × √(|annual return| ÷ max(turnover, 0.125)), as on WorldQuant BRAIN: it rewards returns and punishes churn.</p></section>`;
+  $('#pub').hidden = false;
+  $('#card').textContent = '';
+}
+$('#run').onclick = run;
+$('#expr').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) run(); });
+
+$('#mk').onclick = async () => {
+  if (!last) return;
+  const vis = $('#vis').value;
+  const salt = vis === 'hidden' ? [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, '0')).join('') : 'public';
+  const S = last.settings;
+  const card = { kind: 'strategy', v: 1, id: $('#name').value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'alpha', name: $('#name').value, visibility: vis,
+    expression: vis === 'public' ? last.expression : undefined, logic_commit: await logicCommit(last.expression, S, salt), settings: S,
+    stats: { sharpe: +last.stats.sharpe.toFixed(4), fitness: +last.stats.fitness.toFixed(4), max_drawdown: +last.stats.max_drawdown.toFixed(4), turnover: +last.stats.turnover.toFixed(4), total_return: +last.stats.total_return.toFixed(4), oos_sharpe: +last.out_of_sample.sharpe.toFixed(4), days: last.stats.days },
+    fee: { recipient: '<your-account.near>', bps: 20 } };
+  $('#card').textContent = `${vis === 'hidden' ? `Keep private (give to the auditor only):\n  expression: ${last.expression}\n  salt: ${salt}\n\n` : ''}Publish from your researcher account:\n\nnear contract call-function as-transaction top-notch.near publish_mandate json-args '${JSON.stringify({ mandate: canonical(card) })}' prepaid-gas '30 Tgas' attached-deposit '0 NEAR' sign-as <your-account.near> network-config mainnet sign-with-keychain send`;
+};
+run();
+</script>
+</body>
+</html>

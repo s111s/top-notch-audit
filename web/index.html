@@ -3,136 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Top Notch Audit</title>
-<meta name="description" content="Audit opinions for AI trading agents on NEAR. Every trade checked against the mandate the agent published on-chain.">
-<style>
-:root{--bg:#f7f6f2;--card:#fff;--ink:#16181d;--muted:#5d6370;--line:#e3e1da;--accent:#0f6e4f;--clean:#0f6e4f;--clean-bg:#e5f4e4;--qual:#8a5a00;--qual-bg:#f9eeda;--adv:#a32020;--adv-bg:#fbebeb;--disc:#4a4f5a;--disc-bg:#f0efec;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
-@media (prefers-color-scheme:dark){:root{--bg:#121417;--card:#1b1e23;--ink:#eceae4;--muted:#a3a8b3;--line:#2c3038;--accent:#4cc79a;--clean:#6fd6a3;--clean-bg:#173327;--qual:#f0b54a;--qual-bg:#3a2d12;--adv:#ff8a80;--adv-bg:#3d1b1b;--disc:#c4c8d0;--disc-bg:#262a31}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-main{max-width:980px;margin:0 auto;padding:28px 16px 64px}
-header h1{margin:0;font-size:32px;letter-spacing:-.02em}header h1 span{color:var(--accent)}
-header p{margin:6px 0 0;color:var(--muted)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-top:18px}
-form{display:flex;gap:10px;flex-wrap:wrap}input{flex:1 1 260px;font:inherit;padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-button{font:inherit;font-weight:600;padding:11px 18px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer}button.ghost{background:transparent;color:var(--accent);border:1px solid var(--line)}
-button:disabled{opacity:.5;cursor:wait}
-.hint{color:var(--muted);font-size:14px;margin-top:8px}
-#log{font:13px/1.6 var(--mono);color:var(--muted);white-space:pre-wrap;margin-top:10px}
-.opinion{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-.badge{font-weight:700;font-size:22px;padding:10px 16px;border-radius:12px}
-.clean{color:var(--clean);background:var(--clean-bg)}.qualified{color:var(--qual);background:var(--qual-bg)}.adverse{color:var(--adv);background:var(--adv-bg)}.disclaimer{color:var(--disc);background:var(--disc-bg)}
-.stats{display:flex;gap:22px;flex-wrap:wrap;color:var(--muted)}.stats b{display:block;color:var(--ink);font-size:22px}
-h2{font-size:18px;margin:0 0 12px}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}
-.tbl{overflow-x:auto}
-.ok{color:var(--clean);font-weight:700}.bad{color:var(--adv);font-weight:700}
-code,.mono{font-family:var(--mono);font-size:13px;word-break:break-all}
-a{color:var(--accent)}
-pre.letter{white-space:pre-wrap;font:15px/1.6 Georgia,serif;margin:0}
-.verify li{margin:6px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media (max-width:700px){.grid{grid-template-columns:1fr}}
-footer{margin-top:28px;color:var(--muted);font-size:14px}
-</style>
+<title>Top Notch Strategies</title>
+<meta name="description" content="A strategy marketplace on NEAR. Researchers publish backtested trading strategies (logic public or hidden). Investors' own agents follow them through NEAR Intents and pay the researcher per trade. An auditor checks both sides.">
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <main>
 <header>
-  <nav style="float:right"><a href="./" style="color:var(--accent);font-weight:600;text-decoration:none">Audit</a> &nbsp; <a href="./live.html" style="color:var(--muted);font-weight:600;text-decoration:none">Live tape</a></nav>
+  <nav class="top"><a href="./" class="on">Strategies</a><a href="./lab.html">Lab</a><a href="./audit.html">Agent audit</a><a href="./live.html">Live tape</a></nav>
   <h1>Top Notch <span>✓</span></h1>
-  <p>Audit opinions for AI trading agents on NEAR. Your agent says it trades safely. We check every trade against the mandate it published on-chain.</p>
+  <p>Researchers publish trading strategies with honest backtests, logic public or hidden. Investors pick one and run their own agent on it through NEAR Intents, paying the researcher on every trade. An independent auditor checks both sides on-chain.</p>
 </header>
 
 <section class="card">
-  <form id="f">
-    <input id="agent" placeholder="agent account, e.g. alpha-bot-demo.near" autocomplete="off" spellcheck="false">
-    <button id="go">Audit</button>
-  </form>
-  <div class="hint">Reads the agent's mandate from <code>top-notch.near</code>, its transactions from NEAR mainnet, and each swap's settlement from NEAR Intents (1Click). Runs entirely in your browser.</div>
-  <div id="log"></div>
+  <div class="grid">
+    <div><h2>For researchers</h2><p class="hint" style="margin:0">Write an alpha in the <a href="./lab.html">Lab</a>, see Sharpe, drawdown, turnover and fitness on real NEAR Intents prices, then publish it. Hide the logic if you want: only a hash of it goes on-chain. You earn a fee in every swap an investor's agent makes on your signal.</p></div>
+    <div><h2>For investors</h2><p class="hint" style="margin:0">Pick a strategy by its audited numbers. Your own agent trades your own wallet toward its daily signal, so you never hand over funds. The auditor checks the hidden logic really produced the signals, and that your agent stayed in scope.</p></div>
+  </div>
 </section>
 
-<div id="out"></div>
+<section class="card">
+  <h2>Strategies</h2>
+  <div class="tbl"><table id="tbl"><tr><td class="hint">Reading the registry on NEAR mainnet…</td></tr></table></div>
+  <div class="hint" id="src"></div>
+</section>
 
-<footer>Built at NEAR HACKATHON 2026. Not financial advice and not a statutory audit: Top Notch tests behaviour against a stated mandate. <a href="https://github.com/s111s/top-notch-audit">Source on GitHub</a>.</footer>
+<section class="card">
+  <h2>Investor agents following a strategy</h2>
+  <div class="tbl"><table id="fol"><tr><td class="hint">Loading…</td></tr></table></div>
+</section>
+
+<footer>Built at NEAR HACKATHON 2026. Backtests are not promises: short history, long-only, fees included. Not financial advice. <a href="https://github.com/s111s/top-notch-audit">Source on GitHub</a>.</footer>
 </main>
 
 <script type="module">
-import { audit, verifyReport, OPINION_TEXT, CONFIG } from './engine.js';
+import { loadMarket, OPINION_LABEL } from './market.js';
+import { pct, num, GATES } from './alpha.js';
+import { CONFIG } from './engine.js';
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const tx = (h) => h ? `<a href="${CONFIG.explorerTx(h)}" target="_blank" rel="noopener"><code>${esc(h.slice(0, 10))}…</code></a>` : '';
-const params = new URLSearchParams(location.search);
-const amt = (x) => { const n = Number(x); return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 2 : 4 }) : esc(x); };
-$('#agent').value = params.get('agent') || 'alpha-bot-demo.near';
+const sgn = (x) => (x >= 0 ? 'pos' : 'neg');
 
-function render(r, source) {
-  const op = OPINION_TEXT[r.opinion];
-  const passed = r.trades.filter((t) => t.checks?.every((c) => c.pass)).length;
-  let html = `<section class="card"><div class="opinion"><div class="badge ${r.opinion}">${op.label}</div>
-    <div><div><b>${esc(r.agent)}</b></div><div class="hint" style="margin:0">${esc(op.short)}</div></div></div>
-    <div class="stats" style="margin-top:16px"><div><b>${r.trades.length}</b>trades tested</div><div><b>${passed}</b>tickmarked ✓</div><div><b>${r.findings.length}</b>findings</div>
-    <div><b>${r.period ? esc(r.period.from.slice(0, 10)) : '—'}</b>period from</div></div>
-    ${r.basis ? `<p>${esc(r.basis)}</p>` : ''}<div class="hint">${esc(source)}</div></section>`;
-
-  if (r.mandate?.text) {
-    let rules; try { rules = JSON.parse(r.mandate.text); } catch { rules = {}; }
-    html += `<section class="card"><h2>Mandate the agent published</h2><div class="tbl"><table>
-      <tr><th>Allowed tokens</th><td>${esc((rules.allowed_assets || []).map((a) => a === 'nep141:wrap.near' ? 'wNEAR' : a.replace('nep141:', '').replace(/^17208628.*/, 'USDC')).join(', '))}</td></tr>
-      <tr><th>Max trade size</th><td>$${esc(rules.max_trade_usd)}</td></tr>
-      <tr><th>Max slippage</th><td>${esc(rules.max_slippage_bps)} bps</td></tr>
-      <tr><th>Max trades per day</th><td>${esc(rules.max_trades_per_day)}</td></tr>
-      <tr><th>Max daily loss</th><td>$${esc(rules.max_daily_loss_usd)}</td></tr>
-      <tr><th>Mandate hash</th><td><code>${esc(r.mandate.hash)}</code> (computed on-chain by the registry)</td></tr>
-      <tr><th>Published</th><td>${esc(r.mandate.published_at || '')} · block ${esc(r.mandate.block_height || '')}</td></tr></table></div></section>`;
-  }
-
-  if (r.trades.length) {
-    html += `<section class="card"><h2>Trades tested</h2><div class="tbl"><table><tr><th>#</th><th>Time (UTC)</th><th>Swap</th><th>USD in</th><th>Tests</th><th>Evidence</th></tr>`;
-    for (const t of r.trades) {
-      const checks = (t.checks || []).map((c) => `<div title="${esc(c.detail)}"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✓' : '✗'}</span> ${esc(c.rule)}${c.pass ? '' : `: ${esc(c.detail)}`}</div>`).join('');
-      html += `<tr><td>${t.n ?? ''}</td><td>${esc(t.time.slice(0, 16).replace('T', ' '))}</td><td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td>
-        <td>$${t.in.usd.toFixed(2)}</td><td>${checks}</td><td>${tx(t.tx)}<br><a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;
-    }
-    html += `</table></div></section>`;
-  }
-
-  if (r.findings.length) {
-    html += `<section class="card"><h2>Findings</h2><ol>${r.findings.map((f) => `<li><b>${esc(f.rule)}</b>${f.trade ? ` (trade ${f.trade})` : ''}: ${esc(f.detail)} ${tx(f.tx)}</li>`).join('')}</ol></section>`;
-  }
-
-  if (r.letter?.text) {
-    html += `<section class="card"><h2>Auditor's letter</h2><pre class="letter">${esc(r.letter.text)}</pre>
-      <div class="hint">Written by <code>${esc(r.letter.model)}</code> inside NEAR AI Cloud's TEE from the findings above (it cannot change the opinion).
-      ${r.letter.signature ? `Signature <code>${esc(r.letter.signature.slice(0, 26))}…</code> by <code>${esc(r.letter.signing_address)}</code>.` : ''}
-      Letter sha256 <code>${esc(r.letter.text_sha256)}</code>.</div></section>`;
-  }
-
-  html += `<section class="card"><h2>Verify this report yourself</h2><ul class="verify" id="verify">
-    <li>Report hash: <code>${esc(r.report_hash)}</code></li>${r.publish_tx ? `<li>Published on-chain in ${tx(r.publish_tx)}</li>` : ''}<li id="vres">Checking…</li></ul></section>`;
-  $('#out').innerHTML = html;
-  verifyReport(r).then((v) => {
-    $('#vres').innerHTML = `${v.hashMatches ? '<span class="ok">✓</span> Recomputed hash matches the report' : '<span class="bad">✗</span> Recomputed hash differs (report edited after hashing)'}<br>
-      ${v.onchain ? `<span class="ok">✓</span> Same hash is stored on <code>${CONFIG.registry}</code> at block ${v.onchain.block_height}, opinion <b>${esc(v.onchain.opinion)}</b>` : '<span class="bad">✗</span> Not published on-chain (live audits are not published; only the auditor can publish)'}`;
-  }).catch((e) => { $('#vres').textContent = 'Verification failed: ' + e.message; });
+function gatesPassed(st) {
+  const s = { sharpe: st.sharpe, fitness: st.fitness, max_drawdown: st.max_drawdown, turnover: st.turnover };
+  return GATES.filter((g) => g.test(s, { out_of_sample: { sharpe: st.oos_sharpe } })).length;
 }
 
-async function loadPublished(agent) {
-  const res = await fetch(`./data/report-${agent}.json`, { cache: 'no-store' }).catch(() => null);
-  if (!res || !res.ok) return false;
-  render(await res.json(), 'Published audit (signed letter included). Press Audit to re-run it live from the chain.');
-  return true;
-}
+try {
+  const m = await loadMarket();
+  m.strategies.sort((a, b) => (b.card.json.stats.fitness || 0) - (a.card.json.stats.fitness || 0));
+  let html = `<tr><th>Strategy</th><th>Logic</th><th>Sharpe</th><th>Fitness</th><th>Max DD</th><th>Turnover/day</th><th>Return</th><th>OOS Sharpe</th><th>Gates</th><th>Auditor</th><th>Fee</th><th>Followers</th></tr>`;
+  for (const s of m.strategies) {
+    const c = s.card.json, st = c.stats;
+    const g = gatesPassed(st);
+    const url = `./strategy.html?a=${encodeURIComponent(s.account)}&id=${encodeURIComponent(s.id)}`;
+    html += `<tr class="click" onclick="location.href='${url}'"><td><a href="${url}"><b>${esc(c.name)}</b></a><div class="hint" style="margin:0">${esc(s.account)}</div></td>
+      <td><span class="pill ${c.visibility === 'hidden' ? 'hid' : 'pub'}">${c.visibility === 'hidden' ? '🔒 hidden' : 'public'}</span></td>
+      <td>${num(st.sharpe)}</td><td>${num(st.fitness)}</td><td class="neg">${pct(st.max_drawdown)}</td><td>${pct(st.turnover)}</td>
+      <td class="${sgn(st.total_return)}">${pct(st.total_return, 0)}<div class="hint" style="margin:0">${st.days} days</div></td><td class="${sgn(st.oos_sharpe)}">${num(st.oos_sharpe)}</td>
+      <td>${g}/${GATES.length}</td>
+      <td>${s.audit ? `<span class="badge ${s.audit.opinion}" style="font-size:13px;padding:3px 8px">${OPINION_LABEL[s.audit.opinion]}</span>` : '<span class="hint">not audited</span>'}</td>
+      <td>${c.fee.bps} bps</td><td>${s.followers.length}</td></tr>`;
+  }
+  $('#tbl').innerHTML = m.strategies.length ? html : '<tr><td>No strategies published yet.</td></tr>';
+  $('#src').innerHTML = `Live from <code>${CONFIG.registry}</code> on NEAR mainnet (${m.accounts.length} accounts). Stats are the researcher's claim until the auditor's opinion confirms them.`;
 
-async function runLive(agent) {
-  $('#go').disabled = true; $('#log').textContent = ''; $('#out').innerHTML = '';
-  const log = (m) => { $('#log').textContent += `· ${m}\n`; };
-  try { render(await audit(agent, log), 'Live audit, run in your browser just now from mainnet data.'); }
-  catch (e) { log('Error: ' + e.message); }
-  finally { $('#go').disabled = false; }
+  let f = `<tr><th>Agent</th><th>Follows</th><th>Agent audit</th><th>Researcher fee</th></tr>`;
+  for (const x of m.followers) {
+    const j = x.mandate.json;
+    f += `<tr><td><a href="./audit.html?agent=${encodeURIComponent(x.agent)}">${esc(x.agent)}</a></td><td><a href="./strategy.html?a=${encodeURIComponent(j.strategy.account)}&id=${encodeURIComponent(j.strategy.id)}">${esc(j.strategy.id)}</a> by ${esc(j.strategy.account)}</td>
+      <td>${x.audit ? `<span class="badge ${x.audit.opinion}" style="font-size:13px;padding:3px 8px">${OPINION_LABEL[x.audit.opinion]}</span> ${x.audit.trades_tested} trades` : '<span class="hint">not audited yet</span>'}</td><td>${j.researcher_fee_bps} bps per swap</td></tr>`;
+  }
+  $('#fol').innerHTML = m.followers.length ? f : '<tr><td>No followers yet.</td></tr>';
+} catch (e) {
+  $('#tbl').innerHTML = `<tr><td>Could not read the registry: ${esc(e.message)}</td></tr>`;
 }
-
-$('#f').addEventListener('submit', (e) => { e.preventDefault(); const a = $('#agent').value.trim(); history.replaceState(null, '', `?agent=${encodeURIComponent(a)}`); runLive(a); });
-loadPublished($('#agent').value.trim());
 </script>
 </body>
 </html>

@@ -91,7 +91,9 @@ async function refresh() {
       }
     }
     if (!reports.length) throw new Error('data sources busy');
+    const settling = reports.flatMap((r) => (r.pending_trades || []).map((t) => ({ ...t, agent: r.agent, checks: [], pending: true })));
     const all = reports.flatMap((r) => r.trades.map((t) => ({ ...t, agent: r.agent }))).sort((x, y) => (x.time < y.time ? 1 : -1));
+    const tape = [...settling, ...all].sort((x, y) => (x.time < y.time ? 1 : -1));
 
     const ticked = all.filter((t) => t.checks.every((c) => c.pass)).length;
     const vol = all.reduce((s, t) => s + t.in.usd, 0);
@@ -109,12 +111,12 @@ async function refresh() {
         <td>${r.trades.length}</td><td>${ok}</td><td>${r.findings.length}</td><td>${last}</td></tr>`;
     }).join('');
 
-    $('#tape').innerHTML = all.map((t) => {
-      const key = `${t.agent}:${t.tx}`;
+    $('#tape').innerHTML = tape.map((t) => {
+      const key = `${t.agent}:${t.tx}:${t.pending ? 'p' : 'f'}`;
       const isNew = !firstLoad && !seen.has(key);
       seen.add(key);
       const failed = t.checks.filter((c) => !c.pass);
-      const result = failed.length ? failed.map((c) => `<span class="bad">✗</span> ${esc(c.rule)}`).join('<br>') : `<span class="ok">✓</span> ${t.checks.length} tests passed`;
+      const result = t.pending ? `⏳ settling on NEAR Intents (${esc(t.status)})` : failed.length ? failed.map((c) => `<span class="bad">✗</span> ${esc(c.rule)}`).join('<br>') : `<span class="ok">✓</span> ${t.checks.length} tests passed`;
       return `<tr class="${isNew ? 'new' : ''}"><td>${esc(t.time.slice(0, 19).replace('T', ' '))}</td><td>${esc(t.agent)}</td>
         <td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td><td>$${t.in.usd.toFixed(2)}</td><td>${result}</td>
         <td><a href="${CONFIG.explorerTx(t.tx)}" target="_blank" rel="noopener">tx</a> · <a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;

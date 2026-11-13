@@ -233,7 +233,10 @@ export async function audit(agent, onProgress = () => {}) {
     return report;
   }
   const rules = mandate.rules;
-  const inPeriod = ev.trades.filter((t) => t.time >= mandate.published_at);
+  const FINAL = ['SUCCESS', 'REFUNDED', 'FAILED'];
+  const inPeriodAll = ev.trades.filter((t) => t.time >= mandate.published_at);
+  const inPeriod = inPeriodAll.filter((t) => FINAL.includes(t.status));
+  const pending = inPeriodAll.filter((t) => !FINAL.includes(t.status));
   const tested = inPeriod.map((t, i) => ({ n: i + 1, ...t, checks: testTrade(t, rules) }));
   const findings = [];
   for (const t of tested) for (const c of t.checks) if (!c.pass) findings.push({ trade: t.n, tx: t.tx, rule: c.rule, detail: c.detail, usd: t.in.usd });
@@ -252,7 +255,8 @@ export async function audit(agent, onProgress = () => {}) {
     ...base,
     mandate: { hash: mandate.mandate_hash, text: mandate.mandate, published_at: mandate.published_at, block_height: mandate.block_height },
     period: { from: mandate.published_at, to: tested.length ? tested[tested.length - 1].time : mandate.published_at },
-    out_of_period_trades: ev.trades.length - inPeriod.length,
+    out_of_period_trades: ev.trades.length - inPeriodAll.length,
+    pending_trades: pending.length ? pending : undefined,
     trades: tested,
     findings,
     opinion,

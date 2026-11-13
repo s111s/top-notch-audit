@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-13",
+  "facts": {
+    "vault": "vault-1.top-notch.near",
+    "strategy": "Dip in an uptrend (dip-in-uptrend by researcher-1.top-notch.near)",
+    "signal_date": "2026-11-12",
+    "target_weights": {},
+    "before": {
+      "NEAR": 0,
+      "RHEA": 0,
+      "AURORA": 0,
+      "BTC": 0,
+      "ETH": 0,
+      "USDC": 5.9
+    },
+    "after": {
+      "NEAR": 0,
+      "RHEA": 0,
+      "AURORA": 0,
+      "BTC": 0,
+      "ETH": 0,
+      "USDC": 5.9
+    },
+    "trades": [],
+    "fees": "researcher 20 bps + platform 10 bps per swap, paid inside each 1Click swap",
+    "agent_powers": "can only call vault.swap within the owner policy; cannot withdraw"
+  },
+  "facts_sha256": "2c64ba25e9b0b566fcc76c2fc2b575098782ba57460c909a4dbc81cfdc437141",
+  "letter": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "chat_id": "chatcmpl-8bd60cf8-2ff2-475e-8d15-af2ae26e92c8",
+    "text": "Today the Dip in an uptrend strategy signal asked for no target weights, so no position changes. The agent executed no trades. The vault now holds 5.90 USDC and zero AURORA, BTC, ETH, NEAR, and RHEA, unchanged from before. You can pause or withdraw at any time; the agent can only call vault.swap within the owner policy and cannot withdraw.",
+    "text_sha256": "5a7e362fbfaa866bd7a97ebc77b3e4cbd6412227ced2331bbf264471828845d4",
+    "signature": "0x8a7866e86f4f79aed7e03c2cf1d81b471513b47f9d55eade0cb32800d67ccb476e10e40ff584bb47c111595c61bb35b71a730923b76fd90c81680b7efc74826a1b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:6bf2336e4608202bf01450cef00828102c309eec60279efcb268c8da87da4e14:484644aa3fdc9b6928865a740083cfdae7913b2940d66d1fe9381b7af36ef03d",
+    "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+    "attestation_summary": {
+      "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+      "keys": [
+        "gateway_attestation",
+        "model_attestations",
+        "ohttp_key_config",
+        "ohttp_attestation"
+      ]
+    }
+  }
+}

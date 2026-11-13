@@ -130,6 +130,12 @@ export async function collectEvidence(agent, onProgress = () => {}) {
         try { args = JSON.parse(b64ToUtf8(fc.args)); } catch {}
         if (isImplicit(args.receiver_id)) deposits.push({ tx: t.transaction_hash, ok, time_ns: t.block_timestamp, token: r.transaction.receiver_id, depositAddress: args.receiver_id, amount: args.amount });
       }
+      // Managed agents trade an investor's vault: the agent calls vault.swap, the vault sends to the 1Click deposit address.
+      if (fc && fc.method_name === 'swap') {
+        let args = {};
+        try { args = JSON.parse(b64ToUtf8(fc.args)); } catch {}
+        if (isImplicit(args.deposit_address)) deposits.push({ tx: t.transaction_hash, ok, time_ns: t.block_timestamp, token: args.token, depositAddress: args.deposit_address, amount: args.amount, vault: r.transaction.receiver_id });
+      }
       if (a.Transfer && isImplicit(r.transaction.receiver_id)) {
         deposits.push({ tx: t.transaction_hash, ok, time_ns: t.block_timestamp, token: 'near', depositAddress: r.transaction.receiver_id, amount: a.Transfer.deposit });
       }
@@ -163,6 +169,7 @@ async function normaliseTrade(d, s) {
   const realisedSlippageBps = quotedOut > 0 && actualOut > 0 ? Math.round(((quotedOut - actualOut) / quotedOut) * 10000) : null;
   return {
     tx: d.tx,
+    vault: d.vault,
     depositAddress: d.depositAddress,
     time: new Date(Number(BigInt(d.time_ns) / 1000000n)).toISOString(),
     status: s.status,
@@ -227,6 +234,7 @@ export function testFollow(t, rules, strategy) {
     const w = buying ? sig.json.weights[buying] || 0 : null;
     out.push({ rule: 'Trades toward the signal', pass: !buying || w > 0, detail: buying ? `bought ${buying}, target weight ${(w * 100).toFixed(0)}%` : `sold ${t.in.symbol} into cash` });
   }
+  if (rules.vault) out.push({ rule: "Through the investor's vault", pass: t.vault === rules.vault, detail: t.vault ? `vault.swap on ${t.vault}` : 'agent moved its own funds, not the vault' });
   const fee = (t.appFees || []).find((f) => f.recipient === strategy.account);
   const need = rules.researcher_fee_bps ?? 0;
   out.push({ rule: 'Researcher paid', pass: !!fee && fee.fee >= need, detail: fee ? `${fee.fee} bps to ${strategy.account} (agreed ${need})` : `no fee to ${strategy.account} in this swap` });

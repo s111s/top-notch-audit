@@ -1,0 +1,77 @@
+{
+  "schema": "top-notch/strategy-report@1",
+  "generated_at": "2026-11-13T15:02:54.486Z",
+  "registry": "top-notch.near",
+  "strategy": {
+    "account": "researcher-1.top-notch.near",
+    "id": "dip-in-uptrend",
+    "name": "Dip in an uptrend",
+    "visibility": "hidden",
+    "card_hash": "bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e",
+    "logic_commit": "d946d896962027b704b03300a621b611c1d1a7af447056630d6750b911a87549"
+  },
+  "claimed_stats": {
+    "days": 149,
+    "fitness": 16.4496,
+    "max_drawdown": -0.0894,
+    "oos_sharpe": 1.1964,
+    "sharpe": 2.7752,
+    "total_return": 1.3365,
+    "turnover": 0.1991
+  },
+  "checks": [
+    {
+      "test": "Logic matches its commitment",
+      "pass": true,
+      "detail": "recomputed d946d8969620… vs card d946d8969620…"
+    },
+    {
+      "test": "Backtest reproduces the claimed stats",
+      "pass": true,
+      "detail": "Sharpe 2.78, fitness 16.45, drawdown -8.9%, turnover 19.9%, 149 days"
+    },
+    {
+      "test": "Every signal reproduced from the committed logic",
+      "pass": true,
+      "detail": "1 of 1 signals match"
+    },
+    {
+      "test": "Signals published after the candle closed, not backdated",
+      "pass": true,
+      "detail": "2026-11-12 → 2026-11-13T14:53Z"
+    }
+  ],
+  "signals": [
+    {
+      "date": "2026-11-12",
+      "hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
+      "weights": {},
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-13T14:53:05.224Z",
+      "timely": true
+    }
+  ],
+  "opinion": "clean",
+  "scope": "The auditor saw the strategy logic under engagement. It is not disclosed in this report; only the commitment is.",
+  "report_hash": "c8c6f285d34ee3777025cf03d3ebc03d9d1e7f59a55b7a8c15d747926a9f4bea",
+  "publish_tx": "FqzHpJUDeWUzzqcXU4FT3UTXRu7rwBohP4mM3KVn6zt9",
+  "letter": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "chat_id": "chatcmpl-2c2f7d2f-6349-4933-971d-33afaa4b67be",
+    "text": "**Opinion:** Clean opinion.\n\n**What we tested:** We checked that the strategy logic matches its commitment, that the backtest reproduces the claimed statistics, that every signal can be reproduced from the committed logic, and that signals were published after the candle closed rather than backdated.\n\n**Results:** All four checks passed. The backtest reproduced Sharpe 2.78, fitness 16.45, drawdown -8.9%, turnover 19.9%, and 149 days. One of one signals matched. The signal dated 2026-11-12 was reproduced and timely, with publication from 2026-11-12 to 2026-11-13T14:53Z.\n\n**Scope and limits:** The auditor saw the strategy logic under engagement. It is not disclosed in this report; only the commitment is. Report hash: c8c6f285d34ee3777025cf03d3ebc03d9d1e7f59a55b7a8c15d747926a9f4bea.",
+    "text_sha256": "b1c68fa99d8b578146aa4cbeaa944468522697bd0ce6ce75368abe1c17669234",
+    "signature": "0x471cf8d8a71301b0d4d173ec799c1091618c37d176d04046ad9b778292a38d852e5ca6a39c1609fcc99456287c272bb7dfdf4d66e6ab3f1298e92a1125bd66f91b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:1e6cf2407eb011203f2f03027f00d9b426f132fb3e7ac6f10906b7f14791ca7d:ca4ba1d6de193f54fe9b2bc26f212f719e65263cdc98cb2de57dd2bb7b6005c0",
+    "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+    "attestation_summary": {
+      "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+      "keys": [
+        "gateway_attestation",
+        "model_attestations",
+        "ohttp_key_config",
+        "ohttp_attestation"
+      ]
+    }
+  }
+}

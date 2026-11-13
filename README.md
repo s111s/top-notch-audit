@@ -18,7 +18,7 @@ In auditing, a notch (✓) marks every item that was checked. A top notch is the
 
 ## Try it in 2 minutes (no install)
 
-1. **Open** <LIVE_URL>
+1. **Open** https://s111s.github.io/top-notch-audit/
    **You should see** the published audit of `alpha-bot-demo.near`: a **Qualified opinion**, 8 trades tested, 7 tickmarked ✓, 1 finding.
 2. **Look at the finding.**
    **You should see** *"Allowed tokens (trade 5): wNEAR → SWEAT"*. SWEAT is not on the agent's allowlist. Click the tx link: the swap is on NearBlocks, and the *intents* link shows its settlement on NEAR Intents.
@@ -86,7 +86,7 @@ Append-only. `publish_mandate(mandate)` must be called by the agent account itse
 ## Run locally
 
 ```bash
-git clone <REPO_URL> && cd top-notch-audit
+git clone https://github.com/s111s/top-notch-audit && cd top-notch-audit
 npm install
 # Serve the page (static, no build step)
 npx http-server web -p 8080      # open http://localhost:8080

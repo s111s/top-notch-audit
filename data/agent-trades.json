@@ -88,5 +88,15 @@
     "depositAddress": "21969ed4b514c51eaedebc81e41d91bdb26b2d694179636978c131183e63bab0",
     "status": "SUCCESS",
     "amountOut": "1.079682"
+  },
+  {
+    "at": "2026-11-13T13:44:12.611Z",
+    "from": "USDC",
+    "to": "wNEAR",
+    "amount": "1.0",
+    "txHash": "D7HLLqBPaZxKsgRjh97H9DBJEC2YLy5sAgkYQsMQACuW",
+    "depositAddress": "fff3c90165df0e5287505f36ea24550f06ea862cc4bbaa48650564d37cd7ea9e",
+    "status": "SUCCESS",
+    "amountOut": "0.275200900635152612662427"
   }
 ]

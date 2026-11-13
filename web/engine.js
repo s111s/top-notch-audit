@@ -185,8 +185,10 @@ export async function listAuditedAgents() {
 // 3. Read the mandate the agent published on-chain (latest one wins; trades before it are out of period).
 export async function getMandate(agent) {
   const list = await viewCall(CONFIG.registry, 'get_mandates', { agent }).catch(() => []);
-  if (!list.length) return null;
-  const m = list[list.length - 1];
+  // Researcher accounts also publish strategy cards and signals here; an agent's mandate is its latest other entry.
+  const own = list.filter((x) => { try { return !['strategy', 'signal'].includes(JSON.parse(x.mandate).kind); } catch { return true; } });
+  if (!own.length) return null;
+  const m = own[own.length - 1];
   let rules = null;
   try { rules = JSON.parse(m.mandate); } catch {}
   const recomputed = await sha256Hex(m.mandate);
@@ -194,7 +196,7 @@ export async function getMandate(agent) {
 }
 
 // 4. Rule engine. Every check returns pass/fail with the evidence behind it.
-export function testTrade(t, rules) {
+export function testTrade(t, rules, strategy = null) {
   const checks = [];
   const allowed = rules.allowed_assets || [];
   checks.push({ rule: 'Allowed tokens', pass: allowed.includes(t.in.asset) && allowed.includes(t.out.asset), detail: `${t.in.symbol} → ${t.out.symbol}` });
@@ -206,7 +208,40 @@ export function testTrade(t, rules) {
     checks.push({ rule: 'Max slippage', pass, detail: `requested ${req ?? '?'} bps, realised ${real ?? '?'} bps vs limit ${rules.max_slippage_bps} bps` });
   }
   checks.push({ rule: 'Settled', pass: t.status === 'SUCCESS', detail: `1Click status ${t.status}` });
+  if (rules.kind === 'follow' && strategy) checks.push(...testFollow(t, rules, strategy));
   return checks;
+}
+
+// Follow mandates: the agent promised to trade only toward the researcher's latest on-chain signal,
+// and to pay the researcher's fee on every swap.
+export function testFollow(t, rules, strategy) {
+  const out = [];
+  const bySym = Object.fromEntries(Object.entries(rules.assets || {}).map(([sym, id]) => [id, sym]));
+  const tMs = Date.parse(t.time);
+  const sig = strategy.signals.filter((s) => s.ms <= tMs).at(-1);
+  const ageH = sig ? (tMs - sig.ms) / 3.6e6 : null;
+  const fresh = sig && ageH <= (rules.max_signal_age_hours ?? 36);
+  out.push({ rule: 'Signal in force', pass: !!fresh, detail: sig ? `signal ${sig.json.date} published ${ageH.toFixed(1)}h before the trade (${sig.hash.slice(0, 10)}…)` : 'no signal was published before this trade' });
+  if (sig) {
+    const buying = t.out.asset !== rules.cash_asset ? bySym[t.out.asset] : null;
+    const w = buying ? sig.json.weights[buying] || 0 : null;
+    out.push({ rule: 'Trades toward the signal', pass: !buying || w > 0, detail: buying ? `bought ${buying}, target weight ${(w * 100).toFixed(0)}%` : `sold ${t.in.symbol} into cash` });
+  }
+  const fee = (t.appFees || []).find((f) => f.recipient === strategy.account);
+  const need = rules.researcher_fee_bps ?? 0;
+  out.push({ rule: 'Researcher paid', pass: !!fee && fee.fee >= need, detail: fee ? `${fee.fee} bps to ${strategy.account} (agreed ${need})` : `no fee to ${strategy.account} in this swap` });
+  return out;
+}
+
+// Load a strategy's card and signal history from the registry.
+export async function getStrategy(account, id) {
+  const list = await viewCall(CONFIG.registry, 'get_mandates', { agent: account }).catch(() => []);
+  const parsed = list.map((m) => { let json = null; try { json = JSON.parse(m.mandate); } catch {} return { json, hash: m.mandate_hash, ms: Number(BigInt(m.timestamp_ns) / 1000000n), block_height: m.block_height }; });
+  return {
+    account, id,
+    cards: parsed.filter((e) => e.json?.kind === 'strategy' && e.json.id === id),
+    signals: parsed.filter((e) => e.json?.kind === 'signal' && e.json.id === id),
+  };
 }
 
 export function decideOpinion(findings, tradesTested, rules) {
@@ -237,7 +272,12 @@ export async function audit(agent, onProgress = () => {}) {
   const inPeriodAll = ev.trades.filter((t) => t.time >= mandate.published_at);
   const inPeriod = inPeriodAll.filter((t) => FINAL.includes(t.status));
   const pending = inPeriodAll.filter((t) => !FINAL.includes(t.status));
-  const tested = inPeriod.map((t, i) => ({ n: i + 1, ...t, checks: testTrade(t, rules) }));
+  let strategy = null;
+  if (rules.kind === 'follow') {
+    strategy = await getStrategy(rules.strategy.account, rules.strategy.id);
+    onProgress(`Strategy ${rules.strategy.id} by ${rules.strategy.account}: ${strategy.signals.length} signals on-chain`);
+  }
+  const tested = inPeriod.map((t, i) => ({ n: i + 1, ...t, checks: testTrade(t, rules, strategy) }));
   const findings = [];
   for (const t of tested) for (const c of t.checks) if (!c.pass) findings.push({ trade: t.n, tx: t.tx, rule: c.rule, detail: c.detail, usd: t.in.usd });
   // Daily rules across trades
@@ -257,6 +297,7 @@ export async function audit(agent, onProgress = () => {}) {
     period: { from: mandate.published_at, to: tested.length ? tested[tested.length - 1].time : mandate.published_at },
     out_of_period_trades: ev.trades.length - inPeriodAll.length,
     pending_trades: pending.length ? pending : undefined,
+    strategy: strategy ? { account: strategy.account, id: strategy.id, card_hash: rules.strategy.card_hash, card_found: strategy.cards.some((c) => c.hash === rules.strategy.card_hash), signals: strategy.signals.map((s) => ({ date: s.json.date, hash: s.hash, weights: s.json.weights })) } : undefined,
     trades: tested,
     findings,
     opinion,

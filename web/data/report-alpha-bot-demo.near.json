@@ -3,53 +3,71 @@
   "engine_version": "1.0.0",
   "agent": "alpha-bot-demo.near",
   "registry": "top-notch.near",
-  "generated_at": "2026-11-13T11:16:58.449Z",
+  "generated_at": "2026-11-13T15:04:05.793Z",
   "mandate": {
-    "hash": "e32c02649b574c1b16b7a84324814082f6d26a0b6c499f75937e90a3c517f603",
-    "text": "{\"version\":1,\"agent\":\"alpha-bot-demo.near\",\"description\":\"Momentum bot that trades NEAR against USDC in small size.\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"max_trade_usd\":2.5,\"max_slippage_bps\":100,\"max_trades_per_day\":12,\"max_daily_loss_usd\":1,\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10}}",
-    "published_at": "2026-11-13T11:02:16.536Z",
-    "block_height": 224354405
+    "hash": "62d7652cd86d5f8a58f89ded241074fd737438f48da0f7f0682ec03f6dfe827c",
+    "text": "{\"agent\":\"alpha-bot-demo.near\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:token.rhealab.near\",\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"nep141:nbtc.bridge.near\",\"nep141:eth.bridge.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"assets\":{\"AURORA\":\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"BTC\":\"nep141:nbtc.bridge.near\",\"ETH\":\"nep141:eth.bridge.near\",\"NEAR\":\"nep141:wrap.near\",\"RHEA\":\"nep141:token.rhealab.near\"},\"cash_asset\":\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\",\"description\":\"Follows dip-in-uptrend by researcher-1.top-notch.near: holds the signal's target weights, rest in USDC.\",\"kind\":\"follow\",\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10},\"max_signal_age_hours\":36,\"max_slippage_bps\":100,\"max_trade_usd\":5,\"researcher_fee_bps\":20,\"strategy\":{\"account\":\"researcher-1.top-notch.near\",\"card_hash\":\"bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e\",\"id\":\"dip-in-uptrend\"},\"v\":1}",
+    "published_at": "2026-11-13T14:54:53.930Z",
+    "block_height": 224378687
   },
   "period": {
-    "from": "2026-11-13T11:02:16.536Z",
-    "to": "2026-11-13T11:15:44.198Z"
+    "from": "2026-11-13T14:54:53.930Z",
+    "to": "2026-11-13T14:57:51.997Z"
   },
-  "out_of_period_trades": 0,
+  "out_of_period_trades": 10,
+  "strategy": {
+    "account": "researcher-1.top-notch.near",
+    "id": "dip-in-uptrend",
+    "card_hash": "bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e",
+    "card_found": true,
+    "signals": [
+      {
+        "date": "2026-11-12",
+        "hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
+        "weights": {}
+      }
+    ]
+  },
   "trades": [
     {
       "n": 1,
-      "tx": "9YPKgMdNykcQM7b8XvTxuSh8pUAgH8VR3zC3aYya1zpG",
-      "depositAddress": "9614281148508d025acc212d53ea2629ae86b7195d0d5b115fd3568739bd9e4f",
-      "time": "2026-11-13T11:03:57.473Z",
+      "tx": "HSkQ7tRhzamiCZSxHnBkJfmCs5c9paXJ8QuZM5Nxs2Q5",
+      "depositAddress": "4452b03bdc6caf652babcf3dd490ed18f3ae0ae1ee62cc6224ca9df9d270dd95",
+      "time": "2026-11-13T14:56:30.029Z",
       "status": "SUCCESS",
       "in": {
         "asset": "nep141:wrap.near",
         "symbol": "wNEAR",
-        "amount": "0.35",
-        "usd": 1.225
+        "amount": "0.9",
+        "usd": 3.195
       },
       "out": {
         "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
         "symbol": "USDC",
-        "amount": "1.224647",
-        "usd": 1.224093459556
+        "amount": "3.171986",
+        "usd": 3.170355599196
       },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": -2,
+      "requestedSlippageBps": 100,
+      "realisedSlippageBps": -8,
       "appFees": [
         {
           "limitOrderId": null,
+          "recipient": "researcher-1.top-notch.near",
+          "fee": 20
+        },
+        {
+          "limitOrderId": null,
           "recipient": "top-notch.near",
-          "fee": 10
+          "fee": 5
         },
         {
           "limitOrderId": null,
           "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
+          "fee": 25
         }
       ],
       "destinationTxs": [
-        "EeL3V9P9yMcfAYCCsT8CtJ9cqQEX9eAka2rApTMzWEEy"
+        "Dch8b947qnBKw7V41dVfpDG7k89u4fAoUL9cQeqgb6Cs"
       ],
       "checks": [
         {
@@ -60,446 +78,125 @@
         {
           "rule": "Max trade size",
           "pass": true,
-          "detail": "$1.23 vs limit $2.5"
+          "detail": "$3.19 vs limit $5"
         },
         {
           "rule": "Max slippage",
           "pass": true,
-          "detail": "requested 50 bps, realised -2 bps vs limit 100 bps"
+          "detail": "requested 100 bps, realised -8 bps vs limit 100 bps"
         },
         {
           "rule": "Settled",
           "pass": true,
           "detail": "1Click status SUCCESS"
+        },
+        {
+          "rule": "Signal in force",
+          "pass": true,
+          "detail": "signal 2026-11-12 published 0.1h before the trade (066596f4ac…)"
+        },
+        {
+          "rule": "Trades toward the signal",
+          "pass": true,
+          "detail": "sold wNEAR into cash"
+        },
+        {
+          "rule": "Researcher paid",
+          "pass": true,
+          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
         }
       ]
     },
     {
       "n": 2,
-      "tx": "H1pKdoGHVDtNcFwtgug97Rw6yz7B6QrAzajUrAq7ThcP",
-      "depositAddress": "db15386dd0da76b3b3048dccd943371421cd883c8f6a5047af88e566a4c4fc39",
-      "time": "2026-11-13T11:05:29.085Z",
+      "tx": "278mFTwXRVn3QE4Zp9vsuu7S6gNJL48EzmjU53e8NvvE",
+      "depositAddress": "807f6e36f955cbbf88afa567107663ca4e32b7799949a8afda0543dcfc506196",
+      "time": "2026-11-13T14:57:51.997Z",
       "status": "SUCCESS",
       "in": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.35",
-        "usd": 1.2285
-      },
-      "out": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "1.222095",
-        "usd": 1.22155238982
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": 6,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "3fsUoC6kDM6h6QHA86THhVPpTDYVmbn5bYH7kPcomGyL"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "wNEAR → USDC"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.23 vs limit $2.5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 50 bps, realised 6 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 3,
-      "tx": "8c3GSSQCRkKhxpPFPai7NB2HaW9V1HwRBmzHWgvbV1gX",
-      "depositAddress": "0e3fa0bb197a721bc439559809dc2577a693543d50a80faae63e9a3f29bcead2",
-      "time": "2026-11-13T11:06:55.802Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "1.1",
-        "usd": 1.0995105
-      },
-      "out": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.311150902545859335038362",
-        "usd": 1.092139667936
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": 23,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "DjrBp8zXYRsTz8wWb4AvqDsSiPGwMKbWyFPW21z5Vvn5"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "USDC → wNEAR"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.10 vs limit $2.5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 50 bps, realised 23 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 4,
-      "tx": "GQTZuM85Dk4QvxopAnXp4N8hqQMVKDWrMo1QvhbnMDnB",
-      "depositAddress": "58194cd282101953985623574a5e1711a6bdb3827bd3fd0dca79568d9b0b281e",
-      "time": "2026-11-13T11:08:22.908Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.35",
-        "usd": 1.2285
-      },
-      "out": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "1.226569",
-        "usd": 1.22601704395
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": -4,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "Dxiz3ppcoXHaG45Gz7LboKhv7PjwZ3kdkUDxA1kmS19a"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "wNEAR → USDC"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.23 vs limit $2.5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 50 bps, realised -4 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 5,
-      "tx": "7mbn36C8SR47PBqKZW6T5xSSPciVnRf3AaBopdS8rN6d",
-      "depositAddress": "ec0da29a636eb14c2a3166817a9d76e819a7f9df0cd28df812f784de6360f03a",
-      "time": "2026-11-13T11:11:13.811Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.3",
-        "usd": 1.053
-      },
-      "out": {
         "asset": "nep141:token.rhealab.near",
         "symbol": "RHEA",
         "amount": "29.463647066651329416",
-        "usd": 1.051189857493
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": 0,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "3UEyYX7AdYUDZ11WjKwvA6T7M5PoyEthyHeh8R1mTtxh"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": false,
-          "detail": "wNEAR → RHEA"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.05 vs limit $2.5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 50 bps, realised 0 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 6,
-      "tx": "3DmmQoSo3uCtS1JQi3XV5yzjbGVfVMBPtMKx46GbXnY6",
-      "depositAddress": "98683c94762e271d335ced0ebd7ccd04b2e0e68b6c24b4815eac60b74206ec73",
-      "time": "2026-11-13T11:12:45.767Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "1.1",
-        "usd": 1.099505
-      },
-      "out": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.312082100127248694877449",
-        "usd": 1.095408171447
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": -1,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "7zNwoygavrAXG48ytoL6tUQapF96vcwEPpQG3WwiFQDK"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "USDC → wNEAR"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.10 vs limit $2.5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 50 bps, realised -1 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 7,
-      "tx": "9BCTWyekNSw87LSjD2GA2TE6XUjbwL2m6MoZ5tY6RUhg",
-      "depositAddress": "35248f994e4227f6f9947d006414a9f92923a9234272b4909fac58f6e7196e79",
-      "time": "2026-11-13T11:14:17.705Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.3",
-        "usd": 1.053
+        "usd": 1.073089891722
       },
       "out": {
         "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
         "symbol": "USDC",
-        "amount": "1.047758",
-        "usd": 1.047274983562
+        "amount": "1.056724",
+        "usd": 1.056184014036
       },
-      "requestedSlippageBps": 50,
+      "requestedSlippageBps": 100,
       "realisedSlippageBps": -4,
       "appFees": [
         {
           "limitOrderId": null,
+          "recipient": "researcher-1.top-notch.near",
+          "fee": 20
+        },
+        {
+          "limitOrderId": null,
           "recipient": "top-notch.near",
-          "fee": 10
+          "fee": 5
         },
         {
           "limitOrderId": null,
           "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
+          "fee": 25
         }
       ],
       "destinationTxs": [
-        "GAvEB9e4J7nCFuoJpFp5cMh8EjrFBQpPLsyjBqSUvuPn"
+        "98qR5TbDAX4XNARKMrtts98uftBg4NaTiHsTMuDdfCmz"
       ],
       "checks": [
         {
           "rule": "Allowed tokens",
           "pass": true,
-          "detail": "wNEAR → USDC"
+          "detail": "RHEA → USDC"
         },
         {
           "rule": "Max trade size",
           "pass": true,
-          "detail": "$1.05 vs limit $2.5"
+          "detail": "$1.07 vs limit $5"
         },
         {
           "rule": "Max slippage",
           "pass": true,
-          "detail": "requested 50 bps, realised -4 bps vs limit 100 bps"
+          "detail": "requested 100 bps, realised -4 bps vs limit 100 bps"
         },
         {
           "rule": "Settled",
           "pass": true,
           "detail": "1Click status SUCCESS"
-        }
-      ]
-    },
-    {
-      "n": 8,
-      "tx": "Eg7uqmMoo3uG95iT1trE4cq13gsNEvUQLnS9TSibjaQq",
-      "depositAddress": "0d5cd68c99acca022f1b19db8f112c88917a285c3d448ec9a3df302ff2113157",
-      "time": "2026-11-13T11:15:44.198Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "0.9",
-        "usd": 0.8995653
-      },
-      "out": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.254646729235231502397247",
-        "usd": 0.893810019616
-      },
-      "requestedSlippageBps": 50,
-      "realisedSlippageBps": 17,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 10
         },
         {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 20
-        }
-      ],
-      "destinationTxs": [
-        "CEF45ALbufi7PDysoPpcThhPuHrrzK2uzF7hiZTJ2Cq6"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
+          "rule": "Signal in force",
           "pass": true,
-          "detail": "USDC → wNEAR"
+          "detail": "signal 2026-11-12 published 0.1h before the trade (066596f4ac…)"
         },
         {
-          "rule": "Max trade size",
+          "rule": "Trades toward the signal",
           "pass": true,
-          "detail": "$0.90 vs limit $2.5"
+          "detail": "sold RHEA into cash"
         },
         {
-          "rule": "Max slippage",
+          "rule": "Researcher paid",
           "pass": true,
-          "detail": "requested 50 bps, realised 17 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
+          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
         }
       ]
     }
   ],
-  "findings": [
-    {
-      "trade": 5,
-      "tx": "7mbn36C8SR47PBqKZW6T5xSSPciVnRf3AaBopdS8rN6d",
-      "rule": "Allowed tokens",
-      "detail": "wNEAR → RHEA",
-      "usd": 1.053
-    }
-  ],
-  "opinion": "qualified",
-  "report_hash": "473c6a29cf64736e4efd31a18cf2ea19a9757b80426f943003785876c10fa373",
-  "publish_tx": "9sHWBD1KDmxEDJU9EmMHJMTw2om2T7Ga5hswzqUSvAXK",
+  "findings": [],
+  "opinion": "clean",
+  "report_hash": "934eed4d1ed9415aa01c7049fa50009da83e560afbb21abdacbb7798b4be8159",
+  "publish_tx": "AX1jWnFDgLhpKmcNDwPBbXCvK5scffujdTDPikVsipRW",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-7e2477bd-b4dc-4211-8068-bf4356133230",
-    "text": "Opinion: Qualified opinion.\n\nBasis for opinion: Deterministic tests were run against the agent’s mandate for the period 2026-11-13T11:02:16.536Z to 2026-11-13T11:15:44.198Z. Eight trades were tested. The tests identified one finding, so the opinion is qualified as stated.\n\nFindings:\n- Trade 5: wNEAR → RHEA breached the Allowed tokens rule; tx 7mbn36C8SR47PBqKZW6T5xSSPciVnRf3AaBopdS8rN6d; USD 1.053.\n\nScope and limits: This report covers only the trades tested in the stated period and the deterministic rule checks applied to them. It does not provide assurance over untested trades, off-chain activity, market conditions, or the agent’s broader controls. The mandate hash is e32c02649b574c1b16b7a84324814082f6d26a0b6c499f75937e90a3c517f603. Report hash: 473c6a29cf64736e4efd31a18cf2ea19a9757b80426f943003785876c10fa373.",
-    "text_sha256": "3027cb04404fb007eb786996f486cdee826cdb97847e5dce2ff5005a2db624a3",
-    "signature": "0x895ab6163cac50e8b043c00b1cf4d37072798c32af8474bd2441a826018d6bc7487dba40579fafcb4a59510dfb51462d762d31cf5a5812149ccca48873fcf4011c",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:0d141a46d412b87c7532964f8e498fb74d39f1860d9e5ca1298bfc06605ea8c4:16ba4aee0a28de295110f5e15168d291ca7e76305f9619f787d124be3f084e89",
+    "chat_id": "chatcmpl-053557c1-7cb5-418b-8754-0ba74eafe555",
+    "text": "Opinion\nClean opinion.\n\nBasis for opinion\nThe opinion is based on deterministic tests applied to the agent alpha-bot-demo.near for the period 2026-11-13T14:54:53.930Z to 2026-11-13T14:57:51.997Z. Two trades were tested against mandate hash 62d7652cd86d5f8a58f89ded241074fd737438f48da0f7f0682ec03f6dfe827c.\n\nFindings\nNo findings were identified for trade 1 or trade 2.\n\nScope and limits\nThis report covers only the two trades tested in the stated period. It does not assess trades outside that period, future performance, market conditions, or matters not covered by the deterministic tests. The report hash is 934eed4d1ed9415aa01c7049fa50009da83e560afbb21abdacbb7798b4be8159.",
+    "text_sha256": "4ae4dfbea3ebd062d3b47bff8ccad48a21791b59a55cfefc5d80165b698ae1ee",
+    "signature": "0x9945c360c86ee26529c3186bd1b4fd3b2f89ff0f9725c0d7699cd82fb5d6f2d64fa32e77cc79dd96a030bfcfd6352f12f23e307277685203843938e04234cf7c1b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:7642af51b9b896c52a381ab5ccbbc79ae34ca47c89e5102f3ee2a0ee8df15be1:051929356f7c1e2f8498384d0bb1403756e6f04427493677dee4479a004c39fc",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Notch Agent Audit</title>
+<meta name="description" content="Audit opinions for AI trading agents on NEAR. Every trade checked against the mandate the agent published on-chain.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+<header>
+  <nav class="top"><a href="./">Strategies</a><a href="./vault.html">My agent</a><a href="./lab.html">Lab</a><a href="./audit.html" class="on">Agent audit</a><a href="./live.html">Live tape</a></nav>
+  <h1>Top Notch <span>✓</span></h1>
+  <p>Audit opinions for AI trading agents on NEAR. Your agent says it trades safely. We check every trade against the mandate it published on-chain.</p>
+</header>
+
+<section class="card">
+  <form id="f">
+    <input id="agent" placeholder="agent account, e.g. alpha-bot-demo.near" autocomplete="off" spellcheck="false">
+    <button id="go">Audit</button>
+  </form>
+  <div class="hint">Reads the agent's mandate from <code>top-notch.near</code>, its transactions from NEAR mainnet, and each swap's settlement from NEAR Intents (1Click). Runs entirely in your browser.</div>
+  <div id="log"></div>
+</section>
+
+<div id="out"></div>
+
+<footer>Built at NEAR HACKATHON 2026. Not financial advice and not a statutory audit: Top Notch tests behaviour against a stated mandate. <a href="https://github.com/s111s/top-notch-audit">Source on GitHub</a>.</footer>
+</main>
+
+<script type="module">
+import { audit, verifyReport, OPINION_TEXT, CONFIG } from './engine.js';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const tx = (h) => h ? `<a href="${CONFIG.explorerTx(h)}" target="_blank" rel="noopener"><code>${esc(h.slice(0, 10))}…</code></a>` : '';
+const params = new URLSearchParams(location.search);
+const SYM = { 'nep141:nbtc.bridge.near': 'BTC', 'nep141:eth.bridge.near': 'ETH', 'nep141:token.rhealab.near': 'RHEA', 'nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near': 'AURORA' };
+const amt = (x) => { const n = Number(x); return Number.isFinite(n) ? n.toLocaleString('en-US', { maximumFractionDigits: n >= 100 ? 2 : 4 }) : esc(x); };
+$('#agent').value = params.get('agent') || 'alpha-bot-demo.near';
+
+function render(r, source) {
+  const op = OPINION_TEXT[r.opinion];
+  const passed = r.trades.filter((t) => t.checks?.every((c) => c.pass)).length;
+  let html = `<section class="card"><div class="opinion"><div class="badge ${r.opinion}">${op.label}</div>
+    <div><div><b>${esc(r.agent)}</b></div><div class="hint" style="margin:0">${esc(op.short)}</div></div></div>
+    <div class="stats" style="margin-top:16px"><div><b>${r.trades.length}</b>trades tested</div><div><b>${passed}</b>tickmarked ✓</div><div><b>${r.findings.length}</b>findings</div>
+    <div><b>${r.period ? esc(r.period.from.slice(0, 10)) : '—'}</b>period from</div></div>
+    ${r.basis ? `<p>${esc(r.basis)}</p>` : ''}<div class="hint">${esc(source)}</div></section>`;
+
+  if (r.mandate?.text) {
+    let rules; try { rules = JSON.parse(r.mandate.text); } catch { rules = {}; }
+    html += `<section class="card"><h2>Mandate the agent published</h2><div class="tbl"><table>
+      <tr><th>Allowed tokens</th><td>${esc((rules.allowed_assets || []).map((a) => a === 'nep141:wrap.near' ? 'wNEAR' : (SYM[a] || a.replace('nep141:', '').replace(/^17208628.*/, 'USDC'))).join(', '))}</td></tr>
+      <tr><th>Max trade size</th><td>$${esc(rules.max_trade_usd)}</td></tr>
+      <tr><th>Max slippage</th><td>${esc(rules.max_slippage_bps)} bps</td></tr>
+      ${rules.kind === 'follow' ? `<tr><th>Follows strategy</th><td><a href="./strategy.html?a=${encodeURIComponent(rules.strategy.account)}&id=${encodeURIComponent(rules.strategy.id)}">${esc(rules.strategy.id)}</a> by ${esc(rules.strategy.account)}: trades only toward its latest on-chain signal (≤ ${esc(rules.max_signal_age_hours)}h old)</td></tr>
+      <tr><th>Researcher fee</th><td>${esc(rules.researcher_fee_bps)} bps in every swap's 1Click appFees</td></tr>` : `<tr><th>Max trades per day</th><td>${esc(rules.max_trades_per_day)}</td></tr>
+      <tr><th>Max daily loss</th><td>$${esc(rules.max_daily_loss_usd)}</td></tr>`}
+      <tr><th>Mandate hash</th><td><code>${esc(r.mandate.hash)}</code> (computed on-chain by the registry)</td></tr>
+      <tr><th>Published</th><td>${esc(r.mandate.published_at || '')} · block ${esc(r.mandate.block_height || '')}</td></tr></table></div></section>`;
+  }
+
+  if (r.trades.length) {
+    html += `<section class="card"><h2>Trades tested</h2><div class="tbl"><table><tr><th>#</th><th>Time (UTC)</th><th>Swap</th><th>USD in</th><th>Tests</th><th>Evidence</th></tr>`;
+    for (const t of r.trades) {
+      const checks = (t.checks || []).map((c) => `<div title="${esc(c.detail)}"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✓' : '✗'}</span> ${esc(c.rule)}${c.pass ? '' : `: ${esc(c.detail)}`}</div>`).join('');
+      html += `<tr><td>${t.n ?? ''}</td><td>${esc(t.time.slice(0, 16).replace('T', ' '))}</td><td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td>
+        <td>$${t.in.usd.toFixed(2)}</td><td>${checks}</td><td>${tx(t.tx)}<br><a href="${CONFIG.intentsExplorer(t.depositAddress)}" target="_blank" rel="noopener">intents</a></td></tr>`;
+    }
+    html += `</table></div></section>`;
+  }
+
+  if (r.findings.length) {
+    html += `<section class="card"><h2>Findings</h2><ol>${r.findings.map((f) => `<li><b>${esc(f.rule)}</b>${f.trade ? ` (trade ${f.trade})` : ''}: ${esc(f.detail)} ${tx(f.tx)}</li>`).join('')}</ol></section>`;
+  }
+
+  if (r.letter?.text) {
+    html += `<section class="card"><h2>Auditor's letter</h2><pre class="letter">${esc(r.letter.text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")}</pre>
+      <div class="hint">Written by <code>${esc(r.letter.model)}</code> inside NEAR AI Cloud's TEE from the findings above (it cannot change the opinion).
+      ${r.letter.signature ? `Signature <code>${esc(r.letter.signature.slice(0, 26))}…</code> by <code>${esc(r.letter.signing_address)}</code>.` : ''}
+      Letter sha256 <code>${esc(r.letter.text_sha256)}</code>.</div></section>`;
+  }
+
+  html += `<section class="card"><h2>Verify this report yourself</h2><ul class="verify" id="verify">
+    <li>Report hash: <code>${esc(r.report_hash)}</code></li>${r.publish_tx ? `<li>Published on-chain in ${tx(r.publish_tx)}</li>` : ''}<li id="vres">Checking…</li></ul></section>`;
+  $('#out').innerHTML = html;
+  verifyReport(r).then((v) => {
+    $('#vres').innerHTML = `${v.hashMatches ? '<span class="ok">✓</span> Recomputed hash matches the report' : '<span class="bad">✗</span> Recomputed hash differs (report edited after hashing)'}<br>
+      ${v.onchain ? `<span class="ok">✓</span> Same hash is stored on <code>${CONFIG.registry}</code> at block ${v.onchain.block_height}, opinion <b>${esc(v.onchain.opinion)}</b>` : '<span class="bad">✗</span> Not published on-chain (live audits are not published; only the auditor can publish)'}`;
+  }).catch((e) => { $('#vres').textContent = 'Verification failed: ' + e.message; });
+}
+
+async function loadPublished(agent) {
+  const res = await fetch(`./data/report-${agent}.json`, { cache: 'no-store' }).catch(() => null);
+  if (!res || !res.ok) return false;
+  render(await res.json(), 'Published audit (signed letter included). Press Audit to re-run it live from the chain.');
+  return true;
+}
+
+async function runLive(agent) {
+  $('#go').disabled = true; $('#log').textContent = ''; $('#out').innerHTML = '';
+  const log = (m) => { $('#log').textContent += `· ${m}\n`; };
+  try { render(await audit(agent, log), 'Live audit, run in your browser just now from mainnet data.'); }
+  catch (e) { log('Error: ' + e.message); }
+  finally { $('#go').disabled = false; }
+}
+
+$('#f').addEventListener('submit', (e) => { e.preventDefault(); const a = $('#agent').value.trim(); history.replaceState(null, '', `?agent=${encodeURIComponent(a)}`); runLive(a); });
+loadPublished($('#agent').value.trim());
+</script>
+</body>
+</html>

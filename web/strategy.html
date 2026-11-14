@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top Notch Strategy</title>
+<meta name="description" content="One strategy: its backtest, its on-chain signals, the auditor's opinion, and the investor agents following it.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+<header>
+  <nav class="top"><a href="./" class="on">Strategies</a><a href="./vault.html">My agent</a><a href="./lab.html">Lab</a><a href="./audit.html">Agent audit</a><a href="./live.html">Live tape</a></nav>
+  <h1 id="title">Strategy</h1>
+  <p id="sub" class="hint"></p>
+</header>
+<div id="out"><section class="card hint">Reading the registry on NEAR mainnet…</section></div>
+<footer>Built at NEAR HACKATHON 2026. Backtests are not promises. Not financial advice.</footer>
+</main>
+<script type="module">
+import { loadMarket, lineChart, OPINION_LABEL } from './market.js';
+import { pct, num, GATES, backtest } from './alpha.js';
+import { CONFIG } from './engine.js';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const tx = (h) => `<a href="${CONFIG.explorerTx(h)}" target="_blank" rel="noopener"><code>${esc(h.slice(0, 10))}…</code></a>`;
+const q = new URLSearchParams(location.search);
+const acct = q.get('a') || 'researcher-1.top-notch.near', id = q.get('id') || 'dip-in-uptrend';
+
+const m = await loadMarket();
+const s = m.strategies.find((x) => x.account === acct && x.id === id);
+if (!s) { $('#out').innerHTML = '<section class="card">Strategy not found on-chain.</section>'; throw new Error('nf'); }
+const c = s.card.json, st = c.stats;
+document.title = `${c.name} · Top Notch`;
+$('#title').innerHTML = `${esc(c.name)} <span class="pill ${c.visibility === 'hidden' ? 'hid' : 'pub'}" style="vertical-align:middle">${c.visibility === 'hidden' ? '🔒 hidden logic' : 'public logic'}</span>`;
+$('#sub').innerHTML = `${esc(c.description)}<br>By <code>${esc(acct)}</code> · card published at block ${s.card.block_height} · fee ${c.fee.bps} bps per follower swap`;
+
+const report = await fetch(`./data/strategy-report-${id}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const curve = await fetch(`./data/curve-${id}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const tile = (v, l, cls = '') => `<div class="tile"><b class="${cls}">${v}</b><span>${l}</span></div>`;
+let html = `<section class="card"><h2>Backtest (${esc(c.data.from)} → ${esc(c.data.to)}, ${st.days} days, fees included)</h2><div class="tiles">
+  ${tile(num(st.sharpe), 'Sharpe')}${tile(num(st.fitness), 'Fitness')}${tile(pct(st.max_drawdown), 'Max drawdown', 'neg')}${tile(pct(st.turnover), 'Turnover / day')}
+  ${tile(pct(st.total_return, 0), 'Total return', st.total_return >= 0 ? 'pos' : 'neg')}${tile(num(st.oos_sharpe), 'Out-of-sample Sharpe', st.oos_sharpe >= 0 ? 'pos' : 'neg')}</div>`;
+if (curve) html += `<div style="margin-top:14px">${lineChart([{ points: curve.points.map((p) => [p[0], p[2]]), color: 'var(--muted)', width: 1.5 }, { points: curve.points.map((p) => [p[0], p[1]]), color: 'var(--accent)' }], { split: curve.split_at })}</div>
+  <div class="hint"><span style="color:var(--accent)">━</span> strategy &nbsp; <span style="color:var(--muted)">━</span> hold NEAR. Dashed line: the last 30% of days were not used to judge the in-sample stats.</div>`;
+const gs = { sharpe: st.sharpe, fitness: st.fitness, max_drawdown: st.max_drawdown, turnover: st.turnover };
+html += `<div style="margin-top:12px">${GATES.map((g) => { const ok = g.test(gs, { out_of_sample: { sharpe: st.oos_sharpe } }); return `<span class="${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span> ${esc(g.label)}`; }).join(' &nbsp; ')}</div>`;
+html += `<div class="hint">Universe: ${esc(c.settings.universe.join(', '))} · holds the top ${c.settings.top_n}${c.settings.cash_if_negative ? ', USDC when nothing qualifies' : ''} · daily rebalance · ${c.settings.fee_bps} bps cost per side.</div></section>`;
+
+// logic
+html += `<section class="card"><h2>Logic</h2>`;
+if (c.visibility === 'public') {
+  html += `<pre class="mono" style="margin:0">${esc(c.expression)}</pre><p class="hint">Public: rerun it yourself below, or paste it into the <a href="./lab.html?e=${encodeURIComponent(c.expression)}">Lab</a>.</p><button class="ghost" id="rerun">Rerun backtest in my browser</button> <span id="rr" class="hint"></span>`;
+} else {
+  html += `<p style="margin:0">Hidden. Only its commitment is on-chain:</p><p><code>${esc(c.logic_commit)}</code></p><p class="hint">sha256 of (expression | settings | secret salt). The researcher can't change the logic without changing this hash, and the auditor checks every signal against it.</p>`;
+}
+html += `</section>`;
+
+// auditor
+html += `<section class="card"><h2>Auditor's opinion</h2>`;
+if (s.audit && report) {
+  html += `<div class="opinion"><div class="badge ${s.audit.opinion}">${OPINION_LABEL[s.audit.opinion]} opinion</div><div class="hint" style="margin:0">Report hash <code>${esc(s.audit.report_hash.slice(0, 16))}…</code> on-chain at block ${s.audit.block_height}${report.publish_tx ? ` · ${tx(report.publish_tx)}` : ''}</div></div>
+  <ul class="verify">${report.checks.map((k) => `<li><span class="${k.pass ? 'ok' : 'bad'}">${k.pass ? '✓' : '✗'}</span> <b>${esc(k.test)}</b>: ${esc(k.detail)}</li>`).join('')}</ul>
+  ${report.letter?.text ? `<pre class="letter">${esc(report.letter.text).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")}</pre><div class="hint">Written and signed inside NEAR AI Cloud's TEE by <code>${esc(report.letter.model)}</code>, signer <code>${esc(report.letter.signing_address || '')}</code>. It cannot change the opinion, which code decided first.</div>` : ''}`;
+} else html += `<p class="hint">Not audited yet.</p>`;
+html += `</section>`;
+
+// signals
+html += `<section class="card"><h2>Signals on-chain (${s.signals.length})</h2><div class="tbl"><table><tr><th>Candle</th><th>Target weights</th><th>Published</th><th>Hash</th></tr>`;
+for (const g of [...s.signals].reverse()) {
+  const w = Object.entries(g.json.weights);
+  html += `<tr><td>${esc(g.json.date)}</td><td>${w.length ? w.map(([k, v]) => `${esc(k)} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC (nothing qualifies)'}</td><td>${new Date(g.ms).toISOString().slice(0, 16).replace('T', ' ')} · block ${g.block_height}</td><td><code>${esc(g.hash.slice(0, 12))}…</code></td></tr>`;
+}
+html += `</table></div><p class="hint">Each signal is computed from the last complete daily candle and published by the researcher account. Investor agents trade toward the latest one.</p></section>`;
+
+// followers
+html += `<section class="card"><h2>Investor agents following (${s.followers.length})</h2>`;
+html += s.followers.length ? `<div class="tbl"><table><tr><th>Agent</th><th>Its mandate</th><th>Agent audit</th></tr>${s.followers.map((f) => `<tr><td><a href="./audit.html?agent=${encodeURIComponent(f.agent)}">${esc(f.agent)}</a></td><td>max $${f.mandate.json.max_trade_usd}/trade · slippage ≤ ${f.mandate.json.max_slippage_bps} bps · signal ≤ ${f.mandate.json.max_signal_age_hours}h old · pays ${f.mandate.json.researcher_fee_bps} bps</td><td>${f.audit ? `<span class="badge ${f.audit.opinion}" style="font-size:13px;padding:3px 8px">${OPINION_LABEL[f.audit.opinion]}</span> ${f.audit.trades_tested} trades, ${f.audit.findings} findings` : 'not audited yet'}</td></tr>`).join('')}</table></div>` : '<p class="hint">None yet.</p>';
+html += `<p class="hint">To follow: publish a <code>follow</code> mandate from your agent's account, then let it rebalance your own wallet to the latest signal through 1Click with the researcher's fee in <code>appFees</code>. See <code>scripts/follow.mjs</code>.</p></section>`;
+$('#out').innerHTML = html;
+
+$('#rerun')?.addEventListener('click', async () => {
+  $('#rr').textContent = 'running…';
+  const prices = await fetch('./data/prices.json').then((r) => r.json());
+  const r = backtest(c.expression, prices, c.settings);
+  $('#rr').innerHTML = `Today's data: Sharpe ${num(r.stats.sharpe)}, fitness ${num(r.stats.fitness)}, drawdown ${pct(r.stats.max_drawdown)}, ${r.stats.days} days (the card was computed on data to ${esc(c.data.to)}).`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-14",
+  "facts": {
+    "vault": "vault-1.top-notch.near",
+    "strategy": "Ecosystem 2-day reversal (eco-reversal by researcher-1.top-notch.near)",
+    "signal_date": "2026-11-13",
+    "target_weights": {
+      "BTC": 0.3333,
+      "ETH": 0.3333,
+      "NEAR": 0.3333
+    },
+    "after": {
+      "NEAR": 1.95,
+      "RHEA": 0,
+      "AURORA": 0,
+      "BTC": 1.95,
+      "ETH": 1.95,
+      "USDC": 0
+    },
+    "trades": [
+      {
+        "from": "USDC",
+        "to": "NEAR",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M"
+      },
+      {
+        "from": "USDC",
+        "to": "BTC",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB"
+      },
+      {
+        "from": "USDC",
+        "to": "ETH",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t"
+      }
+    ],
+    "fees": "researcher 20 bps + platform 10 bps per swap, paid inside each 1Click swap",
+    "agent_powers": "can only call vault.swap within the owner policy; cannot withdraw"
+  },
+  "facts_sha256": "12cd99e16a490b1875e8a212e2401d7d31ebde75dd640b33c3a0640c5ba94d15",
+  "letter": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "chat_id": "chatcmpl-9f98ebb0-fc89-4e59-b111-3d601ba6c9df",
+    "text": "On 2026-11-13, the Ecosystem 2-day reversal signal asked for equal target weights: BTC 0.3333, ETH 0.3333, NEAR 0.3333. The agent swapped USDC to NEAR $1.96 tx Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M, USDC to BTC $1.96 tx 9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB, and USDC to ETH $1.96 tx BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t; all succeeded. Vault vault-1.top-notch.near now holds BTC 1.95, ETH 1.95, NEAR 1.95, USDC 0, AURORA 0, RHEA 0. You can pause or withdraw at any time; the agent cannot.",
+    "text_sha256": "3fb4616461705bc8b3479ef5c2b885a12d9789fcf72ad8aeb12aa600f0707657",
+    "signature": "0x7c1a0405edc5cba704a8f38d4327c8ceeafb7f348327ae9db4489d897418636d7b9862d0d3d7e68a727df98fb1240b581601ad3a9996212e480c7c411c2efd0e1b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:37e77c90c256c32c51e121648297ff06eaaacdce1282ccf292a5691cc793a518:3165de8a2a14354571d3aad43855750d8821d566f957d36ff03c262b75cc16c9",
+    "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+    "attestation_summary": {
+      "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+      "keys": [
+        "gateway_attestation",
+        "model_attestations",
+        "ohttp_key_config",
+        "ohttp_attestation"
+      ]
+    }
+  }
+}

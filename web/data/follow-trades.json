@@ -1,0 +1,68 @@
+[
+  {
+    "at": "2026-11-13T14:57:10.275Z",
+    "strategy": {
+      "account": "researcher-1.top-notch.near",
+      "id": "dip-in-uptrend"
+    },
+    "signal_hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
+    "signal_date": "2026-11-12",
+    "from": "NEAR",
+    "to": "USDC",
+    "usd": 3.195,
+    "txHash": "HSkQ7tRhzamiCZSxHnBkJfmCs5c9paXJ8QuZM5Nxs2Q5",
+    "depositAddress": "4452b03bdc6caf652babcf3dd490ed18f3ae0ae1ee62cc6224ca9df9d270dd95",
+    "status": "SUCCESS",
+    "amountOut": "3.171986",
+    "appFees": [
+      {
+        "recipient": "researcher-1.top-notch.near",
+        "fee": 20,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "top-notch.near",
+        "fee": 5,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+        "fee": 25,
+        "limitOrderId": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-13T14:58:37.932Z",
+    "strategy": {
+      "account": "researcher-1.top-notch.near",
+      "id": "dip-in-uptrend"
+    },
+    "signal_hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
+    "signal_date": "2026-11-12",
+    "from": "RHEA",
+    "to": "USDC",
+    "usd": 1.073153827836,
+    "txHash": "278mFTwXRVn3QE4Zp9vsuu7S6gNJL48EzmjU53e8NvvE",
+    "depositAddress": "807f6e36f955cbbf88afa567107663ca4e32b7799949a8afda0543dcfc506196",
+    "status": "SUCCESS",
+    "amountOut": "1.056724",
+    "appFees": [
+      {
+        "recipient": "researcher-1.top-notch.near",
+        "fee": 20,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "top-notch.near",
+        "fee": 5,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+        "fee": 25,
+        "limitOrderId": null
+      }
+    ]
+  }
+]

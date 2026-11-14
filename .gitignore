@@ -3,3 +3,4 @@ contract/target/
 keys/
 *.key.json
 .env
+vault/target/

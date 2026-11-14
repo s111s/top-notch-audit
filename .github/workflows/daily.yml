@@ -1,0 +1,38 @@
+# Runs the managed agent and the auditor once a day, then publishes the site.
+# Needs repository secrets: PLATFORM_KEY, RESEARCHER_KEY, AGENT_KEY (key JSON files),
+# STRATEGIES_PRIVATE (hidden strategy logic), NEAR_AI_API_KEY.
+name: daily-agent
+on:
+  schedule:
+    - cron: '20 0 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - name: Keys from secrets
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          echo '${{ secrets.PLATFORM_KEY }}' > "$RUNNER_TEMP/keys/top-notch.json"
+          echo '${{ secrets.RESEARCHER_KEY }}' > "$RUNNER_TEMP/keys/researcher-1.json"
+          echo '${{ secrets.AGENT_KEY }}' > "$RUNNER_TEMP/keys/alpha-bot-demo.json"
+          echo '${{ secrets.STRATEGIES_PRIVATE }}' > "$RUNNER_TEMP/keys/strategies-private.json"
+      - run: scripts/daily.sh
+        env:
+          TN_KEY_DIR: ${{ runner.temp }}/keys
+          NEAR_AI_API_KEY: ${{ secrets.NEAR_AI_API_KEY }}
+      - name: Commit data and publish the site
+        run: |
+          git config user.name "top-notch-bot"
+          git config user.email "top-notch-bot@users.noreply.github.com"
+          git add web/data
+          git commit -m "Daily run $(date -u +%F)" || exit 0
+          git push
+          git push origin "$(git subtree split --prefix web HEAD)":refs/heads/gh-pages --force

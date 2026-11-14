@@ -1,0 +1,86 @@
+{
+  "schema": "top-notch/strategy-report@1",
+  "generated_at": "2026-11-14T00:31:46.887Z",
+  "registry": "top-notch.near",
+  "strategy": {
+    "account": "researcher-1.top-notch.near",
+    "id": "trend-5-20",
+    "name": "Majors trend 5/20",
+    "visibility": "public",
+    "card_hash": "8b9a22036c31b39bdedeaa0d4fc9fdca5f772a4b8e76e17af9aaffff49e2a7f0",
+    "logic_commit": "155c7314808da3e7cc0c8a60cd5a8f58d788a90fbd31bf204565f969e9675865"
+  },
+  "claimed_stats": {
+    "days": 152,
+    "fitness": 20.1384,
+    "max_drawdown": -0.1602,
+    "oos_sharpe": -1.6416,
+    "sharpe": 2.8316,
+    "total_return": 1.2913,
+    "turnover": 0.0691
+  },
+  "checks": [
+    {
+      "test": "Logic matches its commitment",
+      "pass": true,
+      "detail": "recomputed 155c7314808d… vs card 155c7314808d…"
+    },
+    {
+      "test": "Backtest reproduces the claimed stats",
+      "pass": true,
+      "detail": "Sharpe 2.83, fitness 20.14, drawdown -16.0%, turnover 6.9%, 152 days"
+    },
+    {
+      "test": "Every signal reproduced from the committed logic",
+      "pass": true,
+      "detail": "2 of 2 signals match"
+    },
+    {
+      "test": "Signals published after the candle closed, not backdated",
+      "pass": true,
+      "detail": "2026-11-12 → 2026-11-13T14:53Z; 2026-11-13 → 2026-11-14T00:30Z"
+    }
+  ],
+  "signals": [
+    {
+      "date": "2026-11-12",
+      "hash": "32ba98a0197694d5f4b19838cbcd2db4698c2694c74011ad58c2e23e9cc6576f",
+      "weights": {},
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-13T14:53:17.111Z",
+      "timely": true
+    },
+    {
+      "date": "2026-11-13",
+      "hash": "7369270b96392c37c5738818aaafd572ec064b2a7723ba8483ecfc5f940cb51f",
+      "weights": {},
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-14T00:30:02.787Z",
+      "timely": true
+    }
+  ],
+  "opinion": "clean",
+  "scope": "Public strategy: anyone can rerun this audit.",
+  "report_hash": "40f167e35e5e8c95a77af4f1bc517ebb258c6a2b43cdc135198901ce7e02d133",
+  "publish_tx": "8KR2xiTfpMbA33x9YPUPkFoFjFHLACUB1XExZV5gvgN2",
+  "letter": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "chat_id": "chatcmpl-f4923d94-7371-48aa-b4b3-ffea499f7614",
+    "text": "**Opinion:** Clean opinion.\n\n**What we tested:** The strategy’s committed logic against its commitment; the backtest against claimed statistics; every published signal against the committed logic; and signal timing against candle close.\n\n**Results:** All checks passed. The logic matched its commitment. The backtest reproduced Sharpe 2.83, fitness 20.14, drawdown -16.0%, turnover 6.9%, and 152 days. Both of 2 signals matched, and both were published after the candle closed, not backdated.\n\n**Scope and limits:** This is a public strategy, so anyone can rerun the audit. The opinion covers the deterministic checks and signals listed here only. Report hash: 40f167e35e5e8c95a77af4f1bc517ebb258c6a2b43cdc135198901ce7e02d133.",
+    "text_sha256": "e911c95558fa0b5a5bef7f8263a0479ea767b6cb582e8c829e29396dc5692045",
+    "signature": "0xd1cf9a5620280a1f4d1619e465e8cf57cda5bf5d8699649704409bb00b429ab61ebd7f0d70bcb3297f29038293a054ec7f3704f233763093d2028ea97a3f2d571c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:711b1a1f5cec296f77ff1fcab228403b3d520fc6757f1d907bea575ab09fcd63:806135e71cb942f88302626cd14a34e49556a734a48f2fee6f07b50c2b8eb785",
+    "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+    "attestation_summary": {
+      "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+      "keys": [
+        "gateway_attestation",
+        "model_attestations",
+        "ohttp_key_config",
+        "ohttp_attestation"
+      ]
+    }
+  }
+}

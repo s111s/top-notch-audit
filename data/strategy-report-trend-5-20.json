@@ -1,6 +1,6 @@
 {
   "schema": "top-notch/strategy-report@1",
-  "generated_at": "2026-11-13T15:03:18.867Z",
+  "generated_at": "2026-11-14T00:31:46.887Z",
   "registry": "top-notch.near",
   "strategy": {
     "account": "researcher-1.top-notch.near",
@@ -33,12 +33,12 @@
     {
       "test": "Every signal reproduced from the committed logic",
       "pass": true,
-      "detail": "1 of 1 signals match"
+      "detail": "2 of 2 signals match"
     },
     {
       "test": "Signals published after the candle closed, not backdated",
       "pass": true,
-      "detail": "2026-11-12 → 2026-11-13T14:53Z"
+      "detail": "2026-11-12 → 2026-11-13T14:53Z; 2026-11-13 → 2026-11-14T00:30Z"
     }
   ],
   "signals": [
@@ -50,19 +50,28 @@
       "snapshot_verified": true,
       "published_at": "2026-11-13T14:53:17.111Z",
       "timely": true
+    },
+    {
+      "date": "2026-11-13",
+      "hash": "7369270b96392c37c5738818aaafd572ec064b2a7723ba8483ecfc5f940cb51f",
+      "weights": {},
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-14T00:30:02.787Z",
+      "timely": true
     }
   ],
   "opinion": "clean",
   "scope": "Public strategy: anyone can rerun this audit.",
-  "report_hash": "7dc325c9fb980d8d88ebf0183be5a44472a5a651dbbc26c23e3e603b858d30b1",
-  "publish_tx": "DFbkHfh7deLNoYxm82ppEYks5vBnpkvo8U1iqekLAPRs",
+  "report_hash": "40f167e35e5e8c95a77af4f1bc517ebb258c6a2b43cdc135198901ce7e02d133",
+  "publish_tx": "8KR2xiTfpMbA33x9YPUPkFoFjFHLACUB1XExZV5gvgN2",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-a8cd1f92-e123-48ec-9ad1-638df4e1b6ed",
-    "text": "**Opinion**  \nClean opinion.\n\n**What we tested**  \nWe checked the strategy’s committed logic against its commitment, reproduced the claimed backtest statistics, reproduced every published signal from the committed logic, and checked that signals were published after the candle closed, not backdated.\n\n**Results**  \nAll four checks passed. Logic matched its commitment (155c7314808d…). The backtest reproduced: Sharpe 2.83, fitness 20.14, drawdown -16.0%, turnover 6.9%, 152 days. 1 of 1 signals matched and was timely (2026-11-12 → 2026-11-13T14:53Z).\n\n**Scope and limits**  \nPublic strategy: anyone can rerun this audit. The audit covers the listed checks and reproduced signals only; it does not express a view beyond them. Report hash: 7dc325c9fb980d8d88ebf0183be5a44472a5a651dbbc26c23e3e603b858d30b1.",
-    "text_sha256": "5fb9b4bc1927ced71c7826ca0d94f91eea949b33086ff8d2d3b45724236d8821",
-    "signature": "0x62ed764db0e7fc3ac4c4e29445013f5abb8e34658fd2846bb6a6c9242734a3ed35272291ef9eb1ce86867ba2672b4a486acb019ab5bd9e98beca3894c5fac22e1b",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:0b58fddeec1ad4f5e896da9bc3044cd71d5e4b6062efc4ad0745dad41ff0dc72:0977a81663b2895de84a97d20e4fc109d42becdb458e5c9a70c963dc01c8d2b6",
+    "chat_id": "chatcmpl-f4923d94-7371-48aa-b4b3-ffea499f7614",
+    "text": "**Opinion:** Clean opinion.\n\n**What we tested:** The strategy’s committed logic against its commitment; the backtest against claimed statistics; every published signal against the committed logic; and signal timing against candle close.\n\n**Results:** All checks passed. The logic matched its commitment. The backtest reproduced Sharpe 2.83, fitness 20.14, drawdown -16.0%, turnover 6.9%, and 152 days. Both of 2 signals matched, and both were published after the candle closed, not backdated.\n\n**Scope and limits:** This is a public strategy, so anyone can rerun the audit. The opinion covers the deterministic checks and signals listed here only. Report hash: 40f167e35e5e8c95a77af4f1bc517ebb258c6a2b43cdc135198901ce7e02d133.",
+    "text_sha256": "e911c95558fa0b5a5bef7f8263a0479ea767b6cb582e8c829e29396dc5692045",
+    "signature": "0xd1cf9a5620280a1f4d1619e465e8cf57cda5bf5d8699649704409bb00b429ab61ebd7f0d70bcb3297f29038293a054ec7f3704f233763093d2028ea97a3f2d571c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:711b1a1f5cec296f77ff1fcab228403b3d520fc6757f1d907bea575ab09fcd63:806135e71cb942f88302626cd14a34e49556a734a48f2fee6f07b50c2b8eb785",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

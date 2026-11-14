@@ -128,6 +128,11 @@ async function swap(t, st) {
     if (status && ['SUCCESS', 'REFUNDED', 'FAILED'].includes(status.status)) break;
   }
   console.log(`  status ${status?.status} out ${status?.swapDetails?.amountOutFormatted}`);
+  // 1Click pays NEAR out as native NEAR; wrap it inside the vault so the position stays tradable wNEAR.
+  if (t.to === 'NEAR' && status?.status === 'SUCCESS' && status.swapDetails?.amountOut) {
+    const w = await agent.functionCall({ contractId: VAULT, methodName: 'wrap_near', args: { amount: status.swapDetails.amountOut }, gas: 50000000000000n });
+    console.log(`  wrapped ${status.swapDetails.amountOutFormatted} NEAR inside the vault, tx ${w.transaction.hash}`);
+  }
   const row = { at: new Date().toISOString(), vault: VAULT, signal_date: st.signal.json.date, signal_hash: st.signal.mandate_hash, from: t.from, to: t.to, usd: Number(q.quote.amountInUsd), txHash, depositAddress: dep, status: status?.status, amountOut: status?.swapDetails?.amountOutFormatted, appFees: q.quoteRequest.appFees };
   const log = fs.existsSync(LOG) ? JSON.parse(fs.readFileSync(LOG, 'utf8')) : [];
   log.push(row);
@@ -138,7 +143,7 @@ async function swap(t, st) {
 async function dailyNote(p, done, after) {
   const facts = {
     vault: VAULT, strategy: `${p.card.json.name} (${p.id} by ${p.acct})`, signal_date: p.signal.json.date, target_weights: p.signal.json.weights,
-    before: Object.fromEntries(Object.entries(p.holdings).map(([k, v]) => [k, +v.usd.toFixed(2)])),
+    before: p.holdings ? Object.fromEntries(Object.entries(p.holdings).map(([k, v]) => [k, +v.usd.toFixed(2)])) : undefined,
     after: Object.fromEntries(Object.entries(after).map(([k, v]) => [k, +v.usd.toFixed(2)])),
     trades: done.map((t) => ({ from: t.from, to: t.to, usd: +t.usd.toFixed(2), status: t.status, tx: t.txHash })),
     fees: `researcher ${p.card.json.fee.bps} bps + platform ${PLATFORM.bps} bps per swap, paid inside each 1Click swap`,
@@ -158,6 +163,14 @@ async function dailyNote(p, done, after) {
 
 const cmd = process.argv[2];
 if (cmd === 'mandate') await mandate();
+else if (cmd === 'note') {
+  // Rewrite today's note from today's logged trades and the vault as it stands now.
+  const p = await plan();
+  const today = new Date().toISOString().slice(0, 10);
+  const done = (fs.existsSync(LOG) ? JSON.parse(fs.readFileSync(LOG, 'utf8')) : []).filter((t) => t.at.startsWith(today));
+  await dailyNote({ ...p, holdings: null }, done, p.holdings);
+}
+else if (cmd === 'wrap') { const w = await agent.functionCall({ contractId: VAULT, methodName: 'wrap_near', args: { amount: process.argv[3] }, gas: 50000000000000n }); console.log(`wrapped, tx ${w.transaction.hash}`); }
 else if (cmd === 'plan' || cmd === 'run') {
   const p = await plan();
   console.log(`signal ${p.signal.json.date} ${JSON.stringify(p.signal.json.weights)} | vault equity $${p.equity.toFixed(2)}`);

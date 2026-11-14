@@ -82,6 +82,18 @@ impl Vault {
         )
     }
 
+    /// 1Click pays NEAR out as native NEAR. The agent may wrap it to wNEAR so the position stays a token the
+    /// policy can trade. It stays inside the vault; a reserve for storage and gas is always kept.
+    pub fn wrap_near(&mut self, amount: U128) -> Promise {
+        require!(env::predecessor_account_id() == self.agent, "only the agent can wrap");
+        require!(!self.paused, "vault is paused by its owner");
+        let locked = env::storage_byte_cost().saturating_mul(env::storage_usage() as u128);
+        let free = env::account_balance().saturating_sub(locked).saturating_sub(NearToken::from_millinear(50));
+        require!(amount.0 > 0 && amount.0 <= free.as_yoctonear(), "amount above the vault's free NEAR (reserve kept)");
+        env::log_str(&format!("EVENT_JSON:{{\"standard\":\"topnotch-vault\",\"version\":\"1.0.0\",\"event\":\"wrap\",\"data\":{{\"amount\":\"{}\"}}}}", amount.0));
+        Promise::new("wrap.near".parse().unwrap()).function_call("near_deposit", b"{}".to_vec(), NearToken::from_yoctonear(amount.0), FT_GAS)
+    }
+
     // ---------------- owner ----------------
 
     pub fn withdraw(&mut self, token: AccountId, amount: U128) -> Promise {
@@ -226,6 +238,23 @@ mod tests {
         v.swap("usdc.near".parse().unwrap(), U128(1), DEP.parse().unwrap());
         v.swap("usdc.near".parse().unwrap(), U128(1), DEP2.parse().unwrap());
         v.swap("usdc.near".parse().unwrap(), U128(1), "1111111111111111111111111111111111111111111111111111111111111111".parse().unwrap());
+    }
+
+    #[test]
+    #[should_panic(expected = "only the agent can wrap")]
+    fn stranger_cannot_wrap() {
+        let mut v = vault();
+        ctx("thief.near", 1);
+        v.wrap_near(U128(1));
+    }
+
+    #[test]
+    #[should_panic(expected = "reserve kept")]
+    fn wrap_keeps_reserve() {
+        let mut v = vault();
+        ctx("agent.near", 1);
+        let all = env::account_balance().as_yoctonear();
+        v.wrap_near(U128(all));
     }
 
     #[test]

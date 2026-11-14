@@ -59,6 +59,7 @@ Researchers publish trading strategies with honest backtests, logic public or hi
 | Managed agent mandate | tx `4kFTMA1pL3Vvqc1rDWToBsjnnRnorx5afHNehgKFZNKx` (then `HyQFdvB4KZMmHhbooiChofFY52HdGhTRR1eGytgAfDrE` after the switch) |
 | Investor switches vault to *Ecosystem 2-day reversal* (own key) | card `6DR1xKMJhiRP2BiHuokGEw8rXd9RuZqtR9nLq8dA6tFD`, signal `Gqgg9rEPC9GLTPEMbPAy1t5c8vesJxmPCtaaBWihRPH2`, `set_policy` `AQWQFp1VvfanBtUg7YNimai2nvStH32KPNHRN2iStKuJ` |
 | Agent buys from the vault via `vault.swap` + 1Click | USDC→NEAR `Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M`, USDC→BTC `9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB`, USDC→ETH `BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t` |
+| 1Click pays NEAR out as native NEAR, so the investor upgraded the vault (`wrap_near`, agent can wrap only, reserve kept) and the agent wrapped the position | upgrade `Hm7dcAwrmpMNrZFcnNdD2dxFKHiUM8mmGoy3UuL2UDMJ`, wrap `Ah2yc4sKcFMWhfmZzYX6TSz7kvAgj9zUqRLGmPS6GetH` |
 | Audits after the switch | strategy `6eWM8cppC6wB2xiysoNBPrGfGwgb35qejHEtpVGnCWb3`, agent (Clean, 3 trades) `EKJekzjDvcj4cUpbx8ELv2XjUye4vPKszhe6nFk8MH9m` |
 
 ## How the managed agent works
@@ -105,7 +106,7 @@ Publishing (`researcher.mjs publish|signal`, `follow.mjs mandate|rebalance`, the
 - `web/index.html` strategies · `web/strategy.html` one strategy · `web/lab.html` Lab · `web/audit.html` agent audit · `web/live.html` live trade tape.
 - `scripts/`: price fetcher, researcher, investor follow agent, strategy audit, agent audit, NEAR AI Cloud letter.
 - `contract/`: the append-only registry (`publish_mandate`, `publish_report`).
-- `vault/`: the investor vault contract (`swap` for the agent; `withdraw`, `set_paused`, `set_agent`, `set_policy` for the owner), 11 unit tests: `cd vault && cargo test`.
+- `vault/`: the investor vault contract (`swap` and `wrap_near` for the agent; `withdraw`, `withdraw_near`, `set_paused`, `set_agent`, `set_policy` for the owner), 13 unit tests: `cd vault && cargo test`.
 - `scripts/vault.mjs`, `scripts/managed-agent.mjs`, `scripts/daily.sh`: onboarding, the managed agent, the daily cycle.
 - `web/vault.html`: the investor's My agent page.
 

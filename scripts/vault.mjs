@@ -77,6 +77,16 @@ async function status() {
   console.log('access keys on vault:', keys.keys.map((k) => `${k.public_key.slice(0, 16)}… ${k.access_key.permission === 'FullAccess' ? 'FullAccess' : 'FunctionCall'}`).join(', '));
 }
 
+// The investor (only key on the vault) upgrades the vault code. State is kept.
+async function upgrade() {
+  const { connect, keyStores } = await import('near-api-js');
+  const ks = new keyStores.InMemoryKeyStore();
+  await ks.setKey('mainnet', VAULT, KeyPair.fromString(loadKey('owner').private_key));
+  const near = await connect({ networkId: 'mainnet', keyStore: ks, nodeUrl: 'https://rpc.mainnet.near.org' });
+  const d = await (await near.account(VAULT)).deployContract(fs.readFileSync(new URL('../vault/top_notch_vault.wasm', import.meta.url)));
+  console.log(`investor upgraded vault code, tx ${d.transaction.hash}`);
+}
+
 // The investor switches the strategy their vault follows. Signed by the investor's key, not the platform's.
 async function setStrategy(strategy) {
   const inv = await account('owner');
@@ -91,6 +101,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   else if (cmd === 'fund') await fund(arg);
   else if (cmd === 'status') await status();
   else if (cmd === 'strategy') await setStrategy(arg);
+  else if (cmd === 'upgrade') await upgrade();
   else console.log('usage: vault.mjs create | fund <usdc> | status');
 }
 void REGISTRY;

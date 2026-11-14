@@ -9,16 +9,8 @@
       "ETH": 0.3333,
       "NEAR": 0.3333
     },
-    "before": {
-      "NEAR": 0,
-      "RHEA": 0,
-      "AURORA": 0,
-      "BTC": 0,
-      "ETH": 0,
-      "USDC": 5.9
-    },
     "after": {
-      "NEAR": 0,
+      "NEAR": 1.95,
       "RHEA": 0,
       "AURORA": 0,
       "BTC": 1.95,
@@ -51,14 +43,14 @@
     "fees": "researcher 20 bps + platform 10 bps per swap, paid inside each 1Click swap",
     "agent_powers": "can only call vault.swap within the owner policy; cannot withdraw"
   },
-  "facts_sha256": "b3d9880dbb789b487ad8b2a4665cfd5c1c504c3ec5a2538be63498b5ff880f90",
+  "facts_sha256": "12cd99e16a490b1875e8a212e2401d7d31ebde75dd640b33c3a0640c5ba94d15",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-755ed5e6-a65d-4bd7-8c31-3532ee84eba9",
-    "text": "The strategy signal asked for target weights of 33.33% each in BTC, ETH, and NEAR. The agent executed three USDC swaps: $1.96 to NEAR (tx Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M), $1.96 to BTC (tx 9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB), and $1.96 to ETH (tx BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t). The vault now holds BTC 1.95, ETH 1.95, NEAR 0, and USDC 0. You can pause or withdraw at any time; the agent cannot withdraw.",
-    "text_sha256": "e9fca9d7129ab5bf688dac64ccee0d747c5fe83251d0e30598c0c5a1d63e856a",
-    "signature": "0x65e1c17ee65da2553c637bc30bc15b9b9bfcdbf453c7a93acf1de4baea322d755a46ae5924d23a8f34462d72f566cbf4b9d57e0738bfc5de3e40bc512395b2db1b",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:f29fccb8cce784fb6ed7d90f07a90fa05cf9cbb9a99f3ccab5e28537e4ec9844:a2f7a4c9072552156977b5a567fa3d9102911f08537045fefdc20ce71bb71ff2",
+    "chat_id": "chatcmpl-9f98ebb0-fc89-4e59-b111-3d601ba6c9df",
+    "text": "On 2026-11-13, the Ecosystem 2-day reversal signal asked for equal target weights: BTC 0.3333, ETH 0.3333, NEAR 0.3333. The agent swapped USDC to NEAR $1.96 tx Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M, USDC to BTC $1.96 tx 9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB, and USDC to ETH $1.96 tx BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t; all succeeded. Vault vault-1.top-notch.near now holds BTC 1.95, ETH 1.95, NEAR 1.95, USDC 0, AURORA 0, RHEA 0. You can pause or withdraw at any time; the agent cannot.",
+    "text_sha256": "3fb4616461705bc8b3479ef5c2b885a12d9789fcf72ad8aeb12aa600f0707657",
+    "signature": "0x7c1a0405edc5cba704a8f38d4327c8ceeafb7f348327ae9db4489d897418636d7b9862d0d3d7e68a727df98fb1240b581601ad3a9996212e480c7c411c2efd0e1b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:37e77c90c256c32c51e121648297ff06eaaacdce1282ccf292a5691cc793a518:3165de8a2a14354571d3aad43855750d8821d566f957d36ff03c262b75cc16c9",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

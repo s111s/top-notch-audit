@@ -1,0 +1,92 @@
+[
+  {
+    "at": "2026-11-14T06:29:19.458Z",
+    "vault": "vault-1.top-notch.near",
+    "signal_date": "2026-11-13",
+    "signal_hash": "9ba9b7a981972a081e6089bfc39092271a460f263a7eabd355a47ff8ccb69f5f",
+    "from": "USDC",
+    "to": "NEAR",
+    "usd": 1.964861043015,
+    "txHash": "Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M",
+    "depositAddress": "f9922785e5de848a66005aeeb0087f0c00fb983eb1fa1aa4a3ca2580f41b7fc3",
+    "status": "SUCCESS",
+    "amountOut": "0.576059382629920330480967",
+    "appFees": [
+      {
+        "recipient": "researcher-1.top-notch.near",
+        "fee": 20,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "top-notch.near",
+        "fee": 10,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+        "fee": 30,
+        "limitOrderId": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-14T06:31:00.822Z",
+    "vault": "vault-1.top-notch.near",
+    "signal_date": "2026-11-13",
+    "signal_hash": "9ba9b7a981972a081e6089bfc39092271a460f263a7eabd355a47ff8ccb69f5f",
+    "from": "USDC",
+    "to": "BTC",
+    "usd": 1.96485907735,
+    "txHash": "9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB",
+    "depositAddress": "48014e2701222c604644765279799f36af023651ca7330f5439b9f3fd9508d0c",
+    "status": "SUCCESS",
+    "amountOut": "0.00002896",
+    "appFees": [
+      {
+        "recipient": "researcher-1.top-notch.near",
+        "fee": 20,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "top-notch.near",
+        "fee": 10,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+        "fee": 30,
+        "limitOrderId": null
+      }
+    ]
+  },
+  {
+    "at": "2026-11-14T06:32:22.342Z",
+    "vault": "vault-1.top-notch.near",
+    "signal_date": "2026-11-13",
+    "signal_hash": "9ba9b7a981972a081e6089bfc39092271a460f263a7eabd355a47ff8ccb69f5f",
+    "from": "USDC",
+    "to": "ETH",
+    "usd": 1.964861043015,
+    "txHash": "BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t",
+    "depositAddress": "87e3e0c059bc916ac648a4df425b6f09bc2f1a584bd67c0f671c61900309f5e4",
+    "status": "SUCCESS",
+    "amountOut": "0.001023544113042178",
+    "appFees": [
+      {
+        "recipient": "researcher-1.top-notch.near",
+        "fee": 20,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "top-notch.near",
+        "fee": 10,
+        "limitOrderId": null
+      },
+      {
+        "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+        "fee": 30,
+        "limitOrderId": null
+      }
+    ]
+  }
+]

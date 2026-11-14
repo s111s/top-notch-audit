@@ -31,13 +31,13 @@ Researchers publish trading strategies with honest backtests, logic public or hi
 ## Try it in 60 seconds (no wallet, no install)
 
 1. **Open** https://s111s.github.io/top-notch-audit/
-   **You should see** two strategies read live from `top-notch.near` on mainnet: *Dip in an uptrend* (🔒 hidden, 5/5 gates, auditor **Clean**) and *Majors trend 5/20* (public, 4/5 gates: it fails out-of-sample), plus one investor agent, `alpha-bot-demo.near`, following the hidden one.
+   **You should see** three strategies read live from `top-notch.near` on mainnet, each with an auditor opinion: *Dip in an uptrend* (🔒 hidden, 5/5 gates), *Ecosystem 2-day reversal* (public, 4/5: fails out-of-sample, and the vault follows it) and *Majors trend 5/20* (public, 4/5), plus the managed agent `alpha-bot-demo.near` following one of them.
 2. **Click "Dip in an uptrend".**
    **You should see** the backtest (Sharpe 2.78, max drawdown −8.9%, fitness 16.45) against holding NEAR, the logic shown only as a sha256 commitment, the auditor's four checks all ✓ (logic matches commitment, stats reproduced, every signal reproduced, no backdating) and a letter signed by NEAR AI Cloud.
 3. **Open the Lab** and pick any example, or write your own, e.g. `rank(ts_mean(returns, 14)) - 0.5`.
    **You should see** stats, an equity curve, in-sample vs out-of-sample, the listing gates, and tomorrow's target weights, computed in your browser.
 4. **Open My agent** (https://s111s.github.io/top-notch-audit/vault.html).
-   **You should see** the investor's vault `vault-1.top-notch.near`: its holdings, *"1 full-access key: the investor's. The platform holds none."* read live from the chain, the agent's caps, and today's note from the agent written and signed inside NEAR AI Cloud.
+   **You should see** the investor's vault `vault-1.top-notch.near` holding NEAR, BTC and ETH bought by the agent, *"1 full-access key: the investor's. The platform holds none."* read live from the chain, the agent's caps, its 3 swaps with the researcher's and platform's fees inside each, a **Clean** audit, and today's note from the agent written and signed inside NEAR AI Cloud.
 5. **Open Agent audit** (`alpha-bot-demo.near`).
    **You should see** the managed agent's opinion, each swap tickmarked for *Signal in force*, *Trades toward the signal*, *Through the investor's vault* and *Researcher paid*. Press **Audit** to recompute it in your browser from chain data.
 
@@ -56,7 +56,10 @@ Researchers publish trading strategies with honest backtests, logic public or hi
 | Investor agent audit report | tx `AX1jWnFDgLhpKmcNDwPBbXCvK5scffujdTDPikVsipRW` |
 | Investor vault created (investor key only) | deploy `DMkxzMYwEiX8QLtz3hf11rB7AEMLv8z2visn1EFbnPgV`, init `4E1zLdf1Zao9DHXRnt1WB4dZFCmKmddY6o5nVevUvpWe` |
 | Investor funds vault (5.9 USDC) | tx `7ea7dAh9Z8CQtEKsg1wcMdQUWQTEzrouinA4rNTSmoa` |
-| Managed agent mandate | tx `4kFTMA1pL3Vvqc1rDWToBsjnnRnorx5afHNehgKFZNKx` |
+| Managed agent mandate | tx `4kFTMA1pL3Vvqc1rDWToBsjnnRnorx5afHNehgKFZNKx` (then `HyQFdvB4KZMmHhbooiChofFY52HdGhTRR1eGytgAfDrE` after the switch) |
+| Investor switches vault to *Ecosystem 2-day reversal* (own key) | card `6DR1xKMJhiRP2BiHuokGEw8rXd9RuZqtR9nLq8dA6tFD`, signal `Gqgg9rEPC9GLTPEMbPAy1t5c8vesJxmPCtaaBWihRPH2`, `set_policy` `AQWQFp1VvfanBtUg7YNimai2nvStH32KPNHRN2iStKuJ` |
+| Agent buys from the vault via `vault.swap` + 1Click | USDC→NEAR `Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M`, USDC→BTC `9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB`, USDC→ETH `BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t` |
+| Audits after the switch | strategy `6eWM8cppC6wB2xiysoNBPrGfGwgb35qejHEtpVGnCWb3`, agent (Clean, 3 trades) `EKJekzjDvcj4cUpbx8ELv2XjUye4vPKszhe6nFk8MH9m` |
 
 ## How the managed agent works
 

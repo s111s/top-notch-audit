@@ -3,48 +3,300 @@
   "engine_version": "1.0.0",
   "agent": "alpha-bot-demo.near",
   "registry": "top-notch.near",
-  "generated_at": "2026-11-14T00:32:34.254Z",
+  "generated_at": "2026-11-14T06:34:17.224Z",
   "mandate": {
-    "hash": "31066b797ae79984f7fb609a188351159ae8f494ff17793d56ac16033ebb99bf",
-    "text": "{\"agent\":\"alpha-bot-demo.near\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:token.rhealab.near\",\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"nep141:nbtc.bridge.near\",\"nep141:eth.bridge.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"assets\":{\"AURORA\":\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"BTC\":\"nep141:nbtc.bridge.near\",\"ETH\":\"nep141:eth.bridge.near\",\"NEAR\":\"nep141:wrap.near\",\"RHEA\":\"nep141:token.rhealab.near\"},\"cash_asset\":\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\",\"description\":\"Managed agent: trades the investor's vault vault-1.top-notch.near toward dip-in-uptrend by researcher-1.top-notch.near. It can only call vault.swap; it cannot withdraw.\",\"investor\":\"f9f6f5f3cc4ae3308f7b26d58f3ed945f0857a2848043059614226b008d93180\",\"kind\":\"follow\",\"managed\":true,\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10},\"max_signal_age_hours\":36,\"max_slippage_bps\":100,\"max_trade_usd\":5,\"researcher_fee_bps\":20,\"strategy\":{\"account\":\"researcher-1.top-notch.near\",\"card_hash\":\"bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e\",\"id\":\"dip-in-uptrend\"},\"v\":1,\"vault\":\"vault-1.top-notch.near\"}",
-    "published_at": "2026-11-13T15:57:43.420Z",
-    "block_height": 224385282
+    "hash": "f1bbdd6e96ddb78ac817d8ab3b3c51b78dbddf71ae7ef909af9215ff720d5088",
+    "text": "{\"agent\":\"alpha-bot-demo.near\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:token.rhealab.near\",\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"nep141:nbtc.bridge.near\",\"nep141:eth.bridge.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"assets\":{\"AURORA\":\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"BTC\":\"nep141:nbtc.bridge.near\",\"ETH\":\"nep141:eth.bridge.near\",\"NEAR\":\"nep141:wrap.near\",\"RHEA\":\"nep141:token.rhealab.near\"},\"cash_asset\":\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\",\"description\":\"Managed agent: trades the investor's vault vault-1.top-notch.near toward eco-reversal by researcher-1.top-notch.near. It can only call vault.swap; it cannot withdraw.\",\"investor\":\"f9f6f5f3cc4ae3308f7b26d58f3ed945f0857a2848043059614226b008d93180\",\"kind\":\"follow\",\"managed\":true,\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10},\"max_signal_age_hours\":36,\"max_slippage_bps\":100,\"max_trade_usd\":5,\"researcher_fee_bps\":20,\"strategy\":{\"account\":\"researcher-1.top-notch.near\",\"card_hash\":\"d6cdc1d5a669e70c66eb4c85c124363c6dd7dd1747771a4b3585d3901914c00e\",\"id\":\"eco-reversal\"},\"v\":1,\"vault\":\"vault-1.top-notch.near\"}",
+    "published_at": "2026-11-14T06:27:19.171Z",
+    "block_height": 224476071
   },
   "period": {
-    "from": "2026-11-13T15:57:43.420Z",
-    "to": "2026-11-13T15:57:43.420Z"
+    "from": "2026-11-14T06:27:19.171Z",
+    "to": "2026-11-14T06:31:41.463Z"
   },
   "out_of_period_trades": 12,
   "strategy": {
     "account": "researcher-1.top-notch.near",
-    "id": "dip-in-uptrend",
-    "card_hash": "bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e",
+    "id": "eco-reversal",
+    "card_hash": "d6cdc1d5a669e70c66eb4c85c124363c6dd7dd1747771a4b3585d3901914c00e",
     "card_found": true,
     "signals": [
       {
-        "date": "2026-11-12",
-        "hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
-        "weights": {}
-      },
-      {
         "date": "2026-11-13",
-        "hash": "da91f2c7597004aeb098ecd0fc57fbc2b08c3dcb7d95fbd1728695fea15e7050",
-        "weights": {}
+        "hash": "9ba9b7a981972a081e6089bfc39092271a460f263a7eabd355a47ff8ccb69f5f",
+        "weights": {
+          "BTC": 0.3333,
+          "ETH": 0.3333,
+          "NEAR": 0.3333
+        }
       }
     ]
   },
-  "trades": [],
+  "trades": [
+    {
+      "n": 1,
+      "tx": "Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M",
+      "vault": "vault-1.top-notch.near",
+      "depositAddress": "f9922785e5de848a66005aeeb0087f0c00fb983eb1fa1aa4a3ca2580f41b7fc3",
+      "time": "2026-11-14T06:28:39.239Z",
+      "status": "SUCCESS",
+      "in": {
+        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+        "symbol": "USDC",
+        "amount": "1.965665",
+        "usd": 1.96485907735
+      },
+      "out": {
+        "asset": "nep141:wrap.near",
+        "symbol": "wNEAR",
+        "amount": "0.576059382629920330480967",
+        "usd": 1.952841307115
+      },
+      "requestedSlippageBps": 100,
+      "realisedSlippageBps": 8,
+      "appFees": [
+        {
+          "limitOrderId": null,
+          "recipient": "researcher-1.top-notch.near",
+          "fee": 20
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "top-notch.near",
+          "fee": 10
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+          "fee": 30
+        }
+      ],
+      "destinationTxs": [
+        "7B9ycEQS3EVnkZtKbUd8DAW3vvWVZiRhVsqmK1qQ6W9K"
+      ],
+      "checks": [
+        {
+          "rule": "Allowed tokens",
+          "pass": true,
+          "detail": "USDC → wNEAR"
+        },
+        {
+          "rule": "Max trade size",
+          "pass": true,
+          "detail": "$1.96 vs limit $5"
+        },
+        {
+          "rule": "Max slippage",
+          "pass": true,
+          "detail": "requested 100 bps, realised 8 bps vs limit 100 bps"
+        },
+        {
+          "rule": "Settled",
+          "pass": true,
+          "detail": "1Click status SUCCESS"
+        },
+        {
+          "rule": "Signal in force",
+          "pass": true,
+          "detail": "signal 2026-11-13 published 0.0h before the trade (9ba9b7a981…)"
+        },
+        {
+          "rule": "Trades toward the signal",
+          "pass": true,
+          "detail": "bought NEAR, target weight 33%"
+        },
+        {
+          "rule": "Through the investor's vault",
+          "pass": true,
+          "detail": "vault.swap on vault-1.top-notch.near"
+        },
+        {
+          "rule": "Researcher paid",
+          "pass": true,
+          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "tx": "9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB",
+      "vault": "vault-1.top-notch.near",
+      "depositAddress": "48014e2701222c604644765279799f36af023651ca7330f5439b9f3fd9508d0c",
+      "time": "2026-11-14T06:30:20.481Z",
+      "status": "SUCCESS",
+      "in": {
+        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+        "symbol": "USDC",
+        "amount": "1.965665",
+        "usd": 1.964861043015
+      },
+      "out": {
+        "asset": "nep141:nbtc.bridge.near",
+        "symbol": "BTC",
+        "amount": "0.00002896",
+        "usd": 1.94952928
+      },
+      "requestedSlippageBps": 100,
+      "realisedSlippageBps": 3,
+      "appFees": [
+        {
+          "limitOrderId": null,
+          "recipient": "researcher-1.top-notch.near",
+          "fee": 20
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "top-notch.near",
+          "fee": 10
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+          "fee": 30
+        }
+      ],
+      "destinationTxs": [
+        "F39ZDTBv8Ghu2LpmxnL8R43idpJk6dLDcWsbkHFLU1vZ"
+      ],
+      "checks": [
+        {
+          "rule": "Allowed tokens",
+          "pass": true,
+          "detail": "USDC → BTC"
+        },
+        {
+          "rule": "Max trade size",
+          "pass": true,
+          "detail": "$1.96 vs limit $5"
+        },
+        {
+          "rule": "Max slippage",
+          "pass": true,
+          "detail": "requested 100 bps, realised 3 bps vs limit 100 bps"
+        },
+        {
+          "rule": "Settled",
+          "pass": true,
+          "detail": "1Click status SUCCESS"
+        },
+        {
+          "rule": "Signal in force",
+          "pass": true,
+          "detail": "signal 2026-11-13 published 0.1h before the trade (9ba9b7a981…)"
+        },
+        {
+          "rule": "Trades toward the signal",
+          "pass": true,
+          "detail": "bought BTC, target weight 33%"
+        },
+        {
+          "rule": "Through the investor's vault",
+          "pass": true,
+          "detail": "vault.swap on vault-1.top-notch.near"
+        },
+        {
+          "rule": "Researcher paid",
+          "pass": true,
+          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "tx": "BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t",
+      "vault": "vault-1.top-notch.near",
+      "depositAddress": "87e3e0c059bc916ac648a4df425b6f09bc2f1a584bd67c0f671c61900309f5e4",
+      "time": "2026-11-14T06:31:41.463Z",
+      "status": "SUCCESS",
+      "in": {
+        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+        "symbol": "USDC",
+        "amount": "1.965665",
+        "usd": 1.96490625331
+      },
+      "out": {
+        "asset": "nep141:eth.bridge.near",
+        "symbol": "ETH",
+        "amount": "0.001023544113042178",
+        "usd": 1.950926256664
+      },
+      "requestedSlippageBps": 100,
+      "realisedSlippageBps": 0,
+      "appFees": [
+        {
+          "limitOrderId": null,
+          "recipient": "researcher-1.top-notch.near",
+          "fee": 20
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "top-notch.near",
+          "fee": 10
+        },
+        {
+          "limitOrderId": null,
+          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
+          "fee": 30
+        }
+      ],
+      "destinationTxs": [
+        "Aw17UtghaFGXSdsLDuY133Z4irEHKQ3xG3ogKTy4kSLR"
+      ],
+      "checks": [
+        {
+          "rule": "Allowed tokens",
+          "pass": true,
+          "detail": "USDC → ETH"
+        },
+        {
+          "rule": "Max trade size",
+          "pass": true,
+          "detail": "$1.96 vs limit $5"
+        },
+        {
+          "rule": "Max slippage",
+          "pass": true,
+          "detail": "requested 100 bps, realised 0 bps vs limit 100 bps"
+        },
+        {
+          "rule": "Settled",
+          "pass": true,
+          "detail": "1Click status SUCCESS"
+        },
+        {
+          "rule": "Signal in force",
+          "pass": true,
+          "detail": "signal 2026-11-13 published 0.1h before the trade (9ba9b7a981…)"
+        },
+        {
+          "rule": "Trades toward the signal",
+          "pass": true,
+          "detail": "bought ETH, target weight 33%"
+        },
+        {
+          "rule": "Through the investor's vault",
+          "pass": true,
+          "detail": "vault.swap on vault-1.top-notch.near"
+        },
+        {
+          "rule": "Researcher paid",
+          "pass": true,
+          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
+        }
+      ]
+    }
+  ],
   "findings": [],
-  "opinion": "disclaimer",
-  "report_hash": "fe4a97e22b1403f9227f406a86e89c19667c495fab34b9888ae323e4b518a9ee",
-  "publish_tx": "95kiHWQsk7iaFtftjdqu26SN5wHsUMMs8ZynfA1jGiSC",
+  "opinion": "clean",
+  "report_hash": "13e47dc784cd7f4358d849b7f2c97ef8c3bf4f6d1c10c50a936d5c0d22857f03",
+  "publish_tx": "EKJekzjDvcj4cUpbx8ELv2XjUye4vPKszhe6nFk8MH9m",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-64087a6e-53c0-4703-b089-9eab0212e78d",
-    "text": "Opinion: Disclaimer of opinion.\n\nBasis for opinion: The opinion was determined by deterministic tests applied to the agent and its mandate. Because no trades were tested, we could not obtain sufficient appropriate evidence to form an opinion on the agent’s trading activity.\n\nFindings: No findings were reported; no trade numbers to cite.\n\nScope and limits: We reviewed alpha-bot-demo.near against mandate hash 31066b797ae79984f7fb609a188351159ae8f494ff17793d56ac16033ebb99bf for the period 2026-11-13T15:57:43.420Z to 2026-11-13T15:57:43.420Z. Trades tested: 0. The period has identical start and end timestamps, and no trades were available for testing. This limits our scope; we do not express an opinion on trading conduct, mandate compliance, or performance. Report hash: fe4a97e22b1403f9227f406a86e89c19667c495fab34b9888ae323e4b518a9ee.",
-    "text_sha256": "fcc7e404bb71e7c6a3d40ac7e6118c86f0a7c5f1d489dc6d7b8dacc23562ebe8",
-    "signature": "0xecf3265aa645c6cb5ab81caddc95f5e5ac27244d6383d76277abb3d46e367bed7a43492d86857d8dca3a7e9055bca9559bcf3a88df8ccb57b364aa7504722f0b1c",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:27e2ed52a39e3cb7cc9521de1858a1c9e5dfededae72279886299ff6a1e89d77:7bcf9331723f00f446f59ac0dbf0f4ee7b04f175a84a41f5bcdd2a36bed8f94f",
+    "chat_id": "chatcmpl-94b24d68-b043-4a7e-b674-0dd6f49efae6",
+    "text": "**Opinion**  \nClean opinion.\n\n**Basis for opinion**  \nThe opinion was determined by deterministic tests applied to the agent’s 3 tested trades against mandate hash f1bbdd6e96ddb78ac817d8ab3b3c51b78dbddf71ae7ef909af9215ff720d5088. Those tests produced no findings.\n\n**Findings**  \nNo findings were raised for trades 1, 2, and 3.\n\n**Scope and limits**  \nThis independent auditor’s report covers alpha-bot-demo.near for the period 2026-11-14T06:27:19.171Z to 2026-11-14T06:31:41.463Z. It is limited to the 3 trades tested and the data and deterministic tests available for that period. It does not extend to trades or activity outside that scope. The opinion is stated exactly as decided and has not been changed.\n\nReport hash: 13e47dc784cd7f4358d849b7f2c97ef8c3bf4f6d1c10c50a936d5c0d22857f03.",
+    "text_sha256": "50e9be0ea65226a101ca0ba09d5a92d87ab52268f2996258c6d1eff734253d53",
+    "signature": "0x630e5ffc2c0b3e48be4aa29d13186140b7ea7b71510fce3690081b646140928d2932f7697331023d3545d8daccb1bc3c51bc63815f5f592e1270b02fb54e5a3a1c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:6777ef25b04792681f5d8947846e42aa1180a4542a2ab55cb0fb75c8ab793d13:3636720a5107b74315c2659a0a2c9927c8ac956b2e90e1b2457f221da01e67e8",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

@@ -2,9 +2,13 @@
   "date": "2026-11-14",
   "facts": {
     "vault": "vault-1.top-notch.near",
-    "strategy": "Dip in an uptrend (dip-in-uptrend by researcher-1.top-notch.near)",
+    "strategy": "Ecosystem 2-day reversal (eco-reversal by researcher-1.top-notch.near)",
     "signal_date": "2026-11-13",
-    "target_weights": {},
+    "target_weights": {
+      "BTC": 0.3333,
+      "ETH": 0.3333,
+      "NEAR": 0.3333
+    },
     "before": {
       "NEAR": 0,
       "RHEA": 0,
@@ -17,22 +21,44 @@
       "NEAR": 0,
       "RHEA": 0,
       "AURORA": 0,
-      "BTC": 0,
-      "ETH": 0,
-      "USDC": 5.9
+      "BTC": 1.95,
+      "ETH": 1.95,
+      "USDC": 0
     },
-    "trades": [],
+    "trades": [
+      {
+        "from": "USDC",
+        "to": "NEAR",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M"
+      },
+      {
+        "from": "USDC",
+        "to": "BTC",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB"
+      },
+      {
+        "from": "USDC",
+        "to": "ETH",
+        "usd": 1.96,
+        "status": "SUCCESS",
+        "tx": "BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t"
+      }
+    ],
     "fees": "researcher 20 bps + platform 10 bps per swap, paid inside each 1Click swap",
     "agent_powers": "can only call vault.swap within the owner policy; cannot withdraw"
   },
-  "facts_sha256": "d646807cd8fd7a00c98aa5f8bcf67d54f28b3442576302febcf52f036b2b0c2f",
+  "facts_sha256": "b3d9880dbb789b487ad8b2a4665cfd5c1c504c3ec5a2538be63498b5ff880f90",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-cca09ecd-9987-4c8e-8298-c2fd297fce03",
-    "text": "The dip-in-an-uptrend strategy signal produced no target weights, so it asked for no allocation changes. The agent executed no trades; there are no trades to cite. The vault now holds 5.9 USDC, with AURORA, BTC, ETH, NEAR, and RHEA all at zero. You can pause or withdraw at any time; the agent cannot withdraw funds.",
-    "text_sha256": "4c312f0a57b6ea4ddd07ee5fd62673e96d32b128f8d7a42fc2930fbbf6106cd0",
-    "signature": "0x4df667c0649b3e4868fce5371a29330c11383815b7f679e5731b73b382c57b5d77c8af6ea5b2dcd54405e1418f116a1312225d0378c33f54ff6fcb2994878f1b1c",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:ea645bc41c636a1fabc734b4685939e1f910d9f11fcca5b9c762654fa20c1cbe:57bced02a72454eb25cefdfd6706dcdcdc1b8b6a4d26f3434dd32103e82549a4",
+    "chat_id": "chatcmpl-755ed5e6-a65d-4bd7-8c31-3532ee84eba9",
+    "text": "The strategy signal asked for target weights of 33.33% each in BTC, ETH, and NEAR. The agent executed three USDC swaps: $1.96 to NEAR (tx Dn4vZ83C3GjF7FusakZxN6tUWL9qt3sLr1kYeVGuaz3M), $1.96 to BTC (tx 9obGJAZ2F6J1ysjNcn8xAnd6Wdjd3KVXMiBAZ68FiAoB), and $1.96 to ETH (tx BZGsH6w5x4sfK5d95pBiNzxT6KLDRNHayotiHpCAM69t). The vault now holds BTC 1.95, ETH 1.95, NEAR 0, and USDC 0. You can pause or withdraw at any time; the agent cannot withdraw.",
+    "text_sha256": "e9fca9d7129ab5bf688dac64ccee0d747c5fe83251d0e30598c0c5a1d63e856a",
+    "signature": "0x65e1c17ee65da2553c637bc30bc15b9b9bfcdbf453c7a93acf1de4baea322d755a46ae5924d23a8f34462d72f566cbf4b9d57e0738bfc5de3e40bc512395b2db1b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:f29fccb8cce784fb6ed7d90f07a90fa05cf9cbb9a99f3ccab5e28537e4ec9844:a2f7a4c9072552156977b5a567fa3d9102911f08537045fefdc20ce71bb71ff2",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

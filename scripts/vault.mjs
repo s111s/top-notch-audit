@@ -77,11 +77,20 @@ async function status() {
   console.log('access keys on vault:', keys.keys.map((k) => `${k.public_key.slice(0, 16)}… ${k.access_key.permission === 'FullAccess' ? 'FullAccess' : 'FunctionCall'}`).join(', '));
 }
 
+// The investor switches the strategy their vault follows. Signed by the investor's key, not the platform's.
+async function setStrategy(strategy) {
+  const inv = await account('owner');
+  const policy = await inv.viewFunction({ contractId: VAULT, methodName: 'get_policy' });
+  const r = await inv.functionCall({ contractId: VAULT, methodName: 'set_policy', args: { policy: { ...policy, strategy } }, gas: 30000000000000n });
+  console.log(`investor switched vault strategy to ${strategy}, tx ${r.transaction.hash}`);
+}
+
 const [cmd, arg] = process.argv.slice(2);
 if (import.meta.url === `file://${process.argv[1]}`) {
   if (cmd === 'create') await create();
   else if (cmd === 'fund') await fund(arg);
   else if (cmd === 'status') await status();
+  else if (cmd === 'strategy') await setStrategy(arg);
   else console.log('usage: vault.mjs create | fund <usdc> | status');
 }
 void REGISTRY;

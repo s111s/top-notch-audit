@@ -27,6 +27,14 @@ export const BOOK = {
     settings: { top_n: 3, cash_if_negative: true, fee_bps: 35, max_weight: 1, universe: ['NEAR', 'RHEA', 'AURORA', 'BTC', 'ETH'] },
     fee_bps: 20,
   },
+  'eco-reversal': {
+    name: 'Ecosystem 2-day reversal',
+    description: 'Holds the three NEAR-ecosystem tokens that fell most over the last two days, betting on a bounce. Public logic.',
+    visibility: 'public',
+    expression: 'rank(-ts_delta(close, 2)) - 0.5',
+    settings: { top_n: 3, cash_if_negative: true, fee_bps: 35, max_weight: 1, universe: ['NEAR', 'RHEA', 'AURORA', 'BTC', 'ETH'] },
+    fee_bps: 20,
+  },
   'trend-5-20': {
     name: 'Majors trend 5/20',
     description: 'Holds the two majors whose 5-day average is furthest above their 20-day average.',

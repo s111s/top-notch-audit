@@ -1,0 +1,81 @@
+{
+  "schema": "top-notch/strategy-report@1",
+  "generated_at": "2026-11-14T06:33:26.565Z",
+  "registry": "top-notch.near",
+  "strategy": {
+    "account": "researcher-1.top-notch.near",
+    "id": "eco-reversal",
+    "name": "Ecosystem 2-day reversal",
+    "visibility": "public",
+    "card_hash": "d6cdc1d5a669e70c66eb4c85c124363c6dd7dd1747771a4b3585d3901914c00e",
+    "logic_commit": "13b82cf7830d3c4d91909d6f40949ccd808ae4b0bf7899b7542222cdd5839656"
+  },
+  "claimed_stats": {
+    "days": 152,
+    "fitness": 8.8628,
+    "max_drawdown": -0.2613,
+    "oos_sharpe": -2.5535,
+    "sharpe": 2.0051,
+    "total_return": 1.3131,
+    "turnover": 0.3322
+  },
+  "checks": [
+    {
+      "test": "Logic matches its commitment",
+      "pass": true,
+      "detail": "recomputed 13b82cf7830d… vs card 13b82cf7830d…"
+    },
+    {
+      "test": "Backtest reproduces the claimed stats",
+      "pass": true,
+      "detail": "Sharpe 2.01, fitness 8.86, drawdown -26.1%, turnover 33.2%, 152 days"
+    },
+    {
+      "test": "Every signal reproduced from the committed logic",
+      "pass": true,
+      "detail": "1 of 1 signals match"
+    },
+    {
+      "test": "Signals published after the candle closed, not backdated",
+      "pass": true,
+      "detail": "2026-11-13 → 2026-11-14T06:26Z"
+    }
+  ],
+  "signals": [
+    {
+      "date": "2026-11-13",
+      "hash": "9ba9b7a981972a081e6089bfc39092271a460f263a7eabd355a47ff8ccb69f5f",
+      "weights": {
+        "BTC": 0.3333,
+        "ETH": 0.3333,
+        "NEAR": 0.3333
+      },
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-14T06:26:37.684Z",
+      "timely": true
+    }
+  ],
+  "opinion": "clean",
+  "scope": "Public strategy: anyone can rerun this audit.",
+  "report_hash": "685811dc0593c27bc7c11044562c38447fd43ba07e2618c39eed1d72fc69b743",
+  "publish_tx": "6eWM8cppC6wB2xiysoNBPrGfGwgb35qejHEtpVGnCWb3",
+  "letter": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "chat_id": "chatcmpl-d9c03ef7-d9fa-499c-8e21-2a8c951fb861",
+    "text": "**Opinion:** Clean opinion.\n\n**What we tested:** Deterministic checks that the strategy logic matches its commitment, the backtest reproduces the claimed stats, every signal reproduces from the committed logic, and signals were published after the candle closed rather than backdated.\n\n**Results:** All checks passed. The logic commitment matched. The backtest reproduced Sharpe 2.01, fitness 8.86, drawdown -26.1%, turnover 33.2%, over 152 days. 1 of 1 signals matched. The 2026-11-13 signal was reproduced and timely, with publication from 2026-11-13 to 2026-11-14T06:26Z after candle close.\n\n**Scope and limits:** This is a public strategy, so anyone can rerun the audit. The opinion is limited to the deterministic tests listed above and the committed strategy card. Report hash: 685811dc0593c27bc7c11044562c38447fd43ba07e2618c39eed1d72fc69b743.",
+    "text_sha256": "0429ce289d7537d08bdeb1326119c5fda143b563010ce54519bdd2dd9972a06d",
+    "signature": "0x904da27ff88a9de226c7bc751e884b0e36f82d6a194e72c4f8596388431b31e53400f97160abbffedd8bcb7312cce5f710f060d8260767535820ee180357d57f1c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:3999fdede8473b54c438fafec50882f0679a8d4b2e6ba4e4df997c9fe8b87a6a:fb409728c8d0d946da5e3d406d8b53a376220a2fd5bea1972ad5ba115cfc45e7",
+    "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+    "attestation_summary": {
+      "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
+      "keys": [
+        "gateway_attestation",
+        "model_attestations",
+        "ohttp_key_config",
+        "ohttp_attestation"
+      ]
+    }
+  }
+}

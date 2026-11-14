@@ -6,6 +6,7 @@
 <title>Top Notch Agent Audit</title>
 <meta name="description" content="Audit opinions for AI trading agents on NEAR. Every trade checked against the mandate the agent published on-chain.">
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./tour.js"></script>
 </head>
 <body>
 <main>
@@ -15,7 +16,7 @@
   <p>Audit opinions for AI trading agents on NEAR. Your agent says it trades safely. We check every trade against the mandate it published on-chain.</p>
 </header>
 
-<section class="card">
+<section class="card" id="a-form">
   <form id="f">
     <input id="agent" placeholder="agent account, e.g. alpha-bot-demo.near" autocomplete="off" spellcheck="false">
     <button id="go">Audit</button>
@@ -42,7 +43,7 @@ $('#agent').value = params.get('agent') || 'alpha-bot-demo.near';
 function render(r, source) {
   const op = OPINION_TEXT[r.opinion];
   const passed = r.trades.filter((t) => t.checks?.every((c) => c.pass)).length;
-  let html = `<section class="card"><div class="opinion"><div class="badge ${r.opinion}">${op.label}</div>
+  let html = `<section class="card" id="a-opinion"><div class="opinion"><div class="badge ${r.opinion}">${op.label}</div>
     <div><div><b>${esc(r.agent)}</b></div><div class="hint" style="margin:0">${esc(op.short)}</div></div></div>
     <div class="stats" style="margin-top:16px"><div><b>${r.trades.length}</b>trades tested</div><div><b>${passed}</b>tickmarked ✓</div><div><b>${r.findings.length}</b>findings</div>
     <div><b>${r.period ? esc(r.period.from.slice(0, 10)) : '—'}</b>period from</div></div>
@@ -62,7 +63,7 @@ function render(r, source) {
   }
 
   if (r.trades.length) {
-    html += `<section class="card"><h2>Trades tested</h2><div class="tbl"><table><tr><th>#</th><th>Time (UTC)</th><th>Swap</th><th>USD in</th><th>Tests</th><th>Evidence</th></tr>`;
+    html += `<section class="card" id="a-trades"><h2>Trades tested</h2><div class="tbl"><table><tr><th>#</th><th>Time (UTC)</th><th>Swap</th><th>USD in</th><th>Tests</th><th>Evidence</th></tr>`;
     for (const t of r.trades) {
       const checks = (t.checks || []).map((c) => `<div title="${esc(c.detail)}"><span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? '✓' : '✗'}</span> ${esc(c.rule)}${c.pass ? '' : `: ${esc(c.detail)}`}</div>`).join('');
       html += `<tr><td>${t.n ?? ''}</td><td>${esc(t.time.slice(0, 16).replace('T', ' '))}</td><td>${amt(t.in.amount)} ${esc(t.in.symbol)} → ${amt(t.out.amount)} ${esc(t.out.symbol)}</td>

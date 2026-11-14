@@ -6,89 +6,210 @@
 <title>Top Notch Lab</title>
 <meta name="description" content="Write a trading alpha as one expression and backtest it in your browser on real NEAR Intents prices: Sharpe, drawdown, turnover, fitness.">
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./tour.js"></script>
 </head>
 <body>
 <main>
 <header>
   <nav class="top"><a href="./">Strategies</a><a href="./vault.html">My agent</a><a href="./lab.html" class="on">Lab</a><a href="./audit.html">Agent audit</a><a href="./live.html">Live tape</a></nav>
   <h1>Lab</h1>
-  <p>Write an alpha as one expression. It gives each token a score every day; the portfolio holds the top scorers, long-only, rest in USDC. Backtested in your browser on daily prices from NEAR Intents pools, with swap costs.</p>
+  <p>Test a trading idea on real NEAR Intents prices in seconds. No code, no wallet: write one formula, and the Lab shows how it would have done over the last six months, after swap costs.</p>
 </header>
 
-<section class="card">
-  <label for="expr"><b>Alpha expression</b></label>
-  <textarea id="expr" spellcheck="false">ts_mean(close, 5) / ts_mean(close, 20) - 1</textarea>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center">
-    <select id="ex" aria-label="Examples"><option value="">Examples…</option></select>
-    <label class="chk">Hold top <select id="topn"><option>1</option><option>2</option><option selected>3</option><option>4</option></select></label>
-    <label class="chk"><input type="checkbox" id="cash" checked> USDC when score ≤ 0</label>
-    <label class="chk">Cost/side <select id="fee"><option value="10">10 bps</option><option value="35" selected>35 bps</option><option value="60">60 bps</option></select></label>
-    <button id="run">Backtest</button>
-  </div>
-  <div id="uni" style="margin-top:8px"></div>
-  <div id="err" class="bad" style="margin-top:8px"></div>
-  <details style="margin-top:10px"><summary class="hint">Fields and functions</summary><div id="ref" class="hint"></div></details>
+<section class="card steps3" id="how">
+  <div><b>1</b><span><strong>Pick a starter idea</strong> below, or write your own formula.</span></div>
+  <div><b>2</b><span><strong>Read the results.</strong> Every number has a plain-English line and a green, amber or red mark.</span></div>
+  <div><b>3</b><span><strong>Publish</strong> when it clears the listing bar, and earn a fee each time an investor's agent trades on it.</span></div>
 </section>
 
-<div id="out"></div>
+<section class="card" id="templates">
+  <h2>Starter ideas</h2>
+  <p class="hint" style="margin-top:-6px">Each one is a classic trading idea written as a formula. Click one to load it and run it.</p>
+  <div class="tpls" id="tpls"></div>
+</section>
+
+<section class="card" id="editor">
+  <label for="expr"><b>Your formula</b></label>
+  <p class="hint" style="margin:2px 0 8px">Every day it gives each token a score. The portfolio buys the highest scorers and keeps the rest in USDC. It never shorts.</p>
+  <textarea id="expr" spellcheck="false" placeholder="e.g. ts_mean(close, 5) / ts_mean(close, 20) - 1">ts_mean(close, 5) / ts_mean(close, 20) - 1</textarea>
+  <div id="err" role="alert"></div>
+  <div class="settings" id="settings">
+    <label class="set"><span>Hold the top</span><select id="topn"><option value="1">1 token</option><option value="2">2 tokens</option><option value="3" selected>3 tokens</option><option value="4">4 tokens</option></select><small>How many of the best-scoring tokens to hold, in equal parts.</small></label>
+    <label class="set"><span>Swap cost per side</span><select id="fee"><option value="10">0.10%</option><option value="35" selected>0.35% (realistic)</option><option value="60">0.60% (cautious)</option></select><small>Fees and slippage paid on every buy and every sell.</small></label>
+    <label class="set chkset"><span><input type="checkbox" id="cash" checked> Sit in USDC when nothing scores above 0</span><small>Lets the strategy step aside in a falling market.</small></label>
+  </div>
+  <div id="uni" style="margin-top:10px"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center">
+    <button id="run">Backtest</button><span class="hint" style="margin:0">or press Ctrl/⌘ + Enter</span>
+  </div>
+  <details style="margin-top:12px" id="refd"><summary class="hint">Building blocks: fields and functions you can use</summary><div id="ref" class="hint"></div></details>
+</section>
+
+<div id="out" aria-live="polite"><section class="card empty"><b>Your results will appear here.</b><p class="hint">Pick a starter idea above or press Backtest.</p></section></div>
+
+<section class="card" id="glossary">
+  <h2>What the numbers mean</h2>
+  <dl class="gloss" id="gloss"></dl>
+</section>
 
 <section class="card" id="pub" hidden>
   <h2>Publish this strategy</h2>
-  <p class="hint" style="margin-top:0">Public shows the expression on-chain. Hidden publishes only the hash of (expression | settings | salt), plus the stats; keep the salt and expression private and share them only with the auditor.</p>
+  <p class="hint" style="margin-top:0"><b>Public</b> puts the formula on-chain for anyone to read and rerun. <b>Hidden</b> puts only a fingerprint of it on-chain (a sha256 hash of formula, settings and a secret salt), plus the stats. Nobody can copy your idea, and the auditor can still prove you never changed it.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input id="name" placeholder="Strategy name" value="My alpha"><select id="vis"><option value="public">Public logic</option><option value="hidden">Hidden logic</option></select><button class="ghost" id="mk">Make card</button></div>
+  <p class="hint" id="pubgate"></p>
   <pre class="mono" id="card" style="white-space:pre-wrap;margin-top:12px"></pre>
 </section>
 
-<footer>Built at NEAR HACKATHON 2026. Short history (about 6 months) and many tries make overfitting easy; the out-of-sample column is there to keep you honest.</footer>
+<footer>Built at NEAR HACKATHON 2026. Short history (about 6 months) and many tries make overfitting easy; the unseen-data check is there to keep you honest. Not financial advice.</footer>
 </main>
+
 <script type="module">
-import { backtest, checkGates, FUNCTIONS, FIELDS, pct, num, logicCommit, canonical } from './alpha.js';
+import { backtest, checkGates, GATES, FUNCTIONS, FIELDS, pct, num, logicCommit, canonical } from './alpha.js';
 import { lineChart } from './market.js';
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const EX = {
-  'Trend 5/20': 'ts_mean(close, 5) / ts_mean(close, 20) - 1',
-  'Momentum 20d': 'ts_delta(close, 20) / delay(close, 20)',
-  'Risk-adjusted momentum': 'ts_mean(returns, 21) / ts_std(returns, 21)',
-  'Cross-sectional winners': 'rank(ts_mean(returns, 14)) - 0.5',
-  'Price above 30d trend': 'close / ts_mean(close, 30) - 1',
-  'Short-term reversal': '-ts_delta(close, 3) / delay(close, 3)',
-  'Volume breakout': '(close > ts_max(delay(close, 1), 10)) * rank(volume)',
+
+// ---------- starter ideas ----------
+const TEMPLATES = [
+  { name: 'Follow the trend', tag: 'trend', idea: 'Buy tokens whose last 5 days average above their last 20 days.', e: 'ts_mean(close, 5) / ts_mean(close, 20) - 1' },
+  { name: 'Momentum', tag: 'trend', idea: 'Buy what rose the most over the last 20 days.', e: 'ts_delta(close, 20) / delay(close, 20)' },
+  { name: 'Steady climbers', tag: 'trend', idea: 'Momentum, but rewards smooth rises over wild ones.', e: 'ts_mean(returns, 21) / ts_std(returns, 21)' },
+  { name: 'Pick the winners', tag: 'ranking', idea: 'Rank tokens against each other and hold the top half.', e: 'rank(ts_mean(returns, 14)) - 0.5' },
+  { name: 'Above its trend', tag: 'trend', idea: 'Buy tokens trading above their 30-day average price.', e: 'close / ts_mean(close, 30) - 1' },
+  { name: 'Buy the dip', tag: 'reversal', idea: 'Buy what fell over the last 3 days, betting it bounces.', e: '-ts_delta(close, 3) / delay(close, 3)' },
+  { name: 'Volume breakout', tag: 'breakout', idea: 'Buy a token that hits a 10-day high on strong volume.', e: '(close > ts_max(delay(close, 1), 10)) * rank(volume)' },
+];
+$('#tpls').innerHTML = TEMPLATES.map((t, i) => `<button class="tpl" data-i="${i}" type="button"><span class="pill">${esc(t.tag)}</span><b>${esc(t.name)}</b><span>${esc(t.idea)}</span><code>${esc(t.e)}</code></button>`).join('');
+const markTpl = () => document.querySelectorAll('.tpl').forEach((b) => b.classList.toggle('on', TEMPLATES[b.dataset.i].e === $('#expr').value.trim()));
+$('#tpls').addEventListener('click', (ev) => {
+  const b = ev.target.closest('.tpl'); if (!b) return;
+  $('#expr').value = TEMPLATES[b.dataset.i].e;
+  $('#name').value = TEMPLATES[b.dataset.i].name;
+  markTpl(); run(true);
+});
+$('#expr').addEventListener('input', markTpl);
+
+// ---------- reference ----------
+const sig = (k, f) => `${k}(${f.args === 2 ? (k.startsWith('ts_') || k === 'delay' ? 'x, d' : 'a, b') : 'x'})`;
+const groups = [['Look back over time (d = number of days)', (k) => k.startsWith('ts_') || k === 'delay'], ['Compare tokens with each other today', (k) => k === 'rank' || k === 'zscore'], ['Math', (k) => !(k.startsWith('ts_') || k === 'delay' || k === 'rank' || k === 'zscore')]];
+$('#ref').innerHTML = `<p><b>Fields</b>: <code>close</code> (daily price in USD), <code>volume</code> (daily traded USD), <code>returns</code> (today's % change). <b>Operators</b>: <code>+ - * / &gt; &lt;</code> and brackets. <code>a &gt; b</code> gives 1 when true and 0 when false.</p>` +
+  groups.map(([g, f]) => `<p style="margin-bottom:2px"><b>${g}</b></p><ul>${Object.entries(FUNCTIONS).filter(([k]) => f(k)).map(([k, fn]) => `<li><code>${sig(k, fn)}</code>: ${esc(fn.doc)}</li>`).join('')}</ul>`).join('');
+
+// ---------- plain-language metrics ----------
+// grade: 'good' | 'ok' | 'weak'
+const METRICS = [
+  { key: 'total_return', label: 'Total return', fmt: (v) => pct(v, 0), plain: 'What $100 would have become, after swap costs.', long: 'The gain or loss over the whole test, after paying swap costs on every trade. Compare it with simply holding NEAR, shown on the chart.', grade: (v, r) => (v > Math.max(0, r.benchmark.total_return) ? 'good' : v > 0 ? 'ok' : 'weak') },
+  { key: 'sharpe', label: 'Sharpe', fmt: num, plain: 'Return for each unit of risk. Above 1 is good, above 2 is great.', long: 'Average daily return divided by how much returns swing, scaled to a year. It tells you if the gains came from skill or from wild bets. Below 0 means it lost money. The listing bar is 1.0.', grade: (v) => (v >= 2 ? 'good' : v >= 1 ? 'ok' : 'weak') },
+  { key: 'max_drawdown', label: 'Worst drop', fmt: (v) => pct(v), plain: 'The biggest fall from a high point to a low.', long: 'Max drawdown: the deepest fall from a peak before a new high. −20% means at its worst you were 20% below your best point. Ask yourself if you could sit through it. The listing bar is better than −35%.', grade: (v) => (v > -0.2 ? 'good' : v > -0.35 ? 'ok' : 'weak') },
+  { key: 'turnover', label: 'Trading per day', fmt: (v) => pct(v), plain: 'Share of the portfolio swapped each day. Lower means fewer fees.', long: 'Turnover: the average share of the portfolio bought or sold each day. Every swap costs fees and slippage, so a strategy that trades too much bleeds money. The listing bar is 40% a day or less.', grade: (v) => (v <= 0.2 ? 'good' : v <= 0.4 ? 'ok' : 'weak') },
+  { key: 'fitness', label: 'Fitness', fmt: num, plain: 'One score: Sharpe, boosted by returns, cut by heavy trading.', long: 'Fitness = Sharpe × √(|annual return| ÷ max(turnover, 0.125)). It rewards strategies that make real returns without churning. Used to rank strategies; the listing bar is 0.5.', grade: (v) => (v >= 1 ? 'good' : v >= 0.5 ? 'ok' : 'weak') },
+  { key: 'oos', label: 'Unseen-data Sharpe', fmt: num, plain: 'Sharpe on the last 30% of days. The honesty check.', long: 'Out-of-sample Sharpe: the same test on the last 30% of days only. If a formula only works on the first 70%, it was probably tuned to the past and will likely fail on new data. It must be above 0 to list.', grade: (v) => (v >= 0.5 ? 'good' : v > 0 ? 'ok' : 'weak') },
+];
+const GRADE = { good: 'Good', ok: 'Okay', weak: 'Weak' };
+$('#gloss').innerHTML = METRICS.map((m) => `<dt>${esc(m.label)}</dt><dd>${esc(m.long)}</dd>`).join('') +
+  `<dt>Listing gates</dt><dd>The five bars a strategy must clear before it can be listed for investors. They exist so investors only see ideas with a fair chance of working.</dd><dt>Hold NEAR</dt><dd>The baseline: what you'd have made by just buying NEAR and doing nothing. A strategy worth following should beat it, or lose less in bad times.</dd>`;
+
+const GATE_TIPS = {
+  sharpe: 'Returns are too bumpy for what they earn. Try a longer window (20 or 30 days) or turn on "Sit in USDC".',
+  fitness: 'Not enough return for the trading it does. Smoother, slower signals usually help.',
+  max_drawdown: 'It fell too far at its worst. Turn on "Sit in USDC" or hold more tokens to spread risk.',
+  turnover: 'It trades too often and pays too many fees. Use longer windows, e.g. 20 instead of 5.',
+  oos: 'It stopped working on the last 30% of days, a sign it was tuned to the past. Try a simpler formula.',
 };
-for (const k of Object.keys(EX)) $('#ex').insertAdjacentHTML('beforeend', `<option>${esc(k)}</option>`);
-$('#ex').onchange = () => { if (EX[$('#ex').value]) { $('#expr').value = EX[$('#ex').value]; run(); } };
-$('#ref').innerHTML = `<p>Fields: ${FIELDS.map((f) => `<code>${f}</code>`).join(', ')} (daily close in USD, daily volume in USD, daily return). Operators: <code>+ - * / &gt; &lt;</code> and parentheses.</p><ul>${Object.entries(FUNCTIONS).map(([k, f]) => `<li><code>${k}(${f.args === 2 ? (k.startsWith('ts_') || k === 'delay' ? 'x, d' : 'a, b') : 'x'})</code>: ${esc(f.doc)}</li>`).join('')}</ul>`;
+
+// ---------- friendly errors ----------
+const NAMES = [...Object.keys(FUNCTIONS), ...FIELDS];
+function lev(a, b) { const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...new Array(b.length).fill(0)]); for (let j = 1; j <= b.length; j++) d[0][j] = j; for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; }
+const closest = (w) => NAMES.map((n) => [n, lev(w.toLowerCase(), n)]).sort((a, b) => a[1] - b[1])[0];
+function friendly(msg, src) {
+  let m;
+  const opens = (src.match(/\(/g) || []).length, closes = (src.match(/\)/g) || []).length;
+  if ((m = msg.match(/unknown (function|field) "([^"]+)"/))) {
+    const [best, d] = closest(m[2]);
+    return { title: `"${m[2]}" isn't a ${m[1]} the Lab knows.`, tip: d <= 3 ? `Did you mean <code>${best}</code>?` : `Open "Building blocks" below to see what you can use.`, fix: d <= 3 ? src.replace(new RegExp(`\\b${m[2]}\\b`), best) : null };
+  }
+  if (opens !== closes) return { title: opens > closes ? `A closing bracket ")" is missing.` : `There's an extra closing bracket ")".`, tip: `You have ${opens} "(" and ${closes} ")". They must match.`, fix: opens > closes ? src + ')'.repeat(opens - closes) : null };
+  if ((m = msg.match(/^(\w+) takes (\d) argument\(s\), got (\d)/))) return { title: `${m[1]} needs ${m[2]} input${m[2] === '1' ? '' : 's'}, you gave ${m[3]}.`, tip: `Write it as <code>${sig(m[1], FUNCTIONS[m[1]])}</code>, separated by a comma.` };
+  if ((m = msg.match(/^(\w+): the window must be a number/))) return { title: `The number of days in ${m[1]} must be a plain number.`, tip: `For example <code>${m[1]}(close, 20)</code>, not a field or formula.` };
+  if (/ended early|at the end/.test(msg)) return { title: 'The formula stops in the middle.', tip: 'Something is missing at the end, like a number after an operator.' };
+  if ((m = msg.match(/unexpected "([^"]+)"/))) return { title: `The Lab didn't expect "${m[1]}" there.`, tip: 'Check for a missing operator (+ - * /) between two parts, or a stray character.' };
+  return { title: 'The Lab couldn\'t read this formula.', tip: esc(msg) };
+}
+function showError(title, tip, fix) {
+  $('#err').innerHTML = `<div class="callout bad-c"><b>${esc(title)}</b>${tip ? `<div>${tip}</div>` : ''}<div class="row">${fix ? `<button class="ghost sm" id="fixit" type="button">Fix it for me</button>` : ''}<button class="ghost sm" id="reset" type="button">Load a working starter</button></div></div>`;
+  $('#expr').classList.add('invalid');
+  $('#fixit')?.addEventListener('click', () => { $('#expr').value = fix; run(); });
+  $('#reset').addEventListener('click', () => { $('#expr').value = TEMPLATES[0].e; markTpl(); run(); });
+  $('#out').innerHTML = `<section class="card empty"><b>No results yet.</b><p class="hint">Fix the formula above and press Backtest. Your last good result was cleared so you don't mistake it for this one.</p></section>`;
+  $('#pub').hidden = true;
+}
+
+// ---------- data ----------
 const q = new URLSearchParams(location.search);
 if (q.get('e')) $('#expr').value = q.get('e');
-
-const prices = await fetch('./data/prices.json').then((r) => r.json());
-const syms = Object.keys(prices.tokens);
-$('#uni').innerHTML = '<span class="hint">Universe: </span>' + syms.map((s) => `<label class="chk"><input type="checkbox" value="${s}" checked> ${s}</label>`).join('');
+markTpl();
+let prices = null;
+async function loadPrices() {
+  try {
+    const r = await fetch('./data/prices.json');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    prices = await r.json();
+  } catch (e) {
+    $('#out').innerHTML = `<section class="card empty"><b>Couldn't load the price data.</b><p class="hint">The Lab needs <code>data/prices.json</code> (${esc(e.message)}). Check your connection and try again.</p><button id="retry" type="button">Try again</button></section>`;
+    $('#retry').onclick = () => loadPrices().then(() => prices && run());
+    return;
+  }
+  const syms = Object.keys(prices.tokens);
+  $('#uni').innerHTML = '<span class="hint">Tokens it can buy: </span>' + syms.map((s) => `<label class="chk"><input type="checkbox" value="${s}" checked> ${s}</label>`).join('');
+}
 const settings = () => ({ top_n: +$('#topn').value, cash_if_negative: $('#cash').checked, fee_bps: +$('#fee').value, max_weight: 1, universe: [...document.querySelectorAll('#uni input:checked')].map((i) => i.value) });
 let last = null;
 
-function run() {
-  $('#err').textContent = '';
+function run(scroll = false) {
+  if (!prices) return;
+  $('#err').innerHTML = ''; $('#expr').classList.remove('invalid');
+  const src = $('#expr').value.trim();
+  if (!src) return showError('The formula is empty.', 'Type a formula, or click a starter idea above.');
+  const S = settings();
+  if (!S.universe.length) return showError('No tokens are ticked.', 'Tick at least one token the strategy may buy.');
   let r;
-  try { r = backtest($('#expr').value, prices, settings()); } catch (e) { $('#err').textContent = e.message; return; }
+  try { r = backtest(src, prices, S); } catch (e) { const f = friendly(e.message, src); return showError(f.title, f.tip, f.fix); }
+  if (!r.stats || r.period.days < 10) {
+    if (r.daily.every((d) => d.weights.every((w) => !w))) return showError('This strategy never bought anything.', `No token ever scored above 0, so it would sit in USDC the whole time. Untick "Sit in USDC when nothing scores above 0", or check the formula's sign: a minus in front flips buy and sell ideas.`);
+    return showError('Not enough days to test.', 'Long windows (over 60 days) eat most of the six months of data. Try a shorter window.');
+  }
   last = r;
   const s = r.stats, o = r.out_of_sample, b = r.benchmark;
-  const tile = (v, l, cls = '') => `<div class="tile"><b class="${cls}">${v}</b><span>${l}</span></div>`;
+  const val = { ...s, oos: o.sharpe };
+  const neverBought = r.daily.every((d) => d.weights.every((w) => !w));
+  const gates = checkGates(r);
+  const passed = gates.filter((g) => g.pass).length;
+  const tile = (m) => { const v = val[m.key], g = m.grade(v, r); return `<div class="tile mtile" title="${esc(m.long)}"><span class="grade ${g}">${GRADE[g]}</span><b>${m.fmt(v)}</b><span class="lbl">${esc(m.label)}</span><small>${esc(m.plain)}</small></div>`; };
   const row = (l, x) => `<tr><td>${l}</td><td>${num(x.sharpe)}</td><td>${pct(x.total_return)}</td><td>${pct(x.max_drawdown)}</td><td>${pct(x.turnover)}</td><td>${num(x.fitness)}</td><td>${pct(x.win_rate, 0)}</td></tr>`;
   const split = r.daily[Math.floor(r.daily.length * 0.7)]?.date;
-  $('#out').innerHTML = `<section class="card"><h2>Result · ${r.period.from} → ${r.period.to} (${r.period.days} days)</h2>
-    <div class="tiles">${tile(num(s.sharpe), 'Sharpe')}${tile(num(s.fitness), 'Fitness')}${tile(pct(s.max_drawdown), 'Max drawdown', 'neg')}${tile(pct(s.turnover), 'Turnover / day')}${tile(pct(s.total_return, 0), 'Total return', s.total_return >= 0 ? 'pos' : 'neg')}${tile(num(o.sharpe), 'Out-of-sample Sharpe', o.sharpe >= 0 ? 'pos' : 'neg')}</div>
+  const usd = (x) => `$${(100 * (1 + x)).toFixed(0)}`;
+  const verdict = neverBought ? '' : passed === GATES.length ? '<b class="pos">It clears every listing gate, so you can publish it.</b>'
+    : `It clears ${passed} of ${GATES.length} listing gates. ${o.sharpe <= 0 ? 'It stops working on unseen data, the most common sign of an idea fit to the past.' : 'See the tips below to fix the rest.'}`;
+  const summary = neverBought ? '' : `<p class="summary">Over ${r.period.days} days, <b>$100 became ${usd(s.total_return)}</b> (holding NEAR: ${usd(b.total_return)}). At its worst it was ${pct(Math.abs(s.max_drawdown), 0)} below its high, and it swapped about ${pct(s.turnover, 0)} of the portfolio a day. ${verdict}</p>`;
+  const warn = neverBought ? `<div class="callout qual-c"><b>This strategy never bought anything.</b><div>No token ever scored above 0, so it sat in USDC the whole time. Untick "Sit in USDC when nothing scores above 0", or add a positive number, like <code>${esc(src)} + 0.01</code>.</div></div>` : '';
+  const holds = Object.keys(r.latest_signal.weights).length ? Object.entries(r.latest_signal.weights).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC (nothing qualifies today)';
+  $('#out').innerHTML = `<section class="card" id="result"><h2>Results · ${r.period.from} → ${r.period.to}</h2>${warn}${summary}
+    <div class="tiles" id="tiles">${METRICS.map(tile).join('')}</div>
     <div style="margin-top:14px">${lineChart([{ points: r.daily.map((d) => [d.date, d.bench]), color: 'var(--muted)', width: 1.5 }, { points: r.daily.map((d) => [d.date, d.equity]), color: 'var(--accent)' }], { split })}</div>
-    <div class="hint"><span style="color:var(--accent)">━</span> your alpha &nbsp; <span style="color:var(--muted)">━</span> hold NEAR</div>
-    <div class="tbl" style="margin-top:10px"><table><tr><th></th><th>Sharpe</th><th>Return</th><th>Max DD</th><th>Turnover</th><th>Fitness</th><th>Win days</th></tr>${row('Full period', s)}${row('In-sample (first 70%)', r.in_sample)}${row('Out-of-sample (last 30%)', o)}${row('Hold NEAR', b)}</table></div>
-    <h2 style="margin-top:16px">Listing gates</h2><div>${checkGates(r).map((g) => `<span class="${g.pass ? 'ok' : 'bad'}">${g.pass ? '✓' : '✗'}</span> ${esc(g.label)}`).join(' &nbsp; ')}</div>
-    <p class="hint">Signal for the next day (from the ${r.latest_signal.date} close): ${Object.keys(r.latest_signal.weights).length ? Object.entries(r.latest_signal.weights).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC'}.</p>
-    <p class="hint">Fitness = Sharpe × √(|annual return| ÷ max(turnover, 0.125)). It rewards returns and punishes churn.</p></section>`;
+    <div class="hint"><span style="color:var(--accent)">━</span> your strategy &nbsp; <span style="color:var(--muted)">━</span> just holding NEAR &nbsp;·&nbsp; right of the dashed line: unseen data (last 30% of days)</div>
+    <div id="gates" style="margin-top:16px"><h2>Listing gates <span class="hint" style="font-weight:400">${passed}/${GATES.length} passed</span></h2>
+    <ul class="gatelist">${gates.map((g, i) => `<li><span class="${g.pass ? 'ok' : 'bad'}">${g.pass ? '✓' : '✗'}</span> ${esc(g.label)}${g.pass ? '' : `<div class="hint" style="margin:2px 0 0">${esc(GATE_TIPS[GATES[i].key])}</div>`}</li>`).join('')}</ul></div>
+    <p class="hint">Tomorrow it would hold: <b>${esc(holds)}</b> (from the ${r.latest_signal.date} close).</p>
+    <details><summary class="hint">Detailed table: full period, first 70%, last 30%, hold NEAR</summary><div class="tbl" style="margin-top:8px"><table><tr><th></th><th>Sharpe</th><th>Return</th><th>Worst drop</th><th>Trading/day</th><th>Fitness</th><th>Up days</th></tr>${row('Full period', s)}${row('Tuning period (first 70%)', r.in_sample)}${row('Unseen data (last 30%)', o)}${row('Hold NEAR', b)}</table></div></details></section>`;
   $('#pub').hidden = false;
   $('#card').textContent = '';
+  $('#pubgate').innerHTML = passed === GATES.length ? '<span class="ok">✓</span> Clears every gate: it can be listed.' : `<span class="bad">✗</span> Clears ${passed} of ${GATES.length} gates. You can still make the card, but it won't be listed for investors until it clears all five.`;
+  if (scroll) $('#result').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-$('#run').onclick = run;
-$('#expr').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) run(); });
+$('#run').onclick = () => run(true);
+$('#expr').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) run(true); });
+['#topn', '#fee', '#cash'].forEach((k) => $(k).addEventListener('change', () => run()));
+$('#uni').addEventListener('change', () => run());
 
 $('#mk').onclick = async () => {
   if (!last) return;
@@ -99,8 +220,10 @@ $('#mk').onclick = async () => {
     expression: vis === 'public' ? last.expression : undefined, logic_commit: await logicCommit(last.expression, S, salt), settings: S,
     stats: { sharpe: +last.stats.sharpe.toFixed(4), fitness: +last.stats.fitness.toFixed(4), max_drawdown: +last.stats.max_drawdown.toFixed(4), turnover: +last.stats.turnover.toFixed(4), total_return: +last.stats.total_return.toFixed(4), oos_sharpe: +last.out_of_sample.sharpe.toFixed(4), days: last.stats.days },
     fee: { recipient: '<your-account.near>', bps: 20 } };
-  $('#card').textContent = `${vis === 'hidden' ? `Keep private (give to the auditor only):\n  expression: ${last.expression}\n  salt: ${salt}\n\n` : ''}Publish from your researcher account:\n\nnear contract call-function as-transaction top-notch.near publish_mandate json-args '${JSON.stringify({ mandate: canonical(card) })}' prepaid-gas '30 Tgas' attached-deposit '0 NEAR' sign-as <your-account.near> network-config mainnet sign-with-keychain send`;
+  $('#card').textContent = `${vis === 'hidden' ? `Keep private (give to the auditor only):\n  expression: ${last.expression}\n  salt: ${salt}\n\n` : ''}Publish from your researcher account with NEAR CLI:\n\nnear contract call-function as-transaction top-notch.near publish_mandate json-args '${JSON.stringify({ mandate: canonical(card) })}' prepaid-gas '30 Tgas' attached-deposit '0 NEAR' sign-as <your-account.near> network-config mainnet sign-with-keychain send`;
 };
+
+await loadPrices();
 run();
 </script>
 </body>

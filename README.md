@@ -30,12 +30,14 @@ Researchers publish trading strategies with honest backtests, logic public or hi
 
 ## Try it in 60 seconds (no wallet, no install)
 
+0. **First visit:** a welcome card asks *"I'm a researcher"* or *"I'm an investor"* and walks you through the real pages in about a minute (8 or 9 steps; Esc or × to leave, **Guide** in the menu to restart). Skip it to follow the steps below. Automated checks can add `?notour` to any URL to suppress the card.
 1. **Open** https://s111s.github.io/top-notch-audit/
    **You should see** three strategies read live from `top-notch.near` on mainnet, each with an auditor opinion: *Dip in an uptrend* (🔒 hidden, 5/5 gates), *Ecosystem 2-day reversal* (public, 4/5: fails out-of-sample, and the vault follows it) and *Majors trend 5/20* (public, 4/5), plus the managed agent `alpha-bot-demo.near` following one of them.
 2. **Click "Dip in an uptrend".**
    **You should see** the backtest (Sharpe 2.78, max drawdown −8.9%, fitness 16.45) against holding NEAR, the logic shown only as a sha256 commitment, the auditor's four checks all ✓ (logic matches commitment, stats reproduced, every signal reproduced, no backdating) and a letter signed by NEAR AI Cloud.
-3. **Open the Lab** and pick any example, or write your own, e.g. `rank(ts_mean(returns, 14)) - 0.5`.
-   **You should see** stats, an equity curve, in-sample vs out-of-sample, the listing gates, and tomorrow's target weights, computed in your browser.
+3. **Open the Lab** and click a starter idea (e.g. *Buy the dip*), or write your own, e.g. `rank(ts_mean(returns, 14)) - 0.5`.
+   **You should see** a plain-English summary ("$100 became $X, holding NEAR: $Y"), six metric tiles each with a one-line meaning and a Good/Okay/Weak mark, an equity curve against holding NEAR, the five listing gates with a fix-it tip for each failed one, and tomorrow's target weights, all computed in your browser.
+   **Try a typo**, e.g. `ts_maen(close, 5)`: the Lab says *"ts_maen" isn't a function the Lab knows. Did you mean ts_mean?* and offers **Fix it for me**.
 4. **Open My agent** (https://s111s.github.io/top-notch-audit/vault.html).
    **You should see** the investor's vault `vault-1.top-notch.near` holding NEAR, BTC and ETH bought by the agent, *"1 full-access key: the investor's. The platform holds none."* read live from the chain, the agent's caps, its 3 swaps with the researcher's and platform's fees inside each, a **Clean** audit, and today's note from the agent written and signed inside NEAR AI Cloud.
 5. **Open Agent audit** (`alpha-bot-demo.near`).
@@ -109,6 +111,13 @@ Publishing (`researcher.mjs publish|signal`, `follow.mjs mandate|rebalance`, the
 - `vault/`: the investor vault contract (`swap` and `wrap_near` for the agent; `withdraw`, `withdraw_near`, `set_paused`, `set_agent`, `set_policy` for the owner), 13 unit tests: `cd vault && cargo test`.
 - `scripts/vault.mjs`, `scripts/managed-agent.mjs`, `scripts/daily.sh`: onboarding, the managed agent, the daily cycle.
 - `web/vault.html`: the investor's My agent page.
+- `web/tour.js`: the first-visit guided tour (researcher and investor paths across the real pages), no dependencies.
+
+## Libraries and AI-generated code
+
+- Libraries: `near-api-js`, `@near-js/crypto`, `bs58` (scripts), `near-sdk` (Rust contracts), `binaryen` (wasm lowering at build time). The web pages use no frameworks or CDN scripts.
+- Data: NEAR RPC, NearBlocks, NEAR Intents 1Click API, GeckoTerminal (prices of NEAR Intents pools), NEAR AI Cloud.
+- Much of the code and copy was written with Claude Code (Anthropic) under the author's direction, during the hackathon window.
 
 ## Honest limits
 

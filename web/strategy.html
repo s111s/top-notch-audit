@@ -6,6 +6,7 @@
 <title>Top Notch Strategy</title>
 <meta name="description" content="One strategy: its backtest, its on-chain signals, the auditor's opinion, and the investor agents following it.">
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./tour.js"></script>
 </head>
 <body>
 <main>
@@ -38,7 +39,7 @@ $('#sub').innerHTML = `${esc(c.description)}<br>By <code>${esc(acct)}</code> · 
 const report = await fetch(`./data/strategy-report-${id}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 const curve = await fetch(`./data/curve-${id}.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 const tile = (v, l, cls = '') => `<div class="tile"><b class="${cls}">${v}</b><span>${l}</span></div>`;
-let html = `<section class="card"><h2>Backtest (${esc(c.data.from)} → ${esc(c.data.to)}, ${st.days} days, fees included)</h2><div class="tiles">
+let html = `<section class="card" id="s-backtest"><h2>Backtest (${esc(c.data.from)} → ${esc(c.data.to)}, ${st.days} days, fees included)</h2><div class="tiles">
   ${tile(num(st.sharpe), 'Sharpe')}${tile(num(st.fitness), 'Fitness')}${tile(pct(st.max_drawdown), 'Max drawdown', 'neg')}${tile(pct(st.turnover), 'Turnover / day')}
   ${tile(pct(st.total_return, 0), 'Total return', st.total_return >= 0 ? 'pos' : 'neg')}${tile(num(st.oos_sharpe), 'Out-of-sample Sharpe', st.oos_sharpe >= 0 ? 'pos' : 'neg')}</div>`;
 if (curve) html += `<div style="margin-top:14px">${lineChart([{ points: curve.points.map((p) => [p[0], p[2]]), color: 'var(--muted)', width: 1.5 }, { points: curve.points.map((p) => [p[0], p[1]]), color: 'var(--accent)' }], { split: curve.split_at })}</div>
@@ -48,7 +49,7 @@ html += `<div style="margin-top:12px">${GATES.map((g) => { const ok = g.test(gs,
 html += `<div class="hint">Universe: ${esc(c.settings.universe.join(', '))} · holds the top ${c.settings.top_n}${c.settings.cash_if_negative ? ', USDC when nothing qualifies' : ''} · daily rebalance · ${c.settings.fee_bps} bps cost per side.</div></section>`;
 
 // logic
-html += `<section class="card"><h2>Logic</h2>`;
+html += `<section class="card" id="s-logic"><h2>Logic</h2>`;
 if (c.visibility === 'public') {
   html += `<pre class="mono" style="margin:0">${esc(c.expression)}</pre><p class="hint">Public: rerun it yourself below, or paste it into the <a href="./lab.html?e=${encodeURIComponent(c.expression)}">Lab</a>.</p><button class="ghost" id="rerun">Rerun backtest in my browser</button> <span id="rr" class="hint"></span>`;
 } else {
@@ -57,7 +58,7 @@ if (c.visibility === 'public') {
 html += `</section>`;
 
 // auditor
-html += `<section class="card"><h2>Auditor's opinion</h2>`;
+html += `<section class="card" id="s-audit"><h2>Auditor's opinion</h2>`;
 if (s.audit && report) {
   html += `<div class="opinion"><div class="badge ${s.audit.opinion}">${OPINION_LABEL[s.audit.opinion]} opinion</div><div class="hint" style="margin:0">Report hash <code>${esc(s.audit.report_hash.slice(0, 16))}…</code> on-chain at block ${s.audit.block_height}${report.publish_tx ? ` · ${tx(report.publish_tx)}` : ''}</div></div>
   <ul class="verify">${report.checks.map((k) => `<li><span class="${k.pass ? 'ok' : 'bad'}">${k.pass ? '✓' : '✗'}</span> <b>${esc(k.test)}</b>: ${esc(k.detail)}</li>`).join('')}</ul>
@@ -66,7 +67,7 @@ if (s.audit && report) {
 html += `</section>`;
 
 // signals
-html += `<section class="card"><h2>Signals on-chain (${s.signals.length})</h2><div class="tbl"><table><tr><th>Candle</th><th>Target weights</th><th>Published</th><th>Hash</th></tr>`;
+html += `<section class="card" id="s-signals"><h2>Signals on-chain (${s.signals.length})</h2><div class="tbl"><table><tr><th>Candle</th><th>Target weights</th><th>Published</th><th>Hash</th></tr>`;
 for (const g of [...s.signals].reverse()) {
   const w = Object.entries(g.json.weights);
   html += `<tr><td>${esc(g.json.date)}</td><td>${w.length ? w.map(([k, v]) => `${esc(k)} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC (nothing qualifies)'}</td><td>${new Date(g.ms).toISOString().slice(0, 16).replace('T', ' ')} · block ${g.block_height}</td><td><code>${esc(g.hash.slice(0, 12))}…</code></td></tr>`;
@@ -74,7 +75,7 @@ for (const g of [...s.signals].reverse()) {
 html += `</table></div><p class="hint">Each signal is computed from the last complete daily candle and published by the researcher account. Investor agents trade toward the latest one.</p></section>`;
 
 // followers
-html += `<section class="card"><h2>Investor agents following (${s.followers.length})</h2>`;
+html += `<section class="card" id="s-followers"><h2>Investor agents following (${s.followers.length})</h2>`;
 html += s.followers.length ? `<div class="tbl"><table><tr><th>Agent</th><th>Its mandate</th><th>Agent audit</th></tr>${s.followers.map((f) => `<tr><td><a href="./audit.html?agent=${encodeURIComponent(f.agent)}">${esc(f.agent)}</a></td><td>max $${f.mandate.json.max_trade_usd}/trade · slippage ≤ ${f.mandate.json.max_slippage_bps} bps · signal ≤ ${f.mandate.json.max_signal_age_hours}h old · pays ${f.mandate.json.researcher_fee_bps} bps</td><td>${f.audit ? `<span class="badge ${f.audit.opinion}" style="font-size:13px;padding:3px 8px">${OPINION_LABEL[f.audit.opinion]}</span> ${f.audit.trades_tested} trades, ${f.audit.findings} findings` : 'not audited yet'}</td></tr>`).join('')}</table></div>` : '<p class="hint">None yet.</p>';
 html += `<p class="hint">To follow: publish a <code>follow</code> mandate from your agent's account, then let it rebalance your own wallet to the latest signal through 1Click with the researcher's fee in <code>appFees</code>. See <code>scripts/follow.mjs</code>.</p></section>`;
 $('#out').innerHTML = html;

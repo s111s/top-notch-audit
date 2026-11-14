@@ -83,7 +83,7 @@ function run() {
     <div class="tbl" style="margin-top:10px"><table><tr><th></th><th>Sharpe</th><th>Return</th><th>Max DD</th><th>Turnover</th><th>Fitness</th><th>Win days</th></tr>${row('Full period', s)}${row('In-sample (first 70%)', r.in_sample)}${row('Out-of-sample (last 30%)', o)}${row('Hold NEAR', b)}</table></div>
     <h2 style="margin-top:16px">Listing gates</h2><div>${checkGates(r).map((g) => `<span class="${g.pass ? 'ok' : 'bad'}">${g.pass ? '✓' : '✗'}</span> ${esc(g.label)}`).join(' &nbsp; ')}</div>
     <p class="hint">Signal for the next day (from the ${r.latest_signal.date} close): ${Object.keys(r.latest_signal.weights).length ? Object.entries(r.latest_signal.weights).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(', ') : '100% USDC'}.</p>
-    <p class="hint">Fitness = Sharpe × √(|annual return| ÷ max(turnover, 0.125)), as on WorldQuant BRAIN: it rewards returns and punishes churn.</p></section>`;
+    <p class="hint">Fitness = Sharpe × √(|annual return| ÷ max(turnover, 0.125)). It rewards returns and punishes churn.</p></section>`;
   $('#pub').hidden = false;
   $('#card').textContent = '';
 }

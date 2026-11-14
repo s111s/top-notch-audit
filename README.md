@@ -20,7 +20,7 @@ Researchers publish trading strategies with honest backtests, logic public or hi
 |---|---|---|
 | **Job to be done** | "I have a trading idea. I want to test it on real data in minutes and get paid if it's good, without running money myself or giving my logic away." | "I want strategies with a track record I can trust, run from my own wallet." |
 | **Pain today** | Building data and backtest code takes days. A good idea earns nothing without capital. Sharing it means it gets copied. | Signal groups sell screenshots. Copy-trading means handing funds or keys to someone. |
-| **What Top Notch gives** | A browser Lab with BRAIN-style stats (Sharpe, drawdown, turnover, fitness) on NEAR Intents prices. Publish public or hidden; earn bps on every follower swap. | Audited stats. Hidden logic proven to match its commitment. A managed agent that trades your own vault, can't withdraw, sends you a signed daily note, and is audited against the strategy. |
+| **What Top Notch gives** | A browser Lab with quant-standard stats (Sharpe, drawdown, turnover, fitness) on NEAR Intents prices. Publish public or hidden; earn bps on every follower swap. | Audited stats. Hidden logic proven to match its commitment. A managed agent that trades your own vault, can't withdraw, sends you a signed daily note, and is audited against the strategy. |
 
 **Business model:** every agent swap goes through 1Click with `appFees`: the researcher's fee (20 bps) and the platform's fee (10 bps) are paid by the swap itself. No custody, no pooled fund, no invoices. Later: a monthly fee for managed agents and paid strategy certification. Auditing (strategy certification and agent audits) is the trust layer that makes hidden strategies sellable.
 

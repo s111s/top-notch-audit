@@ -1,9 +1,9 @@
 {
-  "date": "2026-11-13",
+  "date": "2026-11-14",
   "facts": {
     "vault": "vault-1.top-notch.near",
     "strategy": "Dip in an uptrend (dip-in-uptrend by researcher-1.top-notch.near)",
-    "signal_date": "2026-11-12",
+    "signal_date": "2026-11-13",
     "target_weights": {},
     "before": {
       "NEAR": 0,
@@ -25,14 +25,14 @@
     "fees": "researcher 20 bps + platform 10 bps per swap, paid inside each 1Click swap",
     "agent_powers": "can only call vault.swap within the owner policy; cannot withdraw"
   },
-  "facts_sha256": "2c64ba25e9b0b566fcc76c2fc2b575098782ba57460c909a4dbc81cfdc437141",
+  "facts_sha256": "d646807cd8fd7a00c98aa5f8bcf67d54f28b3442576302febcf52f036b2b0c2f",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-8bd60cf8-2ff2-475e-8d15-af2ae26e92c8",
-    "text": "Today the Dip in an uptrend strategy signal asked for no target weights, so no position changes. The agent executed no trades. The vault now holds 5.90 USDC and zero AURORA, BTC, ETH, NEAR, and RHEA, unchanged from before. You can pause or withdraw at any time; the agent can only call vault.swap within the owner policy and cannot withdraw.",
-    "text_sha256": "5a7e362fbfaa866bd7a97ebc77b3e4cbd6412227ced2331bbf264471828845d4",
-    "signature": "0x8a7866e86f4f79aed7e03c2cf1d81b471513b47f9d55eade0cb32800d67ccb476e10e40ff584bb47c111595c61bb35b71a730923b76fd90c81680b7efc74826a1b",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:6bf2336e4608202bf01450cef00828102c309eec60279efcb268c8da87da4e14:484644aa3fdc9b6928865a740083cfdae7913b2940d66d1fe9381b7af36ef03d",
+    "chat_id": "chatcmpl-cca09ecd-9987-4c8e-8298-c2fd297fce03",
+    "text": "The dip-in-an-uptrend strategy signal produced no target weights, so it asked for no allocation changes. The agent executed no trades; there are no trades to cite. The vault now holds 5.9 USDC, with AURORA, BTC, ETH, NEAR, and RHEA all at zero. You can pause or withdraw at any time; the agent cannot withdraw funds.",
+    "text_sha256": "4c312f0a57b6ea4ddd07ee5fd62673e96d32b128f8d7a42fc2930fbbf6106cd0",
+    "signature": "0x4df667c0649b3e4868fce5371a29330c11383815b7f679e5731b73b382c57b5d77c8af6ea5b2dcd54405e1418f116a1312225d0378c33f54ff6fcb2994878f1b1c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:ea645bc41c636a1fabc734b4685939e1f910d9f11fcca5b9c762654fa20c1cbe:57bced02a72454eb25cefdfd6706dcdcdc1b8b6a4d26f3434dd32103e82549a4",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

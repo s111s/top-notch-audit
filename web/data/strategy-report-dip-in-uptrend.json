@@ -1,6 +1,6 @@
 {
   "schema": "top-notch/strategy-report@1",
-  "generated_at": "2026-11-13T15:02:54.486Z",
+  "generated_at": "2026-11-14T00:31:22.214Z",
   "registry": "top-notch.near",
   "strategy": {
     "account": "researcher-1.top-notch.near",
@@ -33,12 +33,12 @@
     {
       "test": "Every signal reproduced from the committed logic",
       "pass": true,
-      "detail": "1 of 1 signals match"
+      "detail": "2 of 2 signals match"
     },
     {
       "test": "Signals published after the candle closed, not backdated",
       "pass": true,
-      "detail": "2026-11-12 → 2026-11-13T14:53Z"
+      "detail": "2026-11-12 → 2026-11-13T14:53Z; 2026-11-13 → 2026-11-14T00:29Z"
     }
   ],
   "signals": [
@@ -50,19 +50,28 @@
       "snapshot_verified": true,
       "published_at": "2026-11-13T14:53:05.224Z",
       "timely": true
+    },
+    {
+      "date": "2026-11-13",
+      "hash": "da91f2c7597004aeb098ecd0fc57fbc2b08c3dcb7d95fbd1728695fea15e7050",
+      "weights": {},
+      "reproduced": true,
+      "snapshot_verified": true,
+      "published_at": "2026-11-14T00:29:50.671Z",
+      "timely": true
     }
   ],
   "opinion": "clean",
   "scope": "The auditor saw the strategy logic under engagement. It is not disclosed in this report; only the commitment is.",
-  "report_hash": "c8c6f285d34ee3777025cf03d3ebc03d9d1e7f59a55b7a8c15d747926a9f4bea",
-  "publish_tx": "FqzHpJUDeWUzzqcXU4FT3UTXRu7rwBohP4mM3KVn6zt9",
+  "report_hash": "68e25c5839aa3d30144e1e1fbf056cf16b348f1328429c567587fe1eca326308",
+  "publish_tx": "AzB3R54nE53soNN4ezi5TpkVGM272fwZKqdjx7T2uaFa",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-2c2f7d2f-6349-4933-971d-33afaa4b67be",
-    "text": "**Opinion:** Clean opinion.\n\n**What we tested:** We checked that the strategy logic matches its commitment, that the backtest reproduces the claimed statistics, that every signal can be reproduced from the committed logic, and that signals were published after the candle closed rather than backdated.\n\n**Results:** All four checks passed. The backtest reproduced Sharpe 2.78, fitness 16.45, drawdown -8.9%, turnover 19.9%, and 149 days. One of one signals matched. The signal dated 2026-11-12 was reproduced and timely, with publication from 2026-11-12 to 2026-11-13T14:53Z.\n\n**Scope and limits:** The auditor saw the strategy logic under engagement. It is not disclosed in this report; only the commitment is. Report hash: c8c6f285d34ee3777025cf03d3ebc03d9d1e7f59a55b7a8c15d747926a9f4bea.",
-    "text_sha256": "b1c68fa99d8b578146aa4cbeaa944468522697bd0ce6ce75368abe1c17669234",
-    "signature": "0x471cf8d8a71301b0d4d173ec799c1091618c37d176d04046ad9b778292a38d852e5ca6a39c1609fcc99456287c272bb7dfdf4d66e6ab3f1298e92a1125bd66f91b",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:1e6cf2407eb011203f2f03027f00d9b426f132fb3e7ac6f10906b7f14791ca7d:ca4ba1d6de193f54fe9b2bc26f212f719e65263cdc98cb2de57dd2bb7b6005c0",
+    "chat_id": "chatcmpl-d65b16ff-899c-4a54-b912-4d0b9eb6ce6e",
+    "text": "**Opinion**  \nClean opinion.\n\n**What we tested**  \nWe tested the strategy’s committed logic against its commitment, reproduced the claimed backtest statistics, reproduced every published signal from the committed logic, and checked that signals were published after the candle closed rather than backdated.\n\n**Results**  \nAll checks passed. The logic matches its commitment (recomputed d946d8969620… vs card d946d8969620…). The backtest reproduced the claimed stats: Sharpe 2.78, fitness 16.45, drawdown -8.9%, turnover 19.9%, 149 days. 2 of 2 signals matched. Signals were timely: 2026-11-12 → 2026-11-13T14:53Z; 2026-11-13 → 2026-11-14T00:29Z.\n\n**Scope and limits**  \nThe auditor saw the strategy logic under engagement. It is not disclosed in this report; only the commitment is. Report hash: 68e25c5839aa3d30144e1e1fbf056cf16b348f1328429c567587fe1eca326308.",
+    "text_sha256": "8309658f365f58dd3f8496ac2d0035943a0d9ed55bef83617837f1be1dcb48d1",
+    "signature": "0x4b188706a7ee7b1c56da2c8af1a5e9fa9a0b8e42b54d62f29fe97a6df72442dd66f09a54d8bea33c828cc31be40f06bdfe8111669d8c03eebf4a80e61dfb04d91b",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:7a05f1dbd47c88afd5c19b42fe56446a186c6493aa77529c9bb5cae0247a7e60:8e00d18dfc3ef50bb96abd8ed511eca969da2875afef00029c53203164e93611",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

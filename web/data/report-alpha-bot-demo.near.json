@@ -3,18 +3,18 @@
   "engine_version": "1.0.0",
   "agent": "alpha-bot-demo.near",
   "registry": "top-notch.near",
-  "generated_at": "2026-11-13T15:04:05.793Z",
+  "generated_at": "2026-11-14T00:32:34.254Z",
   "mandate": {
-    "hash": "62d7652cd86d5f8a58f89ded241074fd737438f48da0f7f0682ec03f6dfe827c",
-    "text": "{\"agent\":\"alpha-bot-demo.near\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:token.rhealab.near\",\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"nep141:nbtc.bridge.near\",\"nep141:eth.bridge.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"assets\":{\"AURORA\":\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"BTC\":\"nep141:nbtc.bridge.near\",\"ETH\":\"nep141:eth.bridge.near\",\"NEAR\":\"nep141:wrap.near\",\"RHEA\":\"nep141:token.rhealab.near\"},\"cash_asset\":\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\",\"description\":\"Follows dip-in-uptrend by researcher-1.top-notch.near: holds the signal's target weights, rest in USDC.\",\"kind\":\"follow\",\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10},\"max_signal_age_hours\":36,\"max_slippage_bps\":100,\"max_trade_usd\":5,\"researcher_fee_bps\":20,\"strategy\":{\"account\":\"researcher-1.top-notch.near\",\"card_hash\":\"bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e\",\"id\":\"dip-in-uptrend\"},\"v\":1}",
-    "published_at": "2026-11-13T14:54:53.930Z",
-    "block_height": 224378687
+    "hash": "31066b797ae79984f7fb609a188351159ae8f494ff17793d56ac16033ebb99bf",
+    "text": "{\"agent\":\"alpha-bot-demo.near\",\"allowed_assets\":[\"nep141:wrap.near\",\"nep141:token.rhealab.near\",\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"nep141:nbtc.bridge.near\",\"nep141:eth.bridge.near\",\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\"],\"assets\":{\"AURORA\":\"nep141:aaaaaa20d9e0e2461697782ef11675f668207961.factory.bridge.near\",\"BTC\":\"nep141:nbtc.bridge.near\",\"ETH\":\"nep141:eth.bridge.near\",\"NEAR\":\"nep141:wrap.near\",\"RHEA\":\"nep141:token.rhealab.near\"},\"cash_asset\":\"nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1\",\"description\":\"Managed agent: trades the investor's vault vault-1.top-notch.near toward dip-in-uptrend by researcher-1.top-notch.near. It can only call vault.swap; it cannot withdraw.\",\"investor\":\"f9f6f5f3cc4ae3308f7b26d58f3ed945f0857a2848043059614226b008d93180\",\"kind\":\"follow\",\"managed\":true,\"materiality\":{\"adverse_if_findings_at_least\":3,\"material_usd\":10},\"max_signal_age_hours\":36,\"max_slippage_bps\":100,\"max_trade_usd\":5,\"researcher_fee_bps\":20,\"strategy\":{\"account\":\"researcher-1.top-notch.near\",\"card_hash\":\"bc4e551d773dc5e43f6685b514a492e865b320b78c394880d65af7d0cb5b246e\",\"id\":\"dip-in-uptrend\"},\"v\":1,\"vault\":\"vault-1.top-notch.near\"}",
+    "published_at": "2026-11-13T15:57:43.420Z",
+    "block_height": 224385282
   },
   "period": {
-    "from": "2026-11-13T14:54:53.930Z",
-    "to": "2026-11-13T14:57:51.997Z"
+    "from": "2026-11-13T15:57:43.420Z",
+    "to": "2026-11-13T15:57:43.420Z"
   },
-  "out_of_period_trades": 10,
+  "out_of_period_trades": 12,
   "strategy": {
     "account": "researcher-1.top-notch.near",
     "id": "dip-in-uptrend",
@@ -25,178 +25,26 @@
         "date": "2026-11-12",
         "hash": "066596f4ac7cc3b6bd8114ad8a28ea1cc3105c8e4c244e4b7d447797ed44ab6c",
         "weights": {}
+      },
+      {
+        "date": "2026-11-13",
+        "hash": "da91f2c7597004aeb098ecd0fc57fbc2b08c3dcb7d95fbd1728695fea15e7050",
+        "weights": {}
       }
     ]
   },
-  "trades": [
-    {
-      "n": 1,
-      "tx": "HSkQ7tRhzamiCZSxHnBkJfmCs5c9paXJ8QuZM5Nxs2Q5",
-      "depositAddress": "4452b03bdc6caf652babcf3dd490ed18f3ae0ae1ee62cc6224ca9df9d270dd95",
-      "time": "2026-11-13T14:56:30.029Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:wrap.near",
-        "symbol": "wNEAR",
-        "amount": "0.9",
-        "usd": 3.195
-      },
-      "out": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "3.171986",
-        "usd": 3.170355599196
-      },
-      "requestedSlippageBps": 100,
-      "realisedSlippageBps": -8,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "researcher-1.top-notch.near",
-          "fee": 20
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 5
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 25
-        }
-      ],
-      "destinationTxs": [
-        "Dch8b947qnBKw7V41dVfpDG7k89u4fAoUL9cQeqgb6Cs"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "wNEAR → USDC"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$3.19 vs limit $5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 100 bps, realised -8 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        },
-        {
-          "rule": "Signal in force",
-          "pass": true,
-          "detail": "signal 2026-11-12 published 0.1h before the trade (066596f4ac…)"
-        },
-        {
-          "rule": "Trades toward the signal",
-          "pass": true,
-          "detail": "sold wNEAR into cash"
-        },
-        {
-          "rule": "Researcher paid",
-          "pass": true,
-          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
-        }
-      ]
-    },
-    {
-      "n": 2,
-      "tx": "278mFTwXRVn3QE4Zp9vsuu7S6gNJL48EzmjU53e8NvvE",
-      "depositAddress": "807f6e36f955cbbf88afa567107663ca4e32b7799949a8afda0543dcfc506196",
-      "time": "2026-11-13T14:57:51.997Z",
-      "status": "SUCCESS",
-      "in": {
-        "asset": "nep141:token.rhealab.near",
-        "symbol": "RHEA",
-        "amount": "29.463647066651329416",
-        "usd": 1.073089891722
-      },
-      "out": {
-        "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
-        "symbol": "USDC",
-        "amount": "1.056724",
-        "usd": 1.056184014036
-      },
-      "requestedSlippageBps": 100,
-      "realisedSlippageBps": -4,
-      "appFees": [
-        {
-          "limitOrderId": null,
-          "recipient": "researcher-1.top-notch.near",
-          "fee": 20
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "top-notch.near",
-          "fee": 5
-        },
-        {
-          "limitOrderId": null,
-          "recipient": "5880ad2b362620fadf759cbceb1cd5737ce8c6ed7fb8e9942881e6731f9247dd",
-          "fee": 25
-        }
-      ],
-      "destinationTxs": [
-        "98qR5TbDAX4XNARKMrtts98uftBg4NaTiHsTMuDdfCmz"
-      ],
-      "checks": [
-        {
-          "rule": "Allowed tokens",
-          "pass": true,
-          "detail": "RHEA → USDC"
-        },
-        {
-          "rule": "Max trade size",
-          "pass": true,
-          "detail": "$1.07 vs limit $5"
-        },
-        {
-          "rule": "Max slippage",
-          "pass": true,
-          "detail": "requested 100 bps, realised -4 bps vs limit 100 bps"
-        },
-        {
-          "rule": "Settled",
-          "pass": true,
-          "detail": "1Click status SUCCESS"
-        },
-        {
-          "rule": "Signal in force",
-          "pass": true,
-          "detail": "signal 2026-11-12 published 0.1h before the trade (066596f4ac…)"
-        },
-        {
-          "rule": "Trades toward the signal",
-          "pass": true,
-          "detail": "sold RHEA into cash"
-        },
-        {
-          "rule": "Researcher paid",
-          "pass": true,
-          "detail": "20 bps to researcher-1.top-notch.near (agreed 20)"
-        }
-      ]
-    }
-  ],
+  "trades": [],
   "findings": [],
-  "opinion": "clean",
-  "report_hash": "934eed4d1ed9415aa01c7049fa50009da83e560afbb21abdacbb7798b4be8159",
-  "publish_tx": "AX1jWnFDgLhpKmcNDwPBbXCvK5scffujdTDPikVsipRW",
+  "opinion": "disclaimer",
+  "report_hash": "fe4a97e22b1403f9227f406a86e89c19667c495fab34b9888ae323e4b518a9ee",
+  "publish_tx": "95kiHWQsk7iaFtftjdqu26SN5wHsUMMs8ZynfA1jGiSC",
   "letter": {
     "model": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
-    "chat_id": "chatcmpl-053557c1-7cb5-418b-8754-0ba74eafe555",
-    "text": "Opinion\nClean opinion.\n\nBasis for opinion\nThe opinion is based on deterministic tests applied to the agent alpha-bot-demo.near for the period 2026-11-13T14:54:53.930Z to 2026-11-13T14:57:51.997Z. Two trades were tested against mandate hash 62d7652cd86d5f8a58f89ded241074fd737438f48da0f7f0682ec03f6dfe827c.\n\nFindings\nNo findings were identified for trade 1 or trade 2.\n\nScope and limits\nThis report covers only the two trades tested in the stated period. It does not assess trades outside that period, future performance, market conditions, or matters not covered by the deterministic tests. The report hash is 934eed4d1ed9415aa01c7049fa50009da83e560afbb21abdacbb7798b4be8159.",
-    "text_sha256": "4ae4dfbea3ebd062d3b47bff8ccad48a21791b59a55cfefc5d80165b698ae1ee",
-    "signature": "0x9945c360c86ee26529c3186bd1b4fd3b2f89ff0f9725c0d7699cd82fb5d6f2d64fa32e77cc79dd96a030bfcfd6352f12f23e307277685203843938e04234cf7c1b",
-    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:7642af51b9b896c52a381ab5ccbbc79ae34ca47c89e5102f3ee2a0ee8df15be1:051929356f7c1e2f8498384d0bb1403756e6f04427493677dee4479a004c39fc",
+    "chat_id": "chatcmpl-64087a6e-53c0-4703-b089-9eab0212e78d",
+    "text": "Opinion: Disclaimer of opinion.\n\nBasis for opinion: The opinion was determined by deterministic tests applied to the agent and its mandate. Because no trades were tested, we could not obtain sufficient appropriate evidence to form an opinion on the agent’s trading activity.\n\nFindings: No findings were reported; no trade numbers to cite.\n\nScope and limits: We reviewed alpha-bot-demo.near against mandate hash 31066b797ae79984f7fb609a188351159ae8f494ff17793d56ac16033ebb99bf for the period 2026-11-13T15:57:43.420Z to 2026-11-13T15:57:43.420Z. Trades tested: 0. The period has identical start and end timestamps, and no trades were available for testing. This limits our scope; we do not express an opinion on trading conduct, mandate compliance, or performance. Report hash: fe4a97e22b1403f9227f406a86e89c19667c495fab34b9888ae323e4b518a9ee.",
+    "text_sha256": "fcc7e404bb71e7c6a3d40ac7e6118c86f0a7c5f1d489dc6d7b8dacc23562ebe8",
+    "signature": "0xecf3265aa645c6cb5ab81caddc95f5e5ac27244d6383d76277abb3d46e367bed7a43492d86857d8dca3a7e9055bca9559bcf3a88df8ccb57b364aa7504722f0b1c",
+    "signed_text": "deepseek-ai/DeepSeek-V4.1-Flash-1017:27e2ed52a39e3cb7cc9521de1858a1c9e5dfededae72279886299ff6a1e89d77:7bcf9331723f00f446f59ac0dbf0f4ee7b04f175a84a41f5bcdd2a36bed8f94f",
     "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",
     "attestation_summary": {
       "signing_address": "0xfe0071895500a9755c18044948ab4f4e1a7f337e",

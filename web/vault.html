@@ -6,6 +6,7 @@
 <title>Top Notch My Agent</title>
 <meta name="description" content="An investor's vault on NEAR and the managed agent trading it: holdings, policy, trades, the daily note signed by NEAR AI Cloud, and the audit.">
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./tour.js"></script>
 </head>
 <body>
 <main>
@@ -49,7 +50,7 @@ const equity = bals.reduce((s, b) => s + b.usd, 0);
 const [stAcct, stId] = policy.strategy.split('/');
 const full = keys.keys.filter((k) => k.access_key.permission === 'FullAccess');
 
-let html = `<section class="card"><div class="tiles">
+let html = `<section class="card" id="v-summary"><div class="tiles">
   <div class="tile"><b>$${equity.toFixed(2)}</b><span>vault value</span></div>
   <div class="tile"><b>${swaps}</b><span>swaps by the agent</span></div>
   <div class="tile"><b class="${paused ? 'neg' : 'pos'}">${paused ? 'Paused' : 'Active'}</b><span>agent status</span></div>
@@ -57,21 +58,21 @@ let html = `<section class="card"><div class="tiles">
   <div class="tbl" style="margin-top:14px"><table><tr><th>Token</th><th>Holding</th><th>USD</th><th>Agent cap per swap</th></tr>
   ${bals.map((b) => `<tr><td>${esc(b.sym)}</td><td>${b.amount.toLocaleString('en-US', { maximumFractionDigits: 6 })}</td><td>$${b.usd.toFixed(2)}</td><td>${b.cap.toLocaleString('en-US', { maximumFractionDigits: 6 })} ${esc(b.sym)}</td></tr>`).join('')}</table></div></section>`;
 
-html += `<section class="card"><h2>Who can do what (read live from the chain)</h2><ul class="verify">
+html += `<section class="card" id="v-who"><h2>Who can do what (read live from the chain)</h2><ul class="verify">
   <li><span class="ok">✓</span> <b>Vault</b> <code>${esc(VAULT)}</code> has ${full.length} full-access key${full.length === 1 ? '' : 's'}: the investor's. The platform holds none.</li>
   <li><span class="ok">✓</span> <b>Owner</b> <code>${esc(owner.length > 30 ? owner.slice(0, 12) + '…' : owner)}</code> can withdraw, pause, change the agent, or change the limits.</li>
   <li><span class="ok">✓</span> <b>Agent</b> <a href="./audit.html?agent=${encodeURIComponent(agent)}">${esc(agent)}</a> can only call <code>swap</code>: allowed tokens, under the caps above, at most ${policy.max_trades_per_day} swaps a day, and only to a one-time NEAR Intents deposit address. Output and refunds come back to the vault.</li></ul></section>`;
 
 if (note?.letter) {
-  html += `<section class="card"><h2>Today's note from your agent · ${esc(note.date)}</h2><pre class="letter">${esc(note.letter.text)}</pre>
+  html += `<section class="card" id="v-note"><h2>Today's note from your agent · ${esc(note.date)}</h2><pre class="letter">${esc(note.letter.text)}</pre>
   <div class="hint">Written inside NEAR AI Cloud's TEE by <code>${esc(note.letter.model)}</code> from the facts below, signed by <code>${esc(note.letter.signing_address || '')}</code>${note.letter.signature ? ` (signature <code>${esc(note.letter.signature.slice(0, 20))}…</code>)` : ''}. Facts sha256 <code>${esc(note.facts_sha256.slice(0, 16))}…</code>.</div></section>`;
 }
 
-html += `<section class="card"><h2>Agent trades on this vault (${trades.length})</h2>${trades.length ? `<div class="tbl"><table><tr><th>Time (UTC)</th><th>Swap</th><th>USD</th><th>Signal</th><th>Fees inside the swap</th><th>Status</th><th>Tx</th></tr>
+html += `<section class="card" id="v-trades"><h2>Agent trades on this vault (${trades.length})</h2>${trades.length ? `<div class="tbl"><table><tr><th>Time (UTC)</th><th>Swap</th><th>USD</th><th>Signal</th><th>Fees inside the swap</th><th>Status</th><th>Tx</th></tr>
   ${[...trades].reverse().map((t) => `<tr><td>${esc(t.at.slice(0, 16).replace('T', ' '))}</td><td>${esc(t.from)} → ${esc(t.to)}</td><td>$${Number(t.usd).toFixed(2)}</td><td>${esc(t.signal_date)}</td><td>${(t.appFees || []).map((f) => `${f.fee} bps ${f.recipient.length > 30 ? '1Click' : esc(f.recipient)}`).join('<br>')}</td><td>${esc(t.status)}</td><td>${tx(t.txHash)}</td></tr>`).join('')}</table></div>` : '<p class="hint">No trades yet: the latest signal says hold USDC, so the agent did nothing. That is the agent working.</p>'}</section>`;
 
-html += `<section class="card"><h2>Audit of the agent</h2><div id="aud" class="hint">Running the audit in your browser from mainnet data…</div></section>`;
-html += `<section class="card"><h2>Your controls</h2><p class="hint" style="margin-top:0">Signed with your own key, no platform involved:</p><pre class="mono" style="white-space:pre-wrap">near contract call-function as-transaction ${esc(VAULT)} set_paused json-args '{"paused":true}' prepaid-gas '30 Tgas' attached-deposit '0 NEAR' sign-as ${esc(owner)} network-config mainnet sign-with-keychain send
+html += `<section class="card" id="v-audit"><h2>Audit of the agent</h2><div id="aud" class="hint">Running the audit in your browser from mainnet data…</div></section>`;
+html += `<section class="card" id="v-controls"><h2>Your controls</h2><p class="hint" style="margin-top:0">Signed with your own key, no platform involved:</p><pre class="mono" style="white-space:pre-wrap">near contract call-function as-transaction ${esc(VAULT)} set_paused json-args '{"paused":true}' prepaid-gas '30 Tgas' attached-deposit '0 NEAR' sign-as ${esc(owner)} network-config mainnet sign-with-keychain send
 near contract call-function as-transaction ${esc(VAULT)} withdraw json-args '{"token":"17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1","amount":"1000000"}' prepaid-gas '50 Tgas' attached-deposit '0 NEAR' sign-as ${esc(owner)} network-config mainnet sign-with-keychain send</pre></section>`;
 $('#out').innerHTML = html;
 

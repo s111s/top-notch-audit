@@ -1,4 +1,4 @@
-// Alpha engine: a small BRAIN-style expression language, a long-only backtester, and the stats
+// Alpha engine: a small formulaic-alpha expression language, a long-only backtester, and the stats
 // (Sharpe, drawdown, turnover, fitness...). Runs the same in the browser and in Node 18+.
 // Deterministic: same expression + settings + prices => same stats and the same signal hash.
 
@@ -214,7 +214,7 @@ export function statsOf(daily) {
   const annRet = Math.pow(eq, DAYS_PER_YEAR / n) - 1;
   const sharpe = s ? (m / s) * Math.sqrt(DAYS_PER_YEAR) : 0;
   const turnover = mean(daily.map((d) => d.turnover));
-  // BRAIN-style fitness: Sharpe * sqrt(|returns| / max(turnover, 0.125)). Rewards returns, punishes churn.
+  // Fitness: Sharpe * sqrt(|returns| / max(turnover, 0.125)). Rewards returns, punishes churn.
   const fitness = sharpe * Math.sqrt(Math.abs(annRet) / Math.max(turnover, 0.125));
   return {
     days: n,
@@ -226,7 +226,7 @@ export function statsOf(daily) {
   };
 }
 
-// The gates a strategy must pass before it can be listed (BRAIN-like submission checks).
+// The gates a strategy must pass before it can be listed.
 export const GATES = [
   { key: 'sharpe', label: 'Sharpe ≥ 1.0', test: (s) => s.sharpe >= 1.0 },
   { key: 'fitness', label: 'Fitness ≥ 0.5', test: (s) => s.fitness >= 0.5 },
